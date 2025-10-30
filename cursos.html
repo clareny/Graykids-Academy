@@ -71,7 +71,20 @@
     <script>
         // Cargar cursos dinámicamente al cargar la página
         document.addEventListener('DOMContentLoaded', function() {
-            loadAllCourses('coursesContainer', renderCourseItem);
+            const params = new URLSearchParams(window.location.search);
+            const availableOnlyParam = params.get('available');
+            const showOnlyAvailable = availableOnlyParam === 'true' || availableOnlyParam === '1' || availableOnlyParam === 'available';
+
+            loadAllCourses('coursesContainer', renderCourseItem, {
+                onlyAvailable: showOnlyAvailable
+            });
+
+            if (showOnlyAvailable) {
+                const heroSubtitle = document.querySelector('.courses-hero__subtitle');
+                if (heroSubtitle) {
+                    heroSubtitle.textContent = 'Mostrando únicamente los cursos con inscripción abierta';
+                }
+            }
         });
     </script>
 

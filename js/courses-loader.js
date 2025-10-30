@@ -19,7 +19,8 @@ const defaultCoursesInfo = {
         icon: '🎤',
         videos: '60+',
         hours: '12+ Horas',
-        status: 'available'
+        status: 'available',
+        presentationVideoUrl: 'https://www.youtube.com/watch?v=ysz5S6PUM-U'
     },
     'curso-maquetizacion': {
         name: 'Maquetización Composicional',
@@ -29,7 +30,8 @@ const defaultCoursesInfo = {
         icon: '🎹',
         videos: '50+',
         hours: '10+ Horas',
-        status: 'coming-soon'
+        status: 'coming-soon',
+        presentationVideoUrl: 'https://www.youtube.com/watch?v=Vx2xTI4_7oA'
     },
     'curso-beats': {
         name: 'Programación de Beats',
@@ -39,7 +41,8 @@ const defaultCoursesInfo = {
         icon: '🎛️',
         videos: '55+',
         hours: '11+ Horas',
-        status: 'coming-soon'
+        status: 'coming-soon',
+        presentationVideoUrl: 'https://www.youtube.com/watch?v=4TnQq0FJ4sI'
     }
 };
 
@@ -57,6 +60,7 @@ function renderCourseItem(courseId, container) {
     // Determinar estado del curso
     const courseStatus = course.status || (courseId === 'curso-voces' ? 'available' : 'coming-soon');
     const isAvailable = courseStatus === 'available' || courseStatus === 'pre-sale';
+    const detailLink = `curso-preview.html?course=${encodeURIComponent(courseId)}`;
     const badgeClass = course.level === 'Avanzado' ? '' : course.level === 'Intermedio' ? 'new' : 'popular';
     
     // Determinar texto y estilo del precio/estado
@@ -71,6 +75,7 @@ function renderCourseItem(courseId, container) {
         priceHtml = `<span class="course-item__price" style="opacity: 0.6;">Próximamente</span>
                      <span class="btn btn--primary" style="opacity: 0.6; cursor: not-allowed; pointer-events: none;">Próximamente</span>`;
     }
+    const detailsButton = `<a href="${detailLink}" class="btn btn--outline">Ver presentación</a>`;
     
     const courseHTML = `
         <article class="course-item" data-course-id="${courseId}">
@@ -99,6 +104,7 @@ function renderCourseItem(courseId, container) {
                 </div>
                 <div class="course-item__footer">
                     ${priceHtml}
+                    ${detailsButton}
                 </div>
             </div>
         </article>
@@ -113,6 +119,7 @@ function renderCourseCard(courseId, container) {
     if (!course) return;
     
     const isAvailable = course.status === 'available' || course.status === undefined;
+    const detailLink = `curso-preview.html?course=${encodeURIComponent(courseId)}`;
     
     const cardHTML = `
         <article class="course-card" data-course-id="${courseId}">
@@ -124,10 +131,13 @@ function renderCourseCard(courseId, container) {
             <div class="course-card__content">
                 <h4 class="course-card__title">${course.name}</h4>
                 <p class="course-card__description">${course.description}</p>
-                ${isAvailable 
-                    ? `<a href="#contacto" class="btn btn--secondary">Más info</a>`
-                    : `<span class="btn btn--secondary" style="opacity: 0.6; cursor: not-allowed;">Próximamente</span>`
-                }
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="${detailLink}" class="btn btn--secondary">Ver presentación</a>
+                    ${isAvailable 
+                        ? `<a href="checkout.html?type=course&id=${courseId}" class="btn btn--outline">Comprar</a>`
+                        : `<span class="btn btn--outline" style="opacity: 0.6; cursor: not-allowed;">Próximamente</span>`
+                    }
+                </div>
             </div>
         </article>
     `;
@@ -136,12 +146,14 @@ function renderCourseCard(courseId, container) {
 }
 
 // Cargar todos los cursos disponibles
-function loadAllCourses(containerId, renderFunction = renderCourseItem) {
+function loadAllCourses(containerId, renderFunction = renderCourseItem, options = {}) {
     const container = document.getElementById(containerId);
     if (!container) return;
     
     container.innerHTML = ''; // Limpiar contenido
     
+    const { onlyAvailable = false } = options || {};
+
     const coursesInfo = getCoursesInfo();
     const deletedCourses = JSON.parse(localStorage.getItem('deletedCourses') || '[]');
     
@@ -158,8 +170,16 @@ function loadAllCourses(containerId, renderFunction = renderCourseItem) {
     const defaultIds = Object.keys(defaultCoursesInfo);
     const newIds = activeCourseIds.filter(id => !defaultIds.includes(id));
     const sortedIds = [...defaultIds.filter(id => !deletedCourses.includes(id)), ...newIds];
+
+    const filteredIds = onlyAvailable
+        ? sortedIds.filter(courseId => {
+            const course = getCourseInfo(courseId);
+            const status = (course && course.status) || (courseId === 'curso-voces' ? 'available' : 'coming-soon');
+            return status === 'available' || status === 'pre-sale';
+        })
+        : sortedIds;
     
-    sortedIds.forEach(courseId => {
+    filteredIds.forEach(courseId => {
         const course = getCourseInfo(courseId);
         // Solo renderizar si el curso tiene información válida
         if (course && course.name) {
@@ -167,9 +187,15 @@ function loadAllCourses(containerId, renderFunction = renderCourseItem) {
         }
     });
     
+    const showNoCoursesMessage = filteredIds.length === 0;
+
     // Si no hay cursos, mostrar mensaje
-    if (sortedIds.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 40px; font-size: 1.1rem;">No hay cursos disponibles. El administrador agregará cursos próximamente.</p>';
+    if (showNoCoursesMessage) {
+        const message = onlyAvailable
+            ? 'No hay cursos disponibles en este momento. Muy pronto anunciaremos nuevas fechas.'
+            : 'No hay cursos disponibles. El administrador agregará cursos próximamente.';
+
+        container.innerHTML = `<p style="color: var(--text-secondary); text-align: center; padding: 40px; font-size: 1.1rem;">${message}</p>`;
     }
 }
 

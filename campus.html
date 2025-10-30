@@ -137,7 +137,7 @@
                     <p class="empty-state__description">
                         Explora nuestros cursos y comienza tu viaje en la producción musical
                     </p>
-                    <a href="cursos.html" class="btn btn--primary">Ver Cursos</a>
+                <a href="cursos.html?available=true" class="btn btn--primary">Ver Cursos</a>
                 </div>
             </div>
         </div>
@@ -201,9 +201,15 @@
                                 <h4 class="available-course-card__title">${course.name}</h4>
                                 ${isAvailable 
                                     ? `<p class="available-course-card__price">$${course.price || '0.00'}</p>
-                                       <a href="checkout.html?type=course&id=${courseId}" class="btn btn--secondary">Comprar Curso</a>`
+                                       <div class="available-course-card__actions">
+                                           <a href="checkout.html?type=course&id=${courseId}" class="btn btn--secondary">Comprar Curso</a>
+                                           <a href="curso-preview.html?course=${courseId}" class="btn btn--outline">Ver Presentación</a>
+                                       </div>`
                                     : `<p class="available-course-card__price" style="opacity: 0.6;">Próximamente</p>
-                                       <span class="btn btn--secondary" style="opacity: 0.6; cursor: not-allowed; pointer-events: none;">Próximamente</span>`
+                                       <div class="available-course-card__actions">
+                                           <span class="btn btn--secondary" style="opacity: 0.6; cursor: not-allowed; pointer-events: none;">Próximamente</span>
+                                           <a href="curso-preview.html?course=${courseId}" class="btn btn--outline">Ver Presentación</a>
+                                       </div>`
                                 }
                             </div>
                         `;
@@ -215,7 +221,7 @@
             </script>
 
             <div class="campus-available-courses__view-all">
-                <a href="cursos.html" class="btn btn--primary btn--large">Ver Todos los Cursos</a>
+                <a href="cursos.html?available=true" class="btn btn--primary btn--large">Ver Todos los Cursos</a>
             </div>
         </div>
     </section>

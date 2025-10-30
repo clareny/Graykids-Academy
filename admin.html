@@ -545,6 +545,14 @@
                     <label style="font-weight: 600; color: white;">Descripción del Curso</label>
                     <textarea id="modalCourseDescription" placeholder="Describe el curso..." style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; min-height: 120px; resize: vertical;"></textarea>
                 </div>
+
+                <div class="form-group">
+                    <label style="font-weight: 600; color: white;">Video de Presentación (URL)</label>
+                    <input type="text" id="modalCoursePresentation" placeholder="https://www.youtube.com/watch?v=..." style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                    <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 6px;">
+                        🔗 Acepta enlaces de YouTube, Vimeo o archivos MP4. Se mostrará como video introductorio del curso.
+                    </p>
+                </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div class="form-group">
@@ -619,6 +627,14 @@
                     <div class="form-group">
                         <label>Descripción</label>
                         <textarea id="newCourseDescription" placeholder="Describe el curso..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Video de presentación (URL)</label>
+                        <input type="text" id="newCoursePresentation" placeholder="https://www.youtube.com/watch?v=...">
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 6px;">
+                            📹 Acepta enlaces de YouTube, Vimeo o archivos MP4/M3U8. Este video se mostrará a los estudiantes antes de comprar o acceder al curso.
+                        </p>
                     </div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
@@ -760,6 +776,11 @@
             const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
             const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
             const defaultCourseIds = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+            const defaultPresentationVideos = {
+                'curso-voces': 'https://www.youtube.com/watch?v=ysz5S6PUM-U',
+                'curso-maquetizacion': 'https://www.youtube.com/watch?v=Vx2xTI4_7oA',
+                'curso-beats': 'https://www.youtube.com/watch?v=4TnQq0FJ4sI'
+            };
             
             defaultCourseIds.forEach(courseId => {
                 // Inicializar estructura de videos si no existe
@@ -781,8 +802,11 @@
                         icon: courseId === 'curso-voces' ? '🎤' : courseId === 'curso-maquetizacion' ? '🎹' : '🎛️',
                         videos: '0+',
                         hours: '0+ Horas',
-                        status: courseId === 'curso-voces' ? 'available' : 'coming-soon'
+                        status: courseId === 'curso-voces' ? 'available' : 'coming-soon',
+                        presentationVideoUrl: defaultPresentationVideos[courseId] || ''
                     };
+                } else if (!coursesInfo[courseId].presentationVideoUrl) {
+                    coursesInfo[courseId].presentationVideoUrl = defaultPresentationVideos[courseId] || '';
                 }
             });
             
@@ -853,6 +877,10 @@
                     const defaultInfo = defaultCoursesInfo[courseId] || {};
                     const totalModules = courseData.modules ? courseData.modules.length : 0;
                     const totalVideos = courseData.modules ? courseData.modules.reduce((total, m) => total + (m.lessons ? m.lessons.length : 0), 0) : 0;
+                    const hasPresentation = Boolean(courseInfo.presentationVideoUrl || defaultInfo.presentationVideoUrl);
+                    const presentationIndicator = hasPresentation
+                        ? '<span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(57, 243, 212, 0.18); color: var(--primary-color); padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;">🎬 Video de presentación listo</span>'
+                        : '<span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 77, 77, 0.15); color: #ff4d4d; padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;">⚠️ Sin video de presentación</span>';
                     
                     const card = document.createElement('div');
                     card.setAttribute('data-course-id', courseId); // Agregar atributo para encontrar el curso después
@@ -919,6 +947,7 @@
                         <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px; line-height: 1.5;">
                             ${courseInfo.description ? (courseInfo.description.length > 120 ? courseInfo.description.substring(0, 120) + '...' : courseInfo.description) : 'Sin descripción'}
                         </p>
+                        <div style="margin-bottom: 18px;">${presentationIndicator}</div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
                             <div style="text-align: center;">
                                 <div style="color: var(--primary-color); font-size: 1.5rem; font-weight: 700;">${totalModules}</div>
@@ -1029,7 +1058,8 @@
                     description: defaultInfo.description,
                     icon: defaultInfo.icon,
                     level: defaultInfo.level,
-                    status: defaultInfo.status
+                    status: defaultInfo.status,
+                    presentationVideoUrl: defaultInfo.presentationVideoUrl || ''
                 };
             }
             return { name: 'Curso sin nombre', description: '', icon: '🎓', status: 'coming-soon' };
@@ -1621,6 +1651,10 @@
             // Llenar formulario del modal
             document.getElementById('modalCourseName').value = courseInfo.name || defaultInfo.name || courseNames[courseId] || '';
             document.getElementById('modalCourseDescription').value = courseInfo.description || defaultInfo.description || '';
+            const modalPresentationInput = document.getElementById('modalCoursePresentation');
+            if (modalPresentationInput) {
+                modalPresentationInput.value = courseInfo.presentationVideoUrl || defaultInfo.presentationVideoUrl || '';
+            }
             document.getElementById('modalCourseLevel').value = courseInfo.level || defaultInfo.level || 'Intermedio';
             document.getElementById('modalCoursePrice').value = courseInfo.price || defaultInfo.price || '';
             document.getElementById('modalCourseStatus').value = courseInfo.status || defaultInfo.status || 'coming-soon';
@@ -1656,6 +1690,8 @@
             const price = parseFloat(document.getElementById('modalCoursePrice').value) || 0;
             const status = document.getElementById('modalCourseStatus').value;
             const icon = document.getElementById('modalCourseIcon').value.trim();
+            const presentationVideoInput = document.getElementById('modalCoursePresentation');
+            const presentationVideoUrl = presentationVideoInput ? presentationVideoInput.value.trim() : '';
             
             if (!name) {
                 alert('Por favor ingresa el título del curso');
@@ -1663,15 +1699,18 @@
             }
             
             const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            const previousEntry = coursesInfo[courseId] || {};
             coursesInfo[courseId] = {
+                ...previousEntry,
                 name: name,
                 description: description,
                 level: level,
                 price: price,
                 status: status,
                 icon: icon,
-                videos: coursesInfo[courseId]?.videos || '0+',
-                hours: coursesInfo[courseId]?.hours || '0+ Horas'
+                presentationVideoUrl: presentationVideoUrl,
+                videos: typeof previousEntry.videos !== 'undefined' ? previousEntry.videos : '0+',
+                hours: typeof previousEntry.hours !== 'undefined' ? previousEntry.hours : '0+ Horas'
             };
             
             localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
@@ -1738,6 +1777,10 @@
                 document.getElementById('courseIcon').value = courseInfo.icon || defaultIcons[currentCourseId] || '🎓';
                 document.getElementById('courseVideos').value = courseInfo.videos || '';
                 document.getElementById('courseHours').value = courseInfo.hours || '';
+                const coursePresentationInput = document.getElementById('coursePresentation');
+                if (coursePresentationInput) {
+                    coursePresentationInput.value = courseInfo.presentationVideoUrl || '';
+                }
                 if (document.getElementById('courseStatus')) {
                     document.getElementById('courseStatus').value = courseInfo.status || (currentCourseId === 'curso-voces' ? 'available' : 'coming-soon');
                 }
@@ -1751,6 +1794,10 @@
                 document.getElementById('courseIcon').value = defaultIcons[currentCourseId] || '🎓';
                 document.getElementById('courseVideos').value = '';
                 document.getElementById('courseHours').value = '';
+                const coursePresentationInput = document.getElementById('coursePresentation');
+                if (coursePresentationInput) {
+                    coursePresentationInput.value = '';
+                }
                 if (document.getElementById('courseStatus')) {
                     document.getElementById('courseStatus').value = currentCourseId === 'curso-voces' ? 'available' : 'coming-soon';
                 }
@@ -1785,6 +1832,7 @@
             const videos = document.getElementById('courseVideos').value;
             const hours = document.getElementById('courseHours').value.trim();
             const status = document.getElementById('courseStatus') ? document.getElementById('courseStatus').value : 'available';
+            const presentationField = document.getElementById('coursePresentation');
             
             if (!name) {
                 alert('Por favor ingresa el título del curso');
@@ -1792,7 +1840,10 @@
             }
             
             const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            const existingEntry = coursesInfo[currentCourseId] || {};
+            const presentationVideoUrl = presentationField ? presentationField.value.trim() : (existingEntry.presentationVideoUrl || '');
             coursesInfo[currentCourseId] = {
+                ...existingEntry,
                 name: name,
                 description: description,
                 level: level,
@@ -1801,7 +1852,8 @@
                 icon: icon,
                 videos: videos,
                 hours: hours,
-                status: status
+                status: status,
+                presentationVideoUrl: presentationVideoUrl
             };
             
             localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
@@ -1844,6 +1896,8 @@
             const courseId = courseIdInput.value.trim();
             const name = nameInput.value.trim();
             const description = descriptionInput.value.trim();
+            const presentationInput = document.getElementById('newCoursePresentation');
+            const presentationVideoUrl = presentationInput ? presentationInput.value.trim() : '';
             const level = document.getElementById('newCourseLevel') ? document.getElementById('newCourseLevel').value : 'Intermedio';
             const price = document.getElementById('newCoursePrice') ? parseFloat(document.getElementById('newCoursePrice').value) || 0 : 0;
             const icon = document.getElementById('newCourseIcon') ? document.getElementById('newCourseIcon').value.trim() || '🎓' : '🎓';
@@ -1866,15 +1920,18 @@
             
             // Guardar información del curso
             const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            const existingEntry = coursesInfo[courseId] || {};
             coursesInfo[courseId] = {
+                ...existingEntry,
                 name: name,
                 description: description,
                 level: level,
                 price: price,
                 icon: icon,
                 status: status,
-                videos: 0,
-                hours: '0+ Horas'
+                presentationVideoUrl: presentationVideoUrl,
+                videos: typeof existingEntry.videos !== 'undefined' ? existingEntry.videos : '0+',
+                hours: typeof existingEntry.hours !== 'undefined' ? existingEntry.hours : '0+ Horas'
             };
             localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
             
@@ -1978,6 +2035,9 @@
             document.getElementById('newCourseDescription').value = '';
             document.getElementById('newCoursePrice').value = '';
             document.getElementById('newCourseIcon').value = '';
+            if (presentationInput) {
+                presentationInput.value = '';
+            }
             
             // Esperar un momento para que se vea el mensaje y luego cambiar a gestionar cursos
             setTimeout(() => {
@@ -2155,21 +2215,24 @@
                 description: 'Nivel Avanzado. Aprende técnicas profesionales para grabar y mezclar voces como los grandes productores.',
                 icon: '🎤',
                 level: 'Avanzado',
-                status: 'available'
+                status: 'available',
+                presentationVideoUrl: 'https://www.youtube.com/watch?v=ysz5S6PUM-U'
             },
             'curso-maquetizacion': {
                 name: 'Maquetización Composicional',
                 description: 'Nivel Intermedio. Domina el arte de estructurar y organizar tus composiciones musicales.',
                 icon: '🎹',
                 level: 'Intermedio',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                presentationVideoUrl: 'https://www.youtube.com/watch?v=Vx2xTI4_7oA'
             },
             'curso-beats': {
                 name: 'Programación de Beats',
                 description: 'Nivel Intermedio. Aprende a programar beats profesionales desde cero.',
                 icon: '🎛️',
                 level: 'Intermedio',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                presentationVideoUrl: 'https://www.youtube.com/watch?v=4TnQq0FJ4sI'
             }
         };
         

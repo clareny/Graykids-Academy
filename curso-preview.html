@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/courses-loader.js"></script>
+    <title>Resumen del Curso</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                    <span class="header__logo-text">Graykids Academy</span>
+                </a>
+            </div>
+            <nav class="header__nav">
+                <a href="cursos.html" class="header__link">Cursos</a>
+                <a href="GraykidsPlus.html" class="header__link">Graykids Plus</a>
+                <a href="Discord.html" class="header__link">Discord</a>
+                <a href="librerias.html" class="header__link">Librerías</a>
+                <a href="index.html#faq" class="header__link">FAQ</a>
+            </nav>
+            <span id="headerAuthButton">
+                <a href="Login.html" class="btn btn--outline">Entrar</a>
+            </span>
+        </div>
+    </header>
+
+    <script>
+        // Actualizar botón de header si hay sesión
+        (function updateHeaderButton() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const user = localStorage.getItem('user');
+            if (isLoggedIn && user) {
+                const btn = document.getElementById('headerAuthButton');
+                btn.innerHTML = `<a href="campus.html" class="btn btn--primary">Mi Campus</a>`;
+            }
+        })();
+    </script>
+
+    <!-- HERO -->
+    <section class="courses-hero">
+        <div class="courses-hero__container container">
+            <p class="course-preview__badge" id="courseBadge"></p>
+            <h1 class="courses-hero__title" id="courseTitle">Curso</h1>
+            <p class="courses-hero__subtitle" id="courseSubtitle">Descubre qué aprenderás antes de comenzar</p>
+        </div>
+    </section>
+
+    <!-- COURSE PREVIEW -->
+    <section class="course-preview">
+        <div class="course-preview__container container">
+            <div class="course-preview__media" id="presentationWrapper">
+                <div class="course-preview__media-empty">
+                    <p>Este curso todavía no tiene un video de presentación. ¡Vuelve pronto!</p>
+                </div>
+            </div>
+
+            <aside class="course-preview__sidebar" id="courseSidebar">
+                <div class="course-preview__status" id="courseStatus"></div>
+                <p class="course-preview__description" id="courseDescription"></p>
+                <ul class="course-preview__stats" id="courseStats"></ul>
+                <div class="course-preview__ctas" id="courseCtas"></div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- MODULES -->
+    <section class="course-preview__modules">
+        <div class="course-preview__modules-container container" id="modulesContainer">
+            <h2 class="course-preview__modules-title">Contenido del curso</h2>
+            <p class="course-preview__modules-subtitle">Revisa los módulos y lecciones que tendrás disponibles</p>
+            <div class="course-preview__modules-grid" id="modulesGrid"></div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="course-preview__cta">
+        <div class="course-preview__cta-container container">
+            <div>
+                <h3 class="course-preview__cta-title">¿Listo para dar el siguiente paso?</h3>
+                <p class="course-preview__cta-text">Empieza el curso o descubre más formación personalizada en nuestro campus.</p>
+            </div>
+            <div class="course-preview__cta-actions">
+                <a href="cursos.html" class="btn btn--outline">Ver todos los cursos</a>
+                <a href="campus.html" class="btn btn--primary">Ir al campus</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__container container">
+            <div class="footer__logo">
+                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+            </div>
+            <div class="footer__links">
+                <a href="contacto.html" class="footer__link">Contact</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="index.html#faq" class="footer__link">FAQ</a>
+            </div>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
+        </div>
+    </footer>
+
+    <script>
+        (function initCoursePreview() {
+            const params = new URLSearchParams(window.location.search);
+            const courseId = params.get('course');
+
+            if (!courseId) {
+                renderError('No se encontró el curso solicitado.');
+                return;
+            }
+
+            const courseInfo = Object.assign({ id: courseId }, getCourseInfo(courseId) || {});
+            const coursesData = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            const courseData = coursesData[courseId] || { modules: [] };
+
+            document.title = `${courseInfo.name || 'Curso'} - Presentación`;
+
+            renderHero(courseInfo);
+            renderPresentation(courseInfo.presentationVideoUrl);
+            renderSidebar(courseInfo, courseData);
+            renderModules(courseData.modules || []);
+        })();
+
+        function renderHero(course) {
+            const badge = document.getElementById('courseBadge');
+            const title = document.getElementById('courseTitle');
+            const subtitle = document.getElementById('courseSubtitle');
+
+            if (course.icon) {
+                title.textContent = `${course.icon} ${course.name || 'Curso'}`;
+            } else {
+                title.textContent = course.name || 'Curso';
+            }
+
+            badge.textContent = course.level ? `Nivel ${course.level}` : '';
+            subtitle.textContent = course.description ? course.description : 'Descubre qué aprenderás antes de comenzar';
+        }
+
+        function renderPresentation(url) {
+            const wrapper = document.getElementById('presentationWrapper');
+            if (!wrapper) return;
+
+            wrapper.innerHTML = '';
+
+            if (!url) {
+                wrapper.innerHTML = `
+                    <div class="course-preview__media-empty">
+                        <p>Este curso todavía no tiene un video de presentación. ¡Pronto añadiremos uno!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const embed = buildVideoEmbed(url);
+            wrapper.innerHTML = embed || `
+                <div class="course-preview__media-empty">
+                    <p>No se pudo reproducir el video proporcionado. Revisa la URL en la configuración del curso.</p>
+                </div>
+            `;
+        }
+
+        function buildVideoEmbed(url) {
+            if (!url) return '';
+            const cleanUrl = url.trim();
+            const lower = cleanUrl.toLowerCase();
+
+            // YouTube enlaces
+            if (lower.includes('youtube.com/watch') || lower.includes('youtu.be/')) {
+                const videoId = extractYouTubeId(cleanUrl);
+                if (videoId) {
+                    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    return `<div class="course-preview__media-frame"><iframe src="${embedUrl}" title="Video de presentación" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+                }
+            }
+
+            // Vimeo
+            if (lower.includes('vimeo.com/')) {
+                const vimeoId = cleanUrl.split('/').pop();
+                if (vimeoId) {
+                    const embedUrl = `https://player.vimeo.com/video/${vimeoId}`;
+                    return `<div class="course-preview__media-frame"><iframe src="${embedUrl}" title="Video de presentación" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>`;
+                }
+            }
+
+            // Archivos directos (mp4, webm, ogg, m3u8)
+            if (/(\.mp4|\.webm|\.ogg|\.m3u8)$/i.test(lower)) {
+                return `<div class="course-preview__media-frame"><video controls preload="metadata"><source src="${cleanUrl}"></video></div>`;
+            }
+
+            // Fallback iframe
+            return `<div class="course-preview__media-frame"><iframe src="${cleanUrl}" title="Video de presentación" frameborder="0" allowfullscreen></iframe></div>`;
+        }
+
+        function extractYouTubeId(url) {
+            const regExp = /(?:youtube\.com\/(?:.*v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/;
+            const match = url.match(regExp);
+            return match ? match[1] : null;
+        }
+
+        function renderSidebar(course, courseData) {
+            const statusContainer = document.getElementById('courseStatus');
+            const description = document.getElementById('courseDescription');
+            const statsList = document.getElementById('courseStats');
+            const ctas = document.getElementById('courseCtas');
+
+            if (description) {
+                description.textContent = course.description || 'Este curso aún no tiene una descripción detallada.';
+            }
+
+            if (statusContainer) {
+                const status = (course.status || '').toLowerCase();
+                const statusLabel = status === 'available' ? 'Disponible' : status === 'pre-sale' ? 'Pre-venta' : 'Próximamente';
+                statusContainer.innerHTML = `<span class="course-preview__status-badge course-preview__status-badge--${status || 'soon'}">${statusLabel}</span>`;
+            }
+
+            if (statsList) {
+                statsList.innerHTML = '';
+                const modules = courseData.modules || [];
+                const totalLessons = modules.reduce((total, module) => total + (module.lessons ? module.lessons.length : 0), 0);
+                const priceValue = typeof course.price === 'number' ? course.price : parseFloat(course.price);
+                const priceLabel = !Number.isNaN(priceValue) && Number.isFinite(priceValue)
+                    ? `$${priceValue.toFixed(2)}`
+                    : (course.price || 'Por anunciar');
+
+                statsList.innerHTML = `
+                    <li><span>📦 Módulos:</span><strong>${modules.length}</strong></li>
+                    <li><span>🎬 Lecciones:</span><strong>${totalLessons}</strong></li>
+                    <li><span>⏱️ Duración estimada:</span><strong>${course.hours || 'Próximamente'}</strong></li>
+                    <li><span>💰 Precio:</span><strong>${priceLabel}</strong></li>
+                `;
+            }
+
+            if (ctas) {
+                const status = (course.status || '').toLowerCase();
+                const isAvailable = status === 'available' || status === 'pre-sale';
+
+                const purchaseUrl = `checkout.html?type=course&id=${encodeURIComponent(course.id || '')}`;
+                ctas.innerHTML = '';
+
+                if (isAvailable && course.id) {
+                    const buyButton = document.createElement('a');
+                    buyButton.className = 'btn btn--primary btn--block';
+                    buyButton.href = purchaseUrl;
+                    buyButton.textContent = status === 'pre-sale' ? 'Comprar en Pre-Venta' : 'Comprar Curso';
+                    ctas.appendChild(buyButton);
+                } else {
+                    const notify = document.createElement('div');
+                    notify.className = 'course-preview__notice';
+                    notify.textContent = 'Este curso aún no está disponible para la compra. Suscríbete a nuestras novedades para enterarte del lanzamiento.';
+                    ctas.appendChild(notify);
+                }
+
+                const backButton = document.createElement('a');
+                backButton.className = 'btn btn--outline btn--block';
+                backButton.href = 'cursos.html';
+                backButton.textContent = 'Volver a cursos';
+                ctas.appendChild(backButton);
+            }
+        }
+
+        function renderModules(modules) {
+            const modulesGrid = document.getElementById('modulesGrid');
+            if (!modulesGrid) return;
+
+            modulesGrid.innerHTML = '';
+
+            if (!modules || modules.length === 0) {
+                modulesGrid.innerHTML = `
+                    <div class="course-preview__modules-empty">
+                        <p>Este curso todavía no tiene módulos publicados. El equipo los añadirá en breve.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            modules.forEach((module, index) => {
+                const moduleCard = document.createElement('article');
+                moduleCard.className = 'course-preview__module-card';
+
+                const lessons = Array.isArray(module.lessons) ? module.lessons : [];
+                const lessonsHtml = lessons.length > 0
+                    ? lessons.map((lesson, lessonIndex) => `
+                        <li>
+                            <span class="lesson-index">${lessonIndex + 1}.</span>
+                            <div class="lesson-info">
+                                <strong>${lesson.title || 'Lección sin título'}</strong>
+                                <span>${lesson.duration || 'Duración N/D'}</span>
+                            </div>
+                        </li>
+                    `).join('')
+                    : '<li class="lesson-empty">Aún no hay lecciones publicadas en este módulo.</li>';
+
+                moduleCard.innerHTML = `
+                    <header>
+                        <span class="module-index">Módulo ${index + 1}</span>
+                        <h3>${module.title || 'Módulo sin título'}</h3>
+                    </header>
+                    <ul class="course-preview__lesson-list">
+                        ${lessonsHtml}
+                    </ul>
+                `;
+
+                modulesGrid.appendChild(moduleCard);
+            });
+        }
+
+        function renderError(message) {
+            const hero = document.querySelector('.courses-hero__container');
+            if (hero) {
+                hero.innerHTML = `<h1 class="courses-hero__title">Curso no encontrado</h1><p class="courses-hero__subtitle">${message}</p>`;
+            }
+
+            const wrapper = document.getElementById('presentationWrapper');
+            if (wrapper) {
+                wrapper.innerHTML = `<div class="course-preview__media-empty"><p>${message}</p></div>`;
+            }
+
+            const modulesGrid = document.getElementById('modulesGrid');
+            if (modulesGrid) {
+                modulesGrid.innerHTML = `<div class="course-preview__modules-empty"><p>No se pudo cargar la información del curso solicitado.</p></div>`;
+            }
+        }
+    </script>
+</body>
+</html>
+

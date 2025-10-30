@@ -7,6 +7,7 @@
     <link rel="icon" href="Images/Graykids Academy Logo.png">
     <link rel="stylesheet" href="CSS/Normalize.css">
     <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/courses-loader.js"></script>
     <script src="js/animaciones.js" defer></script>
     <title>Checkout - Graykids Academy</title>
 </head>
@@ -44,6 +45,33 @@
             btn.innerHTML = `<a href="campus.html" class="btn btn--primary">Mi Campus</a>`;
         }
     </script>
+
+    <!-- COURSE PREVIEW -->
+    <section class="course-preview checkout-preview" id="checkoutPreview" style="display: none;">
+        <div class="course-preview__container container">
+            <div class="course-preview__media" id="previewCourseMedia">
+                <div class="course-preview__media-empty">
+                    <p>Estamos preparando el video de presentación de este curso.</p>
+                </div>
+            </div>
+            <aside class="course-preview__sidebar">
+                <div id="previewCourseStatus"></div>
+                <h2 class="course-preview__cta-title" id="previewCourseTitle">Curso</h2>
+                <p class="course-preview__badge" id="previewCourseLevel"></p>
+                <p class="course-preview__description" id="previewCourseDescription"></p>
+                <ul class="course-preview__stats" id="previewCourseStats"></ul>
+                <div class="course-preview__ctas" id="previewCourseCtas"></div>
+            </aside>
+        </div>
+
+        <div class="course-preview__modules">
+            <div class="course-preview__modules-container container">
+                <h3 class="course-preview__modules-title">Contenido del curso</h3>
+                <p class="course-preview__modules-subtitle">Revisa los módulos y lecciones disponibles antes de comprar</p>
+                <div class="course-preview__modules-grid" id="previewModules"></div>
+            </div>
+        </div>
+    </section>
 
     <!-- CHECKOUT SECTION -->
     <section class="checkout">
@@ -293,6 +321,189 @@
     </footer>
 
     <script>
+        const checkoutPreviewSection = document.getElementById('checkoutPreview');
+
+        function extractYouTubeId(url) {
+            if (!url) return null;
+            const regExp = /(?:youtube\.com\/(?:.*v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/;
+            const match = url.match(regExp);
+            return match ? match[1] : null;
+        }
+
+        function buildVideoEmbed(url) {
+            if (!url) return '';
+            const cleanUrl = url.trim();
+            const lower = cleanUrl.toLowerCase();
+
+            if (lower.includes('youtube.com/watch') || lower.includes('youtu.be/')) {
+                const videoId = extractYouTubeId(cleanUrl);
+                if (videoId) {
+                    return `<div class="course-preview__media-frame"><iframe src="https://www.youtube.com/embed/${videoId}" title="Video de presentación" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+                }
+            }
+
+            if (lower.includes('vimeo.com/')) {
+                const vimeoId = cleanUrl.split('/').pop();
+                if (vimeoId) {
+                    return `<div class="course-preview__media-frame"><iframe src="https://player.vimeo.com/video/${vimeoId}" title="Video de presentación" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>`;
+                }
+            }
+
+            if (/(\.mp4|\.webm|\.ogg|\.m3u8)$/i.test(lower)) {
+                return `<div class="course-preview__media-frame"><video controls preload="metadata"><source src="${cleanUrl}"></video></div>`;
+            }
+
+            return `<div class="course-preview__media-frame"><iframe src="${cleanUrl}" title="Video de presentación" frameborder="0" allowfullscreen></iframe></div>`;
+        }
+
+        function formatPriceLabel(value) {
+            if (value === undefined || value === null || value === '') {
+                return 'Por anunciar';
+            }
+            if (typeof value === 'number') {
+                return `$${value.toFixed(2)}`;
+            }
+            const numeric = parseFloat(value);
+            if (!Number.isNaN(numeric) && Number.isFinite(numeric)) {
+                return `$${numeric.toFixed(2)}`;
+            }
+            return value;
+        }
+
+        function renderCoursePreview(courseId, info, fallbackCourse) {
+            if (!checkoutPreviewSection) return;
+
+            const previewData = Object.assign({ id: courseId }, fallbackCourse || {}, info || {});
+            if (!previewData.name && !previewData.presentationVideoUrl) {
+                checkoutPreviewSection.style.display = 'none';
+                return;
+            }
+
+            checkoutPreviewSection.style.display = 'block';
+
+            const titleEl = document.getElementById('previewCourseTitle');
+            if (titleEl) {
+                titleEl.textContent = `${previewData.icon || '🎓'} ${previewData.name || 'Curso'}`;
+            }
+
+            const levelEl = document.getElementById('previewCourseLevel');
+            if (levelEl) {
+                if (previewData.level) {
+                    levelEl.textContent = `Nivel ${previewData.level}`;
+                    levelEl.style.display = 'inline-flex';
+                } else {
+                    levelEl.textContent = '';
+                    levelEl.style.display = 'none';
+                }
+            }
+
+            const descEl = document.getElementById('previewCourseDescription');
+            if (descEl) {
+                descEl.textContent = previewData.description || 'Este curso aún no tiene una descripción detallada.';
+            }
+
+            const statusEl = document.getElementById('previewCourseStatus');
+            if (statusEl) {
+                const status = (previewData.status || '').toLowerCase();
+                let label = 'Próximamente';
+                if (status === 'available') label = 'Disponible';
+                else if (status === 'pre-sale') label = 'Pre-venta';
+                statusEl.innerHTML = `<span class="course-preview__status-badge course-preview__status-badge--${status || 'soon'}">${label}</span>`;
+            }
+
+            const mediaEl = document.getElementById('previewCourseMedia');
+            if (mediaEl) {
+                if (previewData.presentationVideoUrl) {
+                    const embed = buildVideoEmbed(previewData.presentationVideoUrl);
+                    mediaEl.innerHTML = embed;
+                } else {
+                    mediaEl.innerHTML = `
+                        <div class="course-preview__media-empty">
+                            <p>Este curso todavía no tiene video de presentación. ¡Vuelve pronto!</p>
+                        </div>
+                    `;
+                }
+            }
+
+            const statsList = document.getElementById('previewCourseStats');
+            if (statsList) {
+                const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
+                const modules = Array.isArray(storedCourses[courseId]?.modules) ? storedCourses[courseId].modules : [];
+                const totalLessons = modules.reduce((total, mod) => total + (Array.isArray(mod.lessons) ? mod.lessons.length : 0), 0);
+                const priceLabel = formatPriceLabel(previewData.price);
+
+                statsList.innerHTML = `
+                    <li><span>📦 Módulos:</span><strong>${modules.length}</strong></li>
+                    <li><span>🎬 Lecciones:</span><strong>${totalLessons}</strong></li>
+                    <li><span>⏱️ Duración estimada:</span><strong>${previewData.hours || 'Próximamente'}</strong></li>
+                    <li><span>💰 Precio:</span><strong>${priceLabel}</strong></li>
+                `;
+            }
+
+            const modulesGrid = document.getElementById('previewModules');
+            if (modulesGrid) {
+                const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
+                const modules = Array.isArray(storedCourses[courseId]?.modules) ? storedCourses[courseId].modules : [];
+                modulesGrid.innerHTML = '';
+
+                if (modules.length === 0) {
+                    modulesGrid.innerHTML = `
+                        <div class="course-preview__modules-empty">
+                            <p>Estamos preparando el temario de este curso. El detalle estará disponible muy pronto.</p>
+                        </div>
+                    `;
+                } else {
+                    modules.forEach((module, index) => {
+                        const lessons = Array.isArray(module.lessons) ? module.lessons : [];
+                        const lessonsHtml = lessons.length > 0
+                            ? lessons.map((lesson, lessonIndex) => `
+                                <li>
+                                    <span class="lesson-index">${lessonIndex + 1}.</span>
+                                    <div class="lesson-info">
+                                        <strong>${lesson.title || 'Lección sin título'}</strong>
+                                        <span>${lesson.duration || 'Duración N/D'}</span>
+                                    </div>
+                                </li>
+                            `).join('')
+                            : '<li class="lesson-empty">Próximamente agregaremos las lecciones de este módulo.</li>';
+
+                        const card = document.createElement('article');
+                        card.className = 'course-preview__module-card';
+                        card.innerHTML = `
+                            <header>
+                                <span class="module-index">Módulo ${index + 1}</span>
+                                <h3>${module.title || 'Módulo sin título'}</h3>
+                            </header>
+                            <ul class="course-preview__lesson-list">
+                                ${lessonsHtml}
+                            </ul>
+                        `;
+                        modulesGrid.appendChild(card);
+                    });
+                }
+            }
+
+            const ctas = document.getElementById('previewCourseCtas');
+            if (ctas) {
+                ctas.innerHTML = '';
+                const proceedBtn = document.createElement('a');
+                proceedBtn.href = '#userInfoForm';
+                proceedBtn.className = 'btn btn--primary btn--block';
+                proceedBtn.textContent = 'Continuar con la compra';
+                ctas.appendChild(proceedBtn);
+
+                const status = (previewData.status || '').toLowerCase();
+                if (status && status !== 'available') {
+                    const notice = document.createElement('div');
+                    notice.className = 'course-preview__notice';
+                    notice.textContent = status === 'pre-sale'
+                        ? 'Este curso está en pre-venta. Obtendrás acceso anticipado al contenido reservado.'
+                        : 'Este curso se encuentra en preparación. Tu compra garantizará acceso tan pronto se publique.';
+                    ctas.appendChild(notice);
+                }
+            }
+        }
+
         // Courses data
         const coursesData = {
             'curso-beats': {
@@ -382,17 +593,27 @@
 
         // Update page based on type
         if (type === 'course' && courseId) {
-            const course = coursesData[courseId];
-            if (course) {
+            const courseFromCatalog = coursesData[courseId];
+            const storedCourseInfo = typeof getCourseInfo === 'function' ? getCourseInfo(courseId) : null;
+
+            renderCoursePreview(courseId, storedCourseInfo, courseFromCatalog);
+
+            const combinedCourse = Object.assign({ id: courseId }, courseFromCatalog || {}, storedCourseInfo || {});
+
+            if (combinedCourse.name) {
                 document.getElementById('checkoutTitle').textContent = 'Comprar Curso';
-                document.getElementById('checkoutSubtitle').textContent = course.name;
-                document.getElementById('planName').textContent = course.name;
-                document.getElementById('planPrice').textContent = '$' + course.price;
-                document.getElementById('planTotal').textContent = '$' + course.price;
-                
-                // Show benefits
+                document.getElementById('checkoutSubtitle').textContent = combinedCourse.name;
+                document.getElementById('planName').textContent = combinedCourse.name;
+            }
+
+            const priceLabel = formatPriceLabel(combinedCourse.price);
+            document.getElementById('planPrice').textContent = priceLabel;
+            document.getElementById('planTotal').textContent = priceLabel;
+
+            if (courseFromCatalog && Array.isArray(courseFromCatalog.benefits)) {
                 const benefitsList = document.getElementById('benefitsList');
-                course.benefits.forEach(benefit => {
+                benefitsList.innerHTML = '';
+                courseFromCatalog.benefits.forEach(benefit => {
                     const li = document.createElement('li');
                     li.textContent = benefit;
                     benefitsList.appendChild(li);
@@ -407,6 +628,11 @@
             document.getElementById('planName').textContent = name;
             document.getElementById('planPrice').textContent = '$' + price;
             document.getElementById('planTotal').textContent = '$' + price;
+            if (checkoutPreviewSection) {
+                checkoutPreviewSection.style.display = 'none';
+            }
+        } else if (checkoutPreviewSection) {
+            checkoutPreviewSection.style.display = 'none';
         }
 
         // Initially hide payment grid
