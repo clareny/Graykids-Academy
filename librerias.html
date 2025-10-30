@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/animaciones.js" defer></script>
+    <title>Librerías - Graykids Academy</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                    <span class="header__logo-text">Graykids Academy</span>
+                </a>
+            </div>
+            <nav class="header__nav">
+                <a href="cursos.html" class="header__link">Cursos VIP</a>
+                <a href="GraykidsPlus.html" class="header__link">Graykids Plus</a>
+                <a href="Discord.html" class="header__link">Discord</a>
+                <a href="librerias.html" class="header__link">Librerías</a>
+                <a href="index.html#faq" class="header__link">FAQ</a>
+            </nav>
+            <a href="index.html#contacto" class="btn btn--outline">Entrar</a>
+        </div>
+    </header>
+
+    <script>
+        // Detectar si está en iframe y ocultar header
+        if (window.self !== window.top || new URLSearchParams(window.location.search).get('iframe') === 'true') {
+            document.querySelector('.header').style.display = 'none';
+        }
+    </script>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero__container container">
+            <h1 class="hero__title">Nuestras Librerías</h1>
+            <div class="hero__content">
+                <p class="hero__intro">Sound Kits Premium</p>
+                <h2 class="hero__subtitle">Material de estudio profesional</h2>
+                <p class="hero__description">
+                    Descubre nuestra colección exclusiva de librerías de sonido y sound kits diseñados por profesionales para profesionales. Descarga loops, one-shots, MIDI files y más recursos de alta calidad para llevar tus producciones al siguiente nivel.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORÍAS -->
+    <section class="categories">
+        <div class="categories__container container">
+            <div class="categories__filters">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="trap">Trap</button>
+                <button class="filter-btn" data-filter="reggaeton">Reggaeton</button>
+                <button class="filter-btn" data-filter="drill">Drill</button>
+                <button class="filter-btn" data-filter="afrobeat">Afrobeat</button>
+                <button class="filter-btn" data-filter="hiphop">Hip Hop</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIBRERÍAS GRID -->
+    <section class="libraries">
+        <div class="libraries__container container">
+            <div class="libraries__grid">
+                <!-- LIBRERÍA 1 -->
+                <article class="library-card">
+                    <div class="library-card__image">
+                        <div class="library-card__badge">NUEVO</div>
+                        <div class="library-card__placeholder">
+                            <span class="library-card__icon">🎵</span>
+                        </div>
+                    </div>
+                    <div class="library-card__content">
+                        <span class="library-card__category">Trap / Drill</span>
+                        <h4 class="library-card__title">GRAY DRILL Vol. 1</h4>
+                        <p class="library-card__description">
+                            150+ sounds incluyendo kicks, snares, hi-hats, 808s, percusión y FX. Incluye 50 loops y 100 one-shots de alta calidad.
+                        </p>
+                        <div class="library-card__meta">
+                            <span class="library-card__count">150+ Sounds</span>
+                            <span class="library-card__price">$29.99</span>
+                        </div>
+                        <a href="#" class="btn btn--primary">Descargar Ahora</a>
+                    </div>
+                </article>
+
+                <!-- LIBRERÍA 2 -->
+                <article class="library-card">
+                    <div class="library-card__image">
+                        <div class="library-card__placeholder">
+                            <span class="library-card__icon">🎹</span>
+                        </div>
+                    </div>
+                    <div class="library-card__content">
+                        <span class="library-card__category">Trap / Reggaeton</span>
+                        <h4 class="library-card__title">REGGAETON KIT 2024</h4>
+                        <p class="library-card__description">
+                            El kit más completo para producir reggaeton. Incluye dembow patterns, sintetizadores, 808s personalizados y MIDI files.
+                        </p>
+                        <div class="library-card__meta">
+                            <span class="library-card__count">200+ Sounds</span>
+                            <span class="library-card__price">$34.99</span>
+                        </div>
+                        <a href="#" class="btn btn--primary">Descargar Ahora</a>
+                    </div>
+                </article>
+
+                <!-- LIBRERÍA 3 -->
+                <article class="library-card">
+                    <div class="library-card__image">
+                        <div class="library-card__badge">POPULAR</div>
+                        <div class="library-card__placeholder">
+                            <span class="library-card__icon">🎸</span>
+                        </div>
+                    </div>
+                    <div class="library-card__content">
+                        <span class="library-card__category">Afrobeat</span>
+                        <h4 class="library-card__title">AFRO ESSENTIALS</h4>
+                        <p class="library-card__description">
+                            Todo lo que necesitas para crear ese sonido Afrobeat auténtico. Drums tradicionales, percusión y patrones únicos.
+                        </p>
+                        <div class="library-card__meta">
+                            <span class="library-card__count">180+ Sounds</span>
+                            <span class="library-card__price">$27.99</span>
+                        </div>
+                        <a href="#" class="btn btn--primary">Descargar Ahora</a>
+                    </div>
+                </article>
+
+                <!-- LIBRERÍA 4 -->
+                <article class="library-card">
+                    <div class="library-card__image">
+                        <div class="library-card__placeholder">
+                            <span class="library-card__icon">🎚️</span>
+                        </div>
+                    </div>
+                    <div class="library-card__content">
+                        <span class="library-card__category">Hip Hop</span>
+                        <h4 class="library-card__title">CLASSIC HIP HOP KIT</h4>
+                        <p class="library-card__description">
+                            Samples clásicos de los 90s y 2000s. Vinyl crack, breaks legendarios y drum machines vintage. Nostalgia premium.
+                        </p>
+                        <div class="library-card__meta">
+                            <span class="library-card__count">120+ Sounds</span>
+                            <span class="library-card__price">$24.99</span>
+                        </div>
+                        <a href="#" class="btn btn--primary">Descargar Ahora</a>
+                    </div>
+                </article>
+
+                <!-- LIBRERÍA 5 -->
+                <article class="library-card">
+                    <div class="library-card__image">
+                        <div class="library-card__placeholder">
+                            <span class="library-card__icon">🎯</span>
+                        </div>
+                    </div>
+                    <div class="library-card__content">
+                        <span class="library-card__category">Trap</span>
+                        <h4 class="library-card__title">DARK TRAP PACK</h4>
+                        <p class="library-card__description">
+                            Sonidos oscuros y agresivos para ese trap underground. 808s pesados, hi-hats patterns complejos y FX atmosféricos.
+                        </p>
+                        <div class="library-card__meta">
+                            <span class="library-card__count">160+ Sounds</span>
+                            <span class="library-card__price">$29.99</span>
+                        </div>
+                        <a href="#" class="btn btn--primary">Descargar Ahora</a>
+                    </div>
+                </article>
+
+                <!-- LIBRERÍA 6 -->
+                <article class="library-card">
+                    <div class="library-card__image">
+                        <div class="library-card__badge">NUEVO</div>
+                        <div class="library-card__placeholder">
+                            <span class="library-card__icon">🌟</span>
+                        </div>
+                    </div>
+                    <div class="library-card__content">
+                        <span class="library-card__category">All Genres</span>
+                        <h4 class="library-card__title">GOLDEN MIDI PACK</h4>
+                        <p class="library-card__description">
+                            500+ MIDI files con melodías, acordes y progresiones lista para usar en cualquier género. Ahorra tiempo y crea hits.
+                        </p>
+                        <div class="library-card__meta">
+                            <span class="library-card__count">500+ MIDI</span>
+                            <span class="library-card__price">$39.99</span>
+                        </div>
+                        <a href="#" class="btn btn--primary">Descargar Ahora</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta">
+        <div class="cta__container container">
+            <h2 class="cta__title">¿Listo para elevar tu sonido?</h2>
+            <p class="cta__text">Descarga ahora y empieza a crear</p>
+            <a href="index.html#membresia" class="btn btn--primary btn--large">Ver Membresía VIP</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contacto" class="footer">
+        <div class="footer__container container">
+            <div class="footer__logo">
+                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+            </div>
+            <div class="footer__links">
+                <a href="contacto.html" class="footer__link">Contact</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="index.html#faq" class="footer__link">FAQ</a>
+            </div>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/animaciones.js" defer></script>
+    <script src="js/courses-loader.js"></script>
+    <title>Cursos - Graykids Academy</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                </a>
+                <span class="header__logo-text">Graykids Academy</span>
+            </div>
+            <nav class="header__nav">
+                <a href="cursos.html" class="header__link">Cursos VIP</a>
+                <a href="GraykidsPlus.html" class="header__link">Graykids Plus</a>
+                <a href="Discord.html" class="header__link">Discord</a>
+                <a href="librerias.html" class="header__link">Librerías</a>
+                <a href="index.html#faq" class="header__link">FAQ</a>
+            </nav>
+            <span id="headerAuthButton">
+                <a href="Login.html" class="btn btn--outline">Entrar</a>
+            </span>
+        </div>
+    </header>
+
+    <script>
+        // Detectar si está en iframe y ocultar header
+        if (window.self !== window.top || new URLSearchParams(window.location.search).get('iframe') === 'true') {
+            document.querySelector('.header').style.display = 'none';
+        }
+        
+        // Check if user is logged in and update header
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const user = localStorage.getItem('user');
+        
+        if (isLoggedIn && user) {
+            const btn = document.getElementById('headerAuthButton');
+            const userData = JSON.parse(user);
+            btn.innerHTML = `<a href="campus.html" class="btn btn--primary">Mi Campus</a>`;
+        }
+    </script>
+
+    <!-- HERO -->
+    <section class="courses-hero">
+        <div class="courses-hero__container container">
+            <h1 class="courses-hero__title">Nuestros Cursos</h1>
+            <p class="courses-hero__subtitle">Aprende producción musical profesional desde cero hasta experto</p>
+        </div>
+    </section>
+
+    <!-- CURSOS GRID -->
+    <section class="courses-list">
+        <div class="courses-list__container container">
+            <div id="coursesContainer">
+                <!-- Los cursos se cargarán dinámicamente aquí -->
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        // Cargar cursos dinámicamente al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllCourses('coursesContainer', renderCourseItem);
+        });
+    </script>
+
+    <!-- PACK ESPECIAL -->
+    <section class="pack-special">
+        <div class="pack-special__container container">
+            <div class="pack-special__content">
+                <div class="pack-special__badge">✨ Pack Especial</div>
+                <h3 class="pack-special__title">Pack Productor Pro</h3>
+                <p class="pack-special__description">
+                    ¿Prefieres un pack que incluya todos los cursos a un precio descontado? Este pack incluye accesos ilimitados a todos los cursos, actualizaciones futuras, community exclusiva y mucho más...
+                </p>
+                <div class="pack-special__benefits">
+                    <div class="pack-benefit">
+                        <span class="pack-benefit__icon">✓</span>
+                        <span>Acceso a todos los cursos</span>
+                    </div>
+                    <div class="pack-benefit">
+                        <span class="pack-benefit__icon">✓</span>
+                        <span>Actualizaciones incluidas</span>
+                    </div>
+                    <div class="pack-benefit">
+                        <span class="pack-benefit__icon">✓</span>
+                        <span>Acceso de por vida</span>
+                    </div>
+                    <div class="pack-benefit">
+                        <span class="pack-benefit__icon">✓</span>
+                        <span>Community exclusiva</span>
+                    </div>
+                    <div class="pack-benefit">
+                        <span class="pack-benefit__icon">✓</span>
+                        <span>Librerías extra gratis</span>
+                    </div>
+                    <div class="pack-benefit">
+                        <span class="pack-benefit__icon">✓</span>
+                        <span>Soporte prioritario</span>
+                    </div>
+                </div>
+                <div class="pack-special__pricing">
+                    <span class="pack-special__old-price">$509.94</span>
+                    <span class="pack-special__new-price">$299.99</span>
+                    <span class="pack-special__discount">Ahorra 41%</span>
+                </div>
+                <a href="contacto.html" class="btn btn--primary btn--large">Ver más</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contacto" class="footer">
+        <div class="footer__container container">
+            <div class="footer__logo">
+                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+            </div>
+            <div class="footer__links">
+                <a href="contacto.html" class="footer__link">Contact</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="index.html#faq" class="footer__link">FAQ</a>
+            </div>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
+        </div>
+    </footer>
+</body>
+</html>

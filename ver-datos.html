@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <title>Ver Datos - Graykids Academy</title>
+    <style>
+        .data-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 20px;
+        }
+        
+        .data-section {
+            background: var(--dark-secondary);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .data-item {
+            background: var(--dark-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+        
+        .data-key {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .data-value {
+            color: white;
+            font-family: monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+        
+        .btn-clear {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                </a>
+                <span class="header__logo-text">Graykids Academy</span>
+            </div>
+            <nav class="header__nav">
+                <a href="admin.html" class="header__link">Admin</a>
+                <a href="campus.html" class="header__link">Campus</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="data-container">
+        <h1 style="color: var(--primary-color); margin-bottom: 30px;">📊 Visualizador de Datos (localStorage)</h1>
+        
+        <div class="data-section">
+            <h2>🔐 Datos de Usuario</h2>
+            <div class="data-item" id="userData">
+                <div class="data-key">user:</div>
+                <div class="data-value">Cargando...</div>
+                <button class="btn-clear" onclick="clearData('user')">Eliminar</button>
+            </div>
+            <div class="data-item">
+                <div class="data-key">isLoggedIn:</div>
+                <div class="data-value" id="loginData">Cargando...</div>
+                <button class="btn-clear" onclick="clearData('isLoggedIn')">Eliminar</button>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <h2>💰 Datos de Pagos</h2>
+            <div class="data-item" id="paymentData">
+                <div class="data-key">paymentData:</div>
+                <div class="data-value">Cargando...</div>
+                <button class="btn-clear" onclick="clearData('paymentData')">Eliminar</button>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <h2>📚 Datos de Cursos</h2>
+            <div class="data-item" id="coursesData">
+                <div class="data-key">coursesData:</div>
+                <div class="data-value">Cargando...</div>
+                <button class="btn-clear" onclick="clearData('coursesData')">Eliminar</button>
+            </div>
+            <div class="data-item">
+                <div class="data-key">currentCourse:</div>
+                <div class="data-value" id="currentCourse">Cargando...</div>
+                <button class="btn-clear" onclick="clearData('currentCourse')">Eliminar</button>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <h2>🔄 Acciones</h2>
+            <button class="btn btn--primary" onclick="refreshData()">🔄 Actualizar Datos</button>
+            <button class="btn btn--secondary" onclick="clearAllData()" style="background: #ff4444; margin-left: 10px;">🗑️ Limpiar Todo (Cuidado!)</button>
+        </div>
+    </div>
+
+    <script>
+        function loadData() {
+            // User data
+            const user = localStorage.getItem('user');
+            document.getElementById('userData').querySelector('.data-value').textContent = user 
+                ? JSON.stringify(JSON.parse(user), null, 2) 
+                : 'No hay datos';
+            
+            // Login data
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            document.getElementById('loginData').textContent = isLoggedIn || 'No hay datos';
+            
+            // Payment data
+            const payment = localStorage.getItem('paymentData');
+            document.getElementById('paymentData').querySelector('.data-value').textContent = payment 
+                ? JSON.stringify(JSON.parse(payment), null, 2) 
+                : 'No hay datos';
+            
+            // Courses data
+            const courses = localStorage.getItem('coursesData');
+            document.getElementById('coursesData').querySelector('.data-value').textContent = courses 
+                ? JSON.stringify(JSON.parse(courses), null, 2) 
+                : 'No hay datos';
+            
+            // Current course
+            const current = localStorage.getItem('currentCourse');
+            document.getElementById('currentCourse').textContent = current || 'No hay datos';
+        }
+        
+        function clearData(key) {
+            if (confirm(`¿Estás seguro de eliminar "${key}"?`)) {
+                localStorage.removeItem(key);
+                alert('✅ Dato eliminado');
+                loadData();
+            }
+        }
+        
+        function clearAllData() {
+            if (confirm('⚠️ ¿Estás MUY seguro? Esto eliminará TODOS los datos (usuarios, pagos, cursos). Esta acción no se puede deshacer.')) {
+                localStorage.clear();
+                alert('✅ Todos los datos han sido eliminados');
+                loadData();
+            }
+        }
+        
+        function refreshData() {
+            loadData();
+            alert('✅ Datos actualizados');
+        }
+        
+        // Load on page load
+        loadData();
+    </script>
+</body>
+</html>
+

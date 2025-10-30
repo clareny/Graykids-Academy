@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/animaciones.js" defer></script>
+    <title>Contacto - Graykids Academy</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                    <span class="header__logo-text">Graykids Academy</span>
+                </a>
+            </div>
+            <nav class="header__nav">
+                <a href="cursos.html" class="header__link">Cursos VIP</a>
+                <a href="GraykidsPlus.html" class="header__link">Graykids Plus</a>
+                <a href="Discord.html" class="header__link">Discord</a>
+                <a href="librerias.html" class="header__link">Librerías</a>
+                <a href="index.html#faq" class="header__link">FAQ</a>
+            </nav>
+            <a href="contacto.html" class="btn btn--outline">Entrar</a>
+        </div>
+    </header>
+
+    <script>
+        // Detectar si está en iframe y ocultar header
+        if (window.self !== window.top || new URLSearchParams(window.location.search).get('iframe') === 'true') {
+            document.querySelector('.header').style.display = 'none';
+        }
+    </script>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero__container container">
+            <h1 class="hero__title">Contacta con Nosotros</h1>
+            <div class="hero__content">
+                <p class="hero__intro">Estamos aquí para ayudarte</p>
+                <h2 class="hero__subtitle">¿Tienes alguna pregunta?</h2>
+                <p class="hero__description">
+                    Estamos aquí para ayudarte en todo lo que necesites. Ya sea sobre nuestros cursos, membresías, librerías o cualquier otra consulta, nuestro equipo está listo para responder todas tus preguntas.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact">
+        <div class="contact__container container">
+            <div class="contact__grid">
+                <!-- FORM -->
+                <div class="contact__form-container">
+                    <h3 class="contact__form-title">Envíanos un mensaje</h3>
+                    <form class="contact__form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Nombre completo</label>
+                            <input type="text" id="name" name="name" placeholder="Tu nombre" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Asunto</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Selecciona un asunto</option>
+                                <option value="courses">Información sobre cursos</option>
+                                <option value="membership">Membresía Graykids Plus</option>
+                                <option value="libraries">Librerías y Sound Kits</option>
+                                <option value="support">Soporte técnico</option>
+                                <option value="other">Otro</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Mensaje</label>
+                            <textarea id="message" name="message" rows="6" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn--primary btn--block">Enviar Mensaje</button>
+                    </form>
+                </div>
+
+                <!-- INFO -->
+                <div class="contact__info-container">
+                    <div class="contact__info">
+                        <h3 class="contact__info-title">Información de contacto</h3>
+                        <p class="contact__info-description">
+                            Puedes contactarnos a través de cualquiera de estos medios. Estamos disponibles de Lunes a Viernes de 10:00 AM - 6:00 PM.
+                        </p>
+
+                        <div class="contact__method">
+                            <div class="contact__method-icon">📧</div>
+                            <div class="contact__method-content">
+                                <h4 class="contact__method-title">Email</h4>
+                                <p class="contact__method-text">soporte@graykidsacademy.com</p>
+                            </div>
+                        </div>
+
+                        <div class="contact__method">
+                            <div class="contact__method-icon">💬</div>
+                            <div class="contact__method-content">
+                                <h4 class="contact__method-title">WhatsApp</h4>
+                                <p class="contact__method-text">+51 999 999 999</p>
+                            </div>
+                        </div>
+
+                        <div class="contact__method">
+                            <div class="contact__method-icon">📱</div>
+                            <div class="contact__method-content">
+                                <h4 class="contact__method-title">Instagram</h4>
+                                <p class="contact__method-text">@graykidsacademy</p>
+                            </div>
+                        </div>
+
+                        <div class="contact__method">
+                            <div class="contact__method-icon">🎯</div>
+                            <div class="contact__method-content">
+                                <h4 class="contact__method-title">Horario de atención</h4>
+                                <p class="contact__method-text">Lun - Vie: 10:00 AM - 6:00 PM</p>
+                            </div>
+                        </div>
+
+                        <div class="contact__social">
+                            <h4 class="contact__social-title">Síguenos en redes</h4>
+                            <div class="contact__social-links">
+                                <a href="#" class="contact__social-link">Instagram</a>
+                                <a href="#" class="contact__social-link">YouTube</a>
+                                <a href="#" class="contact__social-link">TikTok</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__container container">
+            <div class="footer__logo">
+                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+            </div>
+            <div class="footer__links">
+                <a href="contacto.html" class="footer__link">Contact</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="index.html#faq" class="footer__link">FAQ</a>
+            </div>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
+        </div>
+    </footer>
+
+    <script>
+        // Form validation
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('¡Mensaje enviado! Nos pondremos en contacto contigo pronto.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

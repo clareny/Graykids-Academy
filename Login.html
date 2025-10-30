@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/config.js"></script>
+    <script src="js/oauth-config.js"></script>
+    <script src="js/animaciones.js" defer></script>
+    <title>Acceso - Graykids Academy</title>
+    <style>
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-logo {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            animation: logoPulse 2s ease-in-out infinite;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(57, 243, 212, 0.5));
+        }
+        
+        @keyframes logoPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 0.9;
+            }
+        }
+        
+        .loading-spinner-ring {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(57, 243, 212, 0.1);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 25px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            animation: textFade 2s ease-in-out infinite;
+        }
+        
+        @keyframes textFade {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        
+        /* Verification Modal */
+        .verification-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .verification-modal.active {
+            display: flex;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .verification-content {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(26, 26, 46, 0.95) 100%);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 550px;
+            width: 90%;
+            text-align: center;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 10px 50px rgba(57, 243, 212, 0.4);
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .verification-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.1); }
+        }
+        
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #4ade80 100%);
+            color: var(--dark-bg);
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(57, 243, 212, 0.4);
+            z-index: 10002;
+            font-weight: 700;
+            font-size: 1.1rem;
+            animation: slideInRight 0.5s ease-out;
+            max-width: 400px;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Password Toggle Icon Styles */
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            z-index: 10;
+            width: 36px;
+            height: 36px;
+        }
+        
+        .password-toggle:hover {
+            color: var(--primary-color);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .password-toggle:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        .eye-icon {
+            width: 20px;
+            height: 20px;
+            transition: all 0.3s ease;
+            user-select: none;
+            pointer-events: none;
+        }
+        
+        .eye-icon-visible,
+        .eye-icon-hidden {
+            position: absolute;
+        }
+    </style>
+</head>
+<body class="login-page">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy" class="loading-logo">
+        <div class="loading-spinner-ring"></div>
+        <p class="loading-text">CARGANDO</p>
+    </div>
+    
+    <!-- Verification Modal -->
+    <div id="verificationModal" class="verification-modal">
+        <div class="verification-content">
+            <button onclick="closeVerificationModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700; transition: transform 0.2s;" onmouseover="this.style.transform='rotate(90deg)'" onmouseout="this.style.transform='rotate(0deg)'">×</button>
+            <div class="verification-icon">📧</div>
+            <h2 style="color: var(--primary-color); margin-bottom: 15px; font-size: 2rem; font-weight: 700;">Verifica tu Email</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6; font-size: 1.05rem;">
+                Hemos enviado un enlace de verificación a:
+            </p>
+            <p style="color: var(--primary-color); margin-bottom: 25px; font-size: 1.1rem; font-weight: 700; word-break: break-all; padding: 10px; background: rgba(57, 243, 212, 0.1); border-radius: 8px;">
+                <span id="verificationEmail">email@ejemplo.com</span>
+            </p>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.6;">
+                Por favor, revisa tu bandeja de entrada (y también la carpeta de spam) y haz clic en el enlace para verificar tu cuenta.
+            </p>
+            <div style="background: rgba(57, 243, 212, 0.15); border-radius: 12px; padding: 20px; margin-bottom: 25px; border-left: 4px solid var(--primary-color);">
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                    <strong style="color: var(--primary-color);">💡 Modo Desarrollo:</strong> Puedes hacer clic en "Verificar Ahora" para continuar sin verificar el email. En producción, esto se deshabilitará.
+                </p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-direction: column;">
+                <button id="verifyNowBtn" style="background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 15px 25px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(57, 243, 212, 0.3);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    ✅ Verificar Ahora
+                </button>
+                <button id="resendEmailBtn" style="background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); padding: 12px 25px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(57, 243, 212, 0.1)'" onmouseout="this.style.background='transparent'">
+                    🔄 Reenviar Email de Verificación
+                </button>
+                <button onclick="closeVerificationModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                    <span class="header__logo-text">Graykids Academy</span>
+                </a>
+            </div>
+            <nav class="header__nav">
+                <a href="index.html" class="header__link">Inicio</a>
+                <a href="cursos.html" class="header__link">Cursos</a>
+                <a href="GraykidsPlus.html" class="header__link">Graykids Plus</a>
+                <a href="contacto.html" class="header__link">Contacto</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- LOGIN SECTION -->
+    <section class="login-hero">
+        <div class="login-hero__container container">
+            <!-- Left Side - Image/Animation -->
+            <div class="login-hero__left">
+                <div class="login-hero__content">
+                    <h1 class="login-hero__title">¡Bienvenido de vuelta! 🎵</h1>
+                    <p class="login-hero__subtitle">
+                        Accede a tus cursos, recursos exclusivos y a la comunidad de productores más grande de Latinoamérica.
+                    </p>
+                    
+                    <!-- Features -->
+                    <div class="login-features">
+                        <div class="login-feature">
+                            <span class="login-feature__icon">📚</span>
+                            <span class="login-feature__text">Cursos exclusivos</span>
+                        </div>
+                        <div class="login-feature">
+                            <span class="login-feature__icon">🎁</span>
+                            <span class="login-feature__text">Recursos descargables</span>
+                        </div>
+                        <div class="login-feature">
+                            <span class="login-feature__icon">💬</span>
+                            <span class="login-feature__text">Comunidad Discord</span>
+                        </div>
+                        <div class="login-feature">
+                            <span class="login-feature__icon">🎓</span>
+                            <span class="login-feature__text">Certificados</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Login Form -->
+            <div class="login-hero__right">
+                <div class="login-card">
+                    <!-- Login Form -->
+                    <div class="login-tabs">
+                        <button class="login-tab login-tab--active" onclick="showLogin()">
+                            Iniciar Sesión
+                        </button>
+                        <button class="login-tab" onclick="showRegister()">
+                            Registrarse
+                        </button>
+                    </div>
+
+                    <!-- LOGIN FORM -->
+                    <form class="login-form active" id="loginForm">
+                        <div class="login-form__header">
+                            <h2 class="login-form__title">Inicia Sesión</h2>
+                            <p class="login-form__subtitle">Ingresa con tu cuenta de Graykids Academy</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loginEmail" class="form-label">Correo Electrónico</label>
+                            <input type="email" id="loginEmail" class="form-input" placeholder="tu@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loginPassword" class="form-label">Contraseña</label>
+                            <div class="password-input">
+                                <input type="password" id="loginPassword" class="form-input" placeholder="Tu contraseña" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')" aria-label="Mostrar/Ocultar contraseña">
+                                    <img src="Images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="loginPassword-eye-visible">
+                                    <img src="Images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="loginPassword-eye-hidden" style="display: none;">
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group--inline">
+                            <label class="checkbox">
+                                <input type="checkbox" id="rememberMe">
+                                <span class="checkbox__checkmark"></span>
+                                <span class="checkbox__label">Recordarme</span>
+                            </label>
+                            <a href="#" class="forgot-link" onclick="showForgotPassword()">¿Olvidaste tu contraseña?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary btn--block btn--large">
+                            Iniciar Sesión
+                        </button>
+
+        <!-- Social Login -->
+        <div class="login-divider">
+            <span class="login-divider__text">O continúa con</span>
+        </div>
+
+        <div class="social-login">
+            <button type="button" class="social-btn social-btn--google" onclick="signInWithGoogle()">
+                <svg class="social-btn__icon" width="20" height="20" viewBox="0 0 20 20">
+                    <path fill="#4285F4" d="M19.6 10.23c0-.82-.07-1.54-.2-2.27H10v4.31h5.4c-.23 1.48-.9 2.73-1.91 3.58v2.38h3.09c1.81-1.67 2.85-4.12 2.85-7.01z"/>
+                    <path fill="#34A853" d="M10 20c2.7 0 4.96-.9 6.61-2.44l-3.09-2.38c-.9.6-2.05.96-3.52.96-2.7 0-5-1.82-5.82-4.28H1.13v2.46C2.78 17.54 6.12 20 10 20z"/>
+                    <path fill="#FBBC05" d="M4.18 11.82c-.2-.6-.31-1.24-.31-1.9 0-.66.11-1.3.31-1.9V5.56H1.13C.42 6.87 0 8.38 0 10s.42 3.13 1.13 4.44l3.05-2.62z"/>
+                    <path fill="#EA4335" d="M10 3.98c1.5 0 2.85.52 3.91 1.53l2.93-2.93C14.96.99 12.7 0 10 0 6.12 0 2.78 2.46 1.13 5.56l3.05 2.38C5 5.82 7.3 3.98 10 3.98z"/>
+                </svg>
+                Google
+            </button>
+            <button type="button" class="social-btn social-btn--facebook" onclick="signInWithFacebook()">
+                <svg class="social-btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                Facebook
+            </button>
+        </div>
+
+                        <p class="login-form__footer">
+                            ¿No tienes cuenta? <a href="#" class="login-form__link" onclick="showRegister()">Regístrate aquí</a>
+                        </p>
+                    </form>
+
+                    <!-- REGISTER FORM -->
+                    <form class="login-form" id="registerForm" style="display: none;">
+                        <div class="login-form__header">
+                            <h2 class="login-form__title">Crea tu Cuenta</h2>
+                            <p class="login-form__subtitle">Únete a Graykids Academy hoy</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registerName" class="form-label">Nombre</label>
+                            <input type="text" id="registerName" class="form-input" placeholder="Tu nombre" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registerEmail" class="form-label">Correo Electrónico</label>
+                            <input type="email" id="registerEmail" class="form-input" placeholder="tu@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registerPassword" class="form-label">Contraseña</label>
+                            <div class="password-input">
+                                <input type="password" id="registerPassword" class="form-input" placeholder="Mínimo 8 caracteres" required minlength="8">
+                                <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')" aria-label="Mostrar/Ocultar contraseña">
+                                    <img src="Images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPassword-eye-visible">
+                                    <img src="Images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPassword-eye-hidden" style="display: none;">
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registerPasswordConfirm" class="form-label">Confirmar Contraseña</label>
+                            <div class="password-input">
+                                <input type="password" id="registerPasswordConfirm" class="form-input" placeholder="Confirma tu contraseña" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('registerPasswordConfirm')" aria-label="Mostrar/Ocultar contraseña">
+                                    <img src="Images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPasswordConfirm-eye-visible">
+                                    <img src="Images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPasswordConfirm-eye-hidden" style="display: none;">
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox">
+                                <input type="checkbox" id="acceptTerms" required>
+                                <span class="checkbox__checkmark"></span>
+                                <span class="checkbox__label">Acepto los <a href="#" class="link">Términos y Condiciones</a></span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary btn--block btn--large">
+                            Registrarse
+                        </button>
+
+                        <!-- Social Register -->
+                        <div class="login-divider">
+                            <span class="login-divider__text">O regístrate con</span>
+                        </div>
+
+                        <div class="social-login">
+                            <button type="button" class="social-btn social-btn--google" onclick="signInWithGoogle()">
+                                <svg class="social-btn__icon" width="20" height="20" viewBox="0 0 20 20">
+                                    <path fill="#4285F4" d="M19.6 10.23c0-.82-.07-1.54-.2-2.27H10v4.31h5.4c-.23 1.48-.9 2.73-1.91 3.58v2.38h3.09c1.81-1.67 2.85-4.12 2.85-7.01z"/>
+                                    <path fill="#34A853" d="M10 20c2.7 0 4.96-.9 6.61-2.44l-3.09-2.38c-.9.6-2.05.96-3.52.96-2.7 0-5-1.82-5.82-4.28H1.13v2.46C2.78 17.54 6.12 20 10 20z"/>
+                                    <path fill="#FBBC05" d="M4.18 11.82c-.2-.6-.31-1.24-.31-1.9 0-.66.11-1.3.31-1.9V5.56H1.13C.42 6.87 0 8.38 0 10s.42 3.13 1.13 4.44l3.05-2.62z"/>
+                                    <path fill="#EA4335" d="M10 3.98c1.5 0 2.85.52 3.91 1.53l2.93-2.93C14.96.99 12.7 0 10 0 6.12 0 2.78 2.46 1.13 5.56l3.05 2.38C5 5.82 7.3 3.98 10 3.98z"/>
+                                </svg>
+                                Google
+                            </button>
+                            <button type="button" class="social-btn social-btn--facebook" onclick="signInWithFacebook()">
+                                <svg class="social-btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                                Facebook
+                            </button>
+                        </div>
+
+                        <p class="login-form__footer">
+                            ¿Ya tienes cuenta? <a href="#" class="login-form__link" onclick="showLogin()">Inicia sesión</a>
+                        </p>
+                    </form>
+
+                    <!-- FORGOT PASSWORD FORM -->
+                    <form class="login-form" id="forgotPasswordForm" style="display: none;">
+                        <div class="login-form__header">
+                            <h2 class="login-form__title">¿Olvidaste tu contraseña?</h2>
+                            <p class="login-form__subtitle">Ingresa tu email y te enviaremos un enlace para restablecerla</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resetEmail" class="form-label">Correo Electrónico</label>
+                            <input type="email" id="resetEmail" class="form-input" placeholder="tu@email.com" required>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary btn--block btn--large">
+                            Enviar enlace de recuperación
+                        </button>
+
+                        <p class="login-form__footer">
+                            <a href="#" class="login-form__link" onclick="showLogin()">← Volver al inicio de sesión</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__container container">
+            <div class="footer__logo">
+                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+            </div>
+            <div class="footer__links">
+                <a href="contacto.html" class="footer__link">Contact</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="index.html#faq" class="footer__link">FAQ</a>
+            </div>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
+        </div>
+    </footer>
+
+    <script>
+        // ========================================
+        // SESSION RESTORATION FROM COOKIES
+        // ========================================
+        function restoreSessionFromCookies() {
+            try {
+                const cookieUserSession = getCookie('user_session');
+                const cookieIsLoggedIn = getCookie('is_logged_in');
+                
+                // Si hay sesión en cookies pero no en localStorage, restaurar
+                if (cookieUserSession && cookieIsLoggedIn === 'true') {
+                    try {
+                        const userInfo = JSON.parse(cookieUserSession);
+                        
+                        // Verificar que sea válido
+                        if (userInfo && userInfo.email) {
+                            // Restaurar en localStorage también
+                            localStorage.setItem('user', cookieUserSession);
+                            localStorage.setItem('isLoggedIn', 'true');
+                            
+                            console.log('Sesión restaurada desde cookies:', userInfo.email);
+                            
+                            // Si hay un parámetro de error en la URL, no redirigir automáticamente
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const error = urlParams.get('error');
+                            
+                            if (error) {
+                                // Mostrar mensaje de error si viene de OAuth
+                                let errorMessage = 'Error de autenticación';
+                                switch(error) {
+                                    case 'access_denied':
+                                        errorMessage = 'La autenticación fue cancelada';
+                                        break;
+                                    case 'no_code':
+                                        errorMessage = 'No se recibió el código de autorización';
+                                        break;
+                                    case 'auth_failed':
+                                        errorMessage = 'Error al autenticar con Google';
+                                        break;
+                                }
+                                showErrorMessage('❌ ' + errorMessage + '.<br><strong>Inténtelo nuevamente.</strong>', true);
+                                return false; // No redirigir si hay error
+                            }
+                            
+                            // Retornar true para indicar que se debe redirigir (pero no redirigir aquí)
+                            // La redirección se hará después de ocultar el loading
+                            setTimeout(() => {
+                                if (userInfo.isAdmin) {
+                                    window.location.href = 'admin.html';
+                                } else {
+                                    window.location.href = 'campus.html?login=success';
+                                }
+                            }, 400); // Esperar a que el loading se oculte primero
+                            
+                            return true; // Indicar que se debe ocultar loading y redirigir
+                        }
+                    } catch (e) {
+                        console.error('Error al parsear cookie de sesión:', e);
+                        // Limpiar cookies inválidas
+                        deleteCookie('user_session');
+                        deleteCookie('is_logged_in');
+                    }
+                }
+            } catch (error) {
+                console.error('Error al restaurar sesión:', error);
+            }
+            return false; // No hay sesión para restaurar
+        }
+        
+        // ========================================
+        // LOADING SCREEN
+        // ========================================
+        window.addEventListener('load', function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            
+            if (!loadingScreen) {
+                console.warn('Loading screen no encontrado');
+                return;
+            }
+            
+            // Restaurar sesión desde cookies
+            const shouldRedirect = restoreSessionFromCookies();
+            
+            // Si hay redirección, ocultar loading y luego redirigir
+            if (shouldRedirect) {
+                setTimeout(() => {
+                    if (loadingScreen) {
+                        loadingScreen.classList.add('hidden');
+                        setTimeout(() => {
+                            if (loadingScreen) {
+                                loadingScreen.style.display = 'none';
+                            }
+                        }, 150);
+                    }
+                }, 200);
+            } else {
+                // Si no hay redirección, ocultar loading normalmente
+                setTimeout(() => {
+                    if (loadingScreen) {
+                        loadingScreen.classList.add('hidden');
+                        setTimeout(() => {
+                            if (loadingScreen) {
+                                loadingScreen.style.display = 'none';
+                            }
+                        }, 200);
+                    }
+                }, 300);
+            }
+        });
+        
+        // ========================================
+        // EMAIL VERIFICATION SYSTEM
+        // ========================================
+        
+        // Generar código de verificación simulado
+        function generateVerificationCode(email) {
+            const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+            const verificationData = {
+                email: email,
+                code: code,
+                timestamp: Date.now(),
+                verified: false
+            };
+            
+            // Guardar en localStorage
+            const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
+            verifications[email] = verificationData;
+            localStorage.setItem('emailVerifications', JSON.stringify(verifications));
+            
+            // En producción, aquí se enviaría el email real
+            console.log(`📧 Email de verificación simulado enviado a ${email}`);
+            console.log(`🔐 Código de verificación (desarrollo): ${code}`);
+            
+            return code;
+        }
+        
+        // Mostrar modal de verificación
+        function showVerificationModal(email) {
+            document.getElementById('verificationEmail').textContent = email;
+            document.getElementById('verificationModal').classList.add('active');
+            
+            // Generar código de verificación
+            generateVerificationCode(email);
+            
+            // Configurar botón de verificar ahora
+            document.getElementById('verifyNowBtn').onclick = function() {
+                verifyEmail(email);
+            };
+            
+            // Configurar botón de reenviar
+            document.getElementById('resendEmailBtn').onclick = function() {
+                generateVerificationCode(email);
+                showSuccessMessage('📧 Email de verificación reenviado! Revisa tu bandeja de entrada.');
+                
+                // Animar botón
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            };
+        }
+        
+        // Cerrar modal de verificación
+        function closeVerificationModal() {
+            document.getElementById('verificationModal').classList.remove('active');
+        }
+        
+        // Verificar email
+        function verifyEmail(email) {
+            const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
+            if (verifications[email]) {
+                verifications[email].verified = true;
+                verifications[email].verifiedAt = Date.now();
+                localStorage.setItem('emailVerifications', JSON.stringify(verifications));
+                
+                // Actualizar estado del usuario
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                user.emailVerified = true;
+                localStorage.setItem('user', JSON.stringify(user));
+                
+                closeVerificationModal();
+                showSuccessMessage('✅ Email verificado exitosamente!');
+                
+                // Redirigir según tipo de usuario
+                setTimeout(() => {
+                    if (user.isAdmin) {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'campus.html?verified=true';
+                    }
+                }, 1500);
+            }
+        }
+        
+        // Mostrar mensaje de éxito
+        function showSuccessMessage(message, isHtml = false) {
+            try {
+                // Remover mensaje anterior si existe
+                const existingMsg = document.querySelector('.success-message');
+                if (existingMsg) {
+                    existingMsg.remove();
+                }
+                
+                if (!message) {
+                    console.warn('showSuccessMessage: mensaje vacío');
+                    return;
+                }
+                
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'success-message';
+                
+                if (isHtml) {
+                    msgDiv.innerHTML = message;
+                } else {
+                    msgDiv.textContent = message;
+                }
+                
+                // Asegurar estilos inline para visibilidad
+                msgDiv.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #39F3D4 0%, #4ade80 100%);
+                    color: #0a0a0a;
+                    padding: 20px 30px;
+                    border-radius: 12px;
+                    box-shadow: 0 10px 30px rgba(57, 243, 212, 0.4);
+                    z-index: 10002;
+                    font-weight: 700;
+                    font-size: 1.1rem;
+                    max-width: 400px;
+                    opacity: 0;
+                    transform: translateX(400px);
+                    line-height: 1.5;
+                    word-wrap: break-word;
+                    white-space: normal;
+                `;
+                
+                if (!document.body) {
+                    console.error('showSuccessMessage: document.body no existe');
+                    return;
+                }
+                
+                document.body.appendChild(msgDiv);
+                
+                // Forzar reflow y luego mostrar
+                msgDiv.offsetHeight; // Trigger reflow
+                
+                // Aplicar animación de entrada
+                setTimeout(() => {
+                    msgDiv.style.transition = 'all 0.5s ease-out';
+                    msgDiv.style.opacity = '1';
+                    msgDiv.style.transform = 'translateX(0)';
+                }, 10);
+                
+                console.log('Mensaje de éxito mostrado:', message);
+                
+                // Desaparecer después de 4 segundos
+                setTimeout(() => {
+                    msgDiv.style.opacity = '0';
+                    msgDiv.style.transform = 'translateX(400px)';
+                    setTimeout(() => {
+                        if (msgDiv.parentElement) {
+                            msgDiv.remove();
+                        }
+                    }, 500);
+                }, 4000);
+            } catch (error) {
+                console.error('Error en showSuccessMessage:', error);
+                // Fallback: mostrar alert si falla el mensaje visual
+                alert(message.replace(/<[^>]*>/g, '')); // Remover HTML para alert
+            }
+        }
+        
+        // Exponer función globalmente para debugging
+        window.showSuccessMessage = showSuccessMessage;
+        
+        // Mostrar mensaje de error
+        function showErrorMessage(message, isHtml = false) {
+            try {
+                // Remover mensajes anteriores
+                const existingMsg = document.querySelector('.error-message');
+                if (existingMsg) {
+                    existingMsg.remove();
+                }
+                
+                if (!message) {
+                    console.warn('showErrorMessage: mensaje vacío');
+                    return;
+                }
+                
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'error-message';
+                
+                if (isHtml) {
+                    msgDiv.innerHTML = message;
+                } else {
+                    msgDiv.textContent = message;
+                }
+                
+                // Estilos para mensaje de error
+                msgDiv.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+                    color: white;
+                    padding: 20px 30px;
+                    border-radius: 12px;
+                    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+                    z-index: 10002;
+                    font-weight: 700;
+                    font-size: 1.1rem;
+                    max-width: 400px;
+                    opacity: 0;
+                    transform: translateX(400px);
+                    line-height: 1.5;
+                    word-wrap: break-word;
+                    white-space: normal;
+                `;
+                
+                if (!document.body) {
+                    console.error('showErrorMessage: document.body no existe');
+                    return;
+                }
+                
+                document.body.appendChild(msgDiv);
+                
+                // Forzar reflow y luego mostrar
+                msgDiv.offsetHeight; // Trigger reflow
+                
+                // Aplicar animación de entrada
+                setTimeout(() => {
+                    msgDiv.style.transition = 'all 0.5s ease-out';
+                    msgDiv.style.opacity = '1';
+                    msgDiv.style.transform = 'translateX(0)';
+                }, 10);
+                
+                console.log('Mensaje de error mostrado:', message);
+                
+                // Desaparecer después de 5 segundos (más tiempo para errores)
+                setTimeout(() => {
+                    msgDiv.style.opacity = '0';
+                    msgDiv.style.transform = 'translateX(400px)';
+                    setTimeout(() => {
+                        if (msgDiv.parentElement) {
+                            msgDiv.remove();
+                        }
+                    }, 500);
+                }, 5000);
+            } catch (error) {
+                console.error('Error en showErrorMessage:', error);
+                // Fallback: mostrar alert si falla el mensaje visual
+                alert(message.replace(/<[^>]*>/g, '')); // Remover HTML para alert
+            }
+        }
+        
+        // Exponer función globalmente
+        window.showErrorMessage = showErrorMessage;
+        
+        // ========================================
+        // FORM FUNCTIONS
+        // ========================================
+        
+        // Show login form
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            
+            document.querySelectorAll('.login-tab').forEach(tab => tab.classList.remove('login-tab--active'));
+            document.querySelector('.login-tabs button:first-child').classList.add('login-tab--active');
+        }
+
+        // Show register form
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            
+            document.querySelectorAll('.login-tab').forEach(tab => tab.classList.remove('login-tab--active'));
+            document.querySelector('.login-tabs button:last-child').classList.add('login-tab--active');
+        }
+
+        // Show forgot password form
+        function showForgotPassword() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'block';
+        }
+
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const toggleBtn = input.parentElement.querySelector('.password-toggle');
+            if (!toggleBtn) return;
+            
+            const eyeVisible = document.getElementById(inputId + '-eye-visible');
+            const eyeHidden = document.getElementById(inputId + '-eye-hidden');
+            
+            if (input.type === 'password') {
+                // Mostrar contraseña
+                input.type = 'text';
+                if (eyeVisible) eyeVisible.style.display = 'none';
+                if (eyeHidden) eyeHidden.style.display = 'block';
+                
+                // Animación
+                if (eyeHidden) {
+                    eyeHidden.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        eyeHidden.style.transform = 'scale(1)';
+                    }, 100);
+                }
+            } else {
+                // Ocultar contraseña
+                input.type = 'password';
+                if (eyeVisible) eyeVisible.style.display = 'block';
+                if (eyeHidden) eyeHidden.style.display = 'none';
+                
+                // Animación
+                if (eyeVisible) {
+                    eyeVisible.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        eyeVisible.style.transform = 'scale(1)';
+                    }, 100);
+                }
+            }
+        }
+
+        // Funciones para manejar cookies
+        function setCookie(name, value, days = 7) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
+        }
+        
+        function getCookie(name) {
+            const nameEQ = name + '=';
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(c.substring(nameEQ.length, c.length));
+                }
+            }
+            return null;
+        }
+        
+        function deleteCookie(name) {
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+        }
+        
+        // Google Sign In - Redirige a Google OAuth
+        function signInWithGoogle() {
+            try {
+                // Verificar que la configuración esté disponible
+                if (typeof getGoogleAuthUrl !== 'function') {
+                    console.error('OAuth config no cargada');
+                    showErrorMessage('❌ Error de configuración. Por favor, recarga la página e inténtelo nuevamente.', true);
+                    return;
+                }
+                
+                // Verificar que el Client ID esté configurado correctamente
+                if (typeof isGoogleOAuthConfigured === 'function' && !isGoogleOAuthConfigured()) {
+                    const config = typeof OAUTH_CONFIG !== 'undefined' ? OAUTH_CONFIG.google : null;
+                    const currentClientId = config ? config.clientId : 'no configurado';
+                    
+                    showErrorMessage(
+                        '❌ Google OAuth no está configurado correctamente.<br><br>' +
+                        'El Client ID debe tener el formato completo:<br>' +
+                        '<strong>XXXXXXXXX-XXXXXXXXXXXXXXXX.apps.googleusercontent.com</strong><br><br>' +
+                        'Actualmente tienes: <strong>' + currentClientId + '</strong><br><br>' +
+                        'Por favor ve a <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color: #39F3D4;">Google Cloud Console</a> y crea un OAuth 2.0 Client ID.',
+                        true
+                    );
+                    console.error('Google CLIENT_ID no configurado correctamente. Actual:', currentClientId);
+                    return;
+                }
+                
+                const googleAuthUrl = getGoogleAuthUrl();
+                
+                // Verificar que la URL se generó correctamente
+                if (!googleAuthUrl) {
+                    showErrorMessage('❌ Error al generar la URL de autenticación de Google.<br><strong>Verifica que tu Client ID esté configurado correctamente.</strong>', true);
+                    return;
+                }
+                
+                // Guardar el origen antes de redirigir (para después del callback)
+                sessionStorage.setItem('oauth_redirect_from', 'Login.html');
+                
+                console.log('Redirigiendo a Google OAuth...');
+                
+                // Redirigir a Google OAuth
+                window.location.href = googleAuthUrl;
+                
+            } catch (error) {
+                console.error('Error en signInWithGoogle:', error);
+                showErrorMessage('❌ Ocurrió un error al iniciar sesión con Google.<br><strong>Por favor, inténtelo nuevamente.</strong>', true);
+            }
+        }
+
+        // Facebook Sign In
+        function signInWithFacebook() {
+            // Para pruebas, usar el mismo sistema de email
+            const loadingBtn = event.target.closest('.social-btn');
+            if (loadingBtn) {
+                loadingBtn.disabled = true;
+                loadingBtn.innerHTML = '<span class="loading-spinner"></span> Autenticando...';
+            }
+            
+            setTimeout(() => {
+                let userEmail = prompt('Ingresa tu email para iniciar sesión:\n\n(Por defecto: spieronilton@gmail.com para admin)\n(Cualquier otro email será usuario normal)');
+                
+                if (!userEmail) {
+                    if (loadingBtn) {
+                        loadingBtn.disabled = false;
+                        loadingBtn.innerHTML = '<svg class="social-icon"><use href="#facebook-icon"></use></svg> Continuar con Facebook';
+                    }
+                    return;
+                }
+                
+                if (!userEmail.trim()) {
+                    userEmail = 'spieronilton@gmail.com';
+                }
+                
+                const userInfo = {
+                    name: userEmail.split('@')[0],
+                    email: userEmail.trim(),
+                    provider: 'facebook',
+                    picture: 'https://via.placeholder.com/150',
+                    isAdmin: false
+                };
+                
+                userInfo.isAdmin = isAdminEmail(userInfo.email);
+                
+                localStorage.setItem('user', JSON.stringify(userInfo));
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Verificar si el email ya está verificado
+                const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
+                const isVerified = verifications[userInfo.email]?.verified || false;
+                userInfo.emailVerified = isVerified;
+                
+                // Si no está verificado y no es admin, mostrar modal de verificación
+                if (!isVerified && !userInfo.isAdmin) {
+                    showVerificationModal(userInfo.email);
+                } else {
+                    if (userInfo.isAdmin) {
+                        showSuccessMessage('✅ Bienvenido Administrador!');
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 1000);
+                    } else {
+                        showSuccessMessage('✅ Inicio de sesión exitoso!');
+                        setTimeout(() => {
+                            window.location.href = 'campus.html?login=success';
+                        }, 1000);
+                    }
+                }
+            }, 800);
+            
+        }
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Validar campos
+            if (!email || !password) {
+                showErrorMessage('❌ Por favor completa todos los campos.<br><strong>Inténtelo nuevamente.</strong>', true);
+                return;
+            }
+            
+            // Normalizar email (trim y lowercase)
+            const normalizedEmail = email.trim().toLowerCase();
+            
+            // Save user info con email normalizado
+            const userInfo = {
+                name: normalizedEmail.split('@')[0],
+                email: normalizedEmail,
+                provider: 'email',
+                picture: '',
+                isAdmin: false // Se verificará después
+            };
+            
+            // Verificar si es administrador (usando función de config.js)
+            // Usar el email normalizado para verificar admin
+            if (typeof isAdminEmail === 'function') {
+                userInfo.isAdmin = isAdminEmail(normalizedEmail);
+            } else {
+                // Fallback: verificar email por defecto
+                const defaultAdminEmail = 'spieronilton@gmail.com';
+                userInfo.isAdmin = normalizedEmail === defaultAdminEmail.toLowerCase();
+            }
+            
+            // Asegurar que el usuario admin esté inicializado
+            if (typeof initializeAdminUser === 'function') {
+                initializeAdminUser();
+            }
+            
+            // Verificar credenciales (simulado - en producción esto sería una llamada al servidor)
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            
+            // Buscar usuario con email normalizado
+            let storedUser = users[normalizedEmail];
+            
+            // Si no se encuentra, intentar buscar sin normalizar (para compatibilidad)
+            if (!storedUser) {
+                storedUser = users[email] || users[email.toLowerCase()] || users[email.trim()];
+            }
+            
+            // Verificar si existe el usuario
+            if (!storedUser) {
+                console.error('Usuario no encontrado. Email ingresado:', email, 'Email normalizado:', normalizedEmail);
+                console.log('Usuarios en localStorage:', Object.keys(users));
+                showErrorMessage('❌ Email o contraseña incorrectos.<br><strong>Inténtelo nuevamente.</strong>', true);
+                return;
+            }
+            
+            // Verificar contraseña
+            if (storedUser.password !== password) {
+                console.error('Contraseña incorrecta. Password ingresada:', password, 'Password guardada:', storedUser.password);
+                showErrorMessage('❌ Email o contraseña incorrectos.<br><strong>Inténtelo nuevamente.</strong>', true);
+                return;
+            }
+            
+            // Actualizar email en userInfo con el email normalizado
+            userInfo.email = normalizedEmail;
+            
+            // Verificar si el email está verificado
+            const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
+            const isVerified = verifications[normalizedEmail]?.verified || verifications[email]?.verified || false;
+            userInfo.emailVerified = isVerified;
+            
+            // Si es admin, marcar como verificado automáticamente
+            if (userInfo.isAdmin) {
+                userInfo.emailVerified = true;
+            }
+            
+            localStorage.setItem('user', JSON.stringify(userInfo));
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            // Si no está verificado, mostrar modal
+            if (!isVerified && !userInfo.isAdmin) {
+                showVerificationModal(email);
+            } else {
+                if (userInfo.isAdmin) {
+                    showSuccessMessage('✅ Bienvenido Administrador!');
+                    setTimeout(() => {
+                        window.location.href = 'admin.html';
+                    }, 1000);
+                } else {
+                    showSuccessMessage('✅ Inicio de sesión exitoso!');
+                    setTimeout(() => {
+                        window.location.href = 'campus.html?login=success';
+                    }, 1000);
+                }
+            }
+        });
+
+        // Handle register form submission
+        // Asegurar que se ejecute cuando el DOM esté listo
+        function initRegisterForm() {
+            const registerForm = document.getElementById('registerForm');
+            if (!registerForm) {
+                console.warn('registerForm no encontrado, reintentando...');
+                setTimeout(initRegisterForm, 100);
+                return;
+            }
+            
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                try {
+                    const nameInput = document.getElementById('registerName');
+                    const emailInput = document.getElementById('registerEmail');
+                    const passwordInput = document.getElementById('registerPassword');
+                    const passwordConfirmInput = document.getElementById('registerPasswordConfirm');
+                    
+                    if (!nameInput || !emailInput || !passwordInput || !passwordConfirmInput) {
+                        showErrorMessage('❌ Error: No se encontraron todos los campos del formulario.<br><strong>Por favor, recarga la página e inténtelo nuevamente.</strong>', true);
+                        console.error('Error: Campos del formulario no encontrados');
+                        return;
+                    }
+                    
+                    const name = nameInput.value.trim();
+                    const email = emailInput.value.trim();
+                    const password = passwordInput.value;
+                    const passwordConfirm = passwordConfirmInput.value;
+                    
+                    // Validaciones
+                    // Validar campos vacíos
+                    if (!name || !email || !password || !passwordConfirm) {
+                        showErrorMessage('❌ Por favor completa todos los campos.<br><strong>Inténtelo nuevamente.</strong>', true);
+                        return;
+                    }
+                    
+                    // Validar formato de email
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        showErrorMessage('❌ Por favor ingresa un email válido.<br><strong>Inténtelo nuevamente.</strong>', true);
+                        return;
+                    }
+                    
+                    // Validar longitud mínima de contraseña
+                    if (password.length < 8) {
+                        showErrorMessage('❌ La contraseña debe tener al menos 8 caracteres.<br><strong>Inténtelo nuevamente.</strong>', true);
+                        return;
+                    }
+                    
+                    // Validar que las contraseñas coincidan
+                    if (password !== passwordConfirm) {
+                        showErrorMessage('❌ Las contraseñas no coinciden.<br><strong>Inténtelo nuevamente.</strong>', true);
+                        return;
+                    }
+                    
+                    console.log('Formulario de registro enviado:', { name, email });
+                    
+                    // Save user info
+                    const userInfo = {
+                        name: name,
+                        email: email,
+                        provider: 'email',
+                        picture: '',
+                        isAdmin: false,
+                        emailVerified: false
+                    };
+                    
+                    // Verificar si es administrador (usando función de config.js)
+                    // Esperar a que config.js se cargue si no está disponible
+                    if (typeof isAdminEmail === 'function') {
+                        userInfo.isAdmin = isAdminEmail(email);
+                    } else {
+                        // Fallback: verificar email por defecto
+                        const defaultAdminEmail = 'spieronilton@gmail.com';
+                        userInfo.isAdmin = email.toLowerCase() === defaultAdminEmail.toLowerCase();
+                        console.warn('isAdminEmail no está disponible, usando fallback');
+                    }
+                    
+                    // Guardar usuario
+                    const users = JSON.parse(localStorage.getItem('users') || '{}');
+                    users[email] = {
+                        name: name,
+                        email: email,
+                        password: password // ⚠️ En producción NUNCA guardes contraseñas sin encriptar
+                    };
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    localStorage.setItem('user', JSON.stringify(userInfo));
+                    localStorage.setItem('isLoggedIn', 'true');
+                    
+                    console.log('Usuario guardado:', userInfo);
+                    
+                    // Deshabilitar el formulario mientras se procesa
+                    const submitBtn = registerForm.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Registrando...';
+                    }
+                    
+                    // Mostrar mensaje de confirmación de registro
+                    if (userInfo.isAdmin) {
+                        userInfo.emailVerified = true;
+                        localStorage.setItem('user', JSON.stringify(userInfo));
+                        showSuccessMessage('✅ Registrado exitosamente. Bienvenido Administrador!');
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 2000);
+                    } else {
+                        // Mensaje de confirmación con información del email de verificación
+                        const message = '✅ <strong>Registrado exitosamente</strong><br><br>📧 Enviaremos un email de verificación a:<br><strong>' + email + '</strong>';
+                        showSuccessMessage(message, true);
+                        
+                        // Redirigir a la página de inicio de sesión después de 4 segundos
+                        setTimeout(() => {
+                            // Asegurarse de limpiar el estado de login para forzar que inicie sesión de nuevo
+                            localStorage.removeItem('isLoggedIn');
+                            localStorage.removeItem('user');
+                            window.location.href = 'Login.html';
+                        }, 4000);
+                    }
+                } catch (error) {
+                    console.error('Error en el registro:', error);
+                    showErrorMessage('❌ Ocurrió un error al registrar.<br><strong>Por favor, inténtelo nuevamente.</strong>', true);
+                    // Re-habilitar el botón en caso de error
+                    const submitBtn = registerForm.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Crear Cuenta';
+                    }
+                }
+            });
+        }
+        
+        // Inicializar cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initRegisterForm);
+        } else {
+            initRegisterForm();
+        }
+
+        // Handle forgot password form
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('resetEmail').value;
+            
+            if (!email) {
+                showSuccessMessage('❌ Por favor ingresa tu email');
+                return;
+            }
+            
+            // Simular envío de email de recuperación
+            showSuccessMessage('📧 Hemos enviado un enlace de recuperación a tu email');
+            
+            // En producción: hacer llamada al API para enviar email real
+            console.log(`📧 Email de recuperación simulado enviado a ${email}`);
+            
+            setTimeout(() => {
+                showLogin();
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

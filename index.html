@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/animaciones.js" defer></script>
+    <script src="js/courses-loader.js"></script>
+    <title>Graykids Academy - Producción Musical Profesional</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                    <span class="header__logo-text">Graykids Academy</span>
+                </a>
+            </div>
+            <nav class="header__nav">
+                <a href="cursos.html" class="header__link">Cursos Vip</a>
+                <a href="GraykidsPlus.html" class="header__link">Graykids Plus</a>
+                <a href="Discord.html" class="header__link">Discord</a>
+                <a href="librerias.html" class="header__link">Librerías</a>
+                <a href="contacto.html" class="header__link">Contacto</a>
+                <a href="#faq" class="header__link">FAQ</a>
+            </nav>
+            <span id="headerAuthButton">
+                <a href="campus.html" class="btn btn--outline">Entrar</a>
+            </span>
+        </div>
+    </header>
+
+    <script>
+        // Check if user is logged in and update header
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const user = localStorage.getItem('user');
+        
+        if (isLoggedIn && user) {
+            const btn = document.getElementById('headerAuthButton');
+            const userData = JSON.parse(user);
+            btn.innerHTML = `<a href="campus.html" class="btn btn--primary">Mi Campus</a>`;
+        }
+    </script>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero__container container">
+            <h1 class="hero__title">¿Producir es Facil?</h1>
+            <div class="hero__content">
+                <p class="hero__intro">Cursos Practicos</p>
+                <h2 class="hero__subtitle">¡¿Te aburren los video de youtube?</h2>
+                <p class="hero__description">
+                    Graykids Academy te enseñará a convertirte en un profesional completo 
+                    y capaz de manejarte competitivamente en cualquier escenario. No todo lo puedes encontrar en YouTube porque ahora los creadores de contenido luchan contra el algoritmo, pues solo suben contenido fácil y rápido, aquí no hacemos eso, nos tomamos las cosas en serio, muy en serio...
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CURSO DESTACADO -->
+    <section class="featured-course">
+        <div class="featured-course__container container">
+            <div class="featured-course__header">
+                <p class="featured-course__badge">Ableton Live</p>
+                <h3 class="featured-course__title">De cero a Experto</h3>
+                <p class="featured-course__status">¡Ya disponible! 🎹</p>
+                <p class="featured-course__subtitle">Aprende a manejar cualquier daw</p>
+            </div>
+            
+            <div class="featured-course__content">
+                <div class="featured-course__info">
+                    <h4 class="featured-course__course-title">Ableton Live</h4>
+                    <h5 class="featured-course__course-subtitle">De Zero a Experto</h5>
+                    <p class="featured-course__text">
+                        <strong>¡¿Necesitas un buen DAW para crear tus producciones?¡ </strong>
+                        Estas perdido en tanto generos de como se hace?
+                        <strong>¿Usar ia y desempeñarte en tu daw?</strong>
+                        <br>Piensas que necesitas años de experiencia para manejarlo<br>
+                        Nuestro curso de  <strong>Ableton Live de Cero a Experto</strong>
+                        , vas a aprender a manejarlo de manera natural como si fuera parte de ti 
+                        el programa. Desde la técnica básica y comandos rapidos hasta la creación de tus propias producciones.
+                    </p>
+                    <p class="featured-course__signature">Unete ahora al curso 🎼</p>
+                    <a href="#contacto" class="btn btn--primary">Unirse</a>
+                </div>
+                <div class="featured-course__image">
+                    <div class="featured-course__placeholder">
+                        <span class="featured-course__icon">🎹</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CURSOS POPULARES -->
+    <section id="cursos" class="courses">
+        <div class="courses__container container">
+            <h3 class="courses__title">Cursos más populares</h3>
+            
+            <div class="courses__grid" id="popularCoursesContainer">
+                <!-- Los cursos se cargarán dinámicamente aquí -->
+            </div>
+            
+            <script>
+                // Cargar cursos populares dinámicamente
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Solo mostrar cursos disponibles o los primeros 3
+                    const coursesInfo = getCoursesInfo();
+                    const defaultCourseIds = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+                    
+                    defaultCourseIds.forEach(courseId => {
+                        const course = getCourseInfo(courseId);
+                        if (course) {
+                            renderCourseCard(courseId, document.getElementById('popularCoursesContainer'));
+                        }
+                    });
+                });
+            </script>
+
+            <div class="courses__view-all">
+                <a href="cursos.html" class="btn btn--outline">Ver todos los cursos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEMBRESÍA -->
+    <section id="membresia" class="membership">
+        <div class="membership__container container">
+            <div class="membership__content">
+                <h3 class="membership__title">Se miembro del club en Graykids Plus</h3>
+                <p class="membership__description">
+                    Esta seccion dispondras en que categoria quieres desarrolarte, 
+                    en donde pondremos a tu disposición las herramientas y recursos necesarios 
+                    para potenciar tus habilidades y conocimientos para crear y desarrollar 
+                    tus proyectos musicales.
+                </p>
+                <p class="membership__description">
+                    Con la suscripción a Graykids Plus, tendrás acceso a tutoriales exclusivos, cursos exclusivos de Graykids Plus*, contenido y recursos exclusivos, descuentos en cursos premium*, packs y mucho más...
+                </p>
+                <a href="GraykidsPlus.html" class="btn btn--primary">Más Info</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section class="testimonials">
+        <div class="testimonials__container container">
+            <h3 class="testimonials__title">Que dice nuestra comunidad...</h3>
+            
+            <div class="testimonials__grid">
+                <div class="testimonial">
+                    <h4 class="testimonial__author">@yefferzone</h4>
+                    <p class="testimonial__text">
+                        Inicié en Graykids Academy con el curso para hacer beats y aprendí bastante. Luego entré a Graykids+, donde hay clases en vivo en las que se tocan temas de producción, mezcla, finanzas y todo sobre la industria.<br><br>
+                        Lo recomiendo porque, además del feedback que se recibe y todo lo que se aprende, también nos rodeamos de gente que sabe y vive cerca de la música. Sin duda, lo mejor que he tenido para mejorar cada día más y más 🔥
+                    </p>
+                </div>
+
+                <div class="testimonial">
+                    <h4 class="testimonial__author">@alandaniel0001</h4>
+                    <p class="testimonial__text">
+                        🎤 Empezar como artista emergente no es fácil. Aprendí a mezclar mis voces viendo tutoriales en YouTube, pero cada video era diferente y solo me llenaban de dudas y más dudas.<br><br>
+                        Cuando me suscribí a Graykids Plus luego de ver el contenido que había ahí, no dudé en tomar el curso de beats y seguido por el de mezcla de voces. El tiempo que te ahorras y todo lo que he aprendido es sorprendente. Recomendado al 100%.🔥
+                    </p>
+                </div>
+
+                <div class="testimonial">
+                    <h4 class="testimonial__author">@alien.flp</h4>
+                    <p class="testimonial__text">
+                        Mis habilidades como productor e ingeniero de mezcla y mastering han mejorado muchísimo desde que estoy en Graykids+ y tengo los cursos de Mezcla Creativa y Mastering. Salí de dudas que tenía, aprendí cosas nuevas que no vi en la carrera universitaria que estudié.<br><br>
+                        Y es increíble que se vayan actualizando sin costo adicional. Sin mencionar la comunidad, que es una comunidad que apoya muchísimo tu talento y nos ayudamos mutuamente en cualquier duda. Recomiendo 100% Graykids Academy.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="cta">
+        <div class="cta__container container">
+            <h2 class="cta__title">¿Qué esperas para formar parte?</h2>
+        </div>
+    </section>
+
+    <!-- SOBRE EL FUNDADOR -->
+    <section class="founder">
+        <div class="founder__container container">
+            <div class="founder__content">
+                <h2 class="founder__name">Clareny</h2>
+                <p class="founder__role">CEO clareny ©</p>
+                <img src="Images/clareny.png" alt="Clareny" class="founder__image">
+                <p class="founder__bio">
+                    Clareny es un productor musical con muchos años de trayectoria en la industria musical 
+                    y en la creación de contenido en diferentes plataformas como YouTube, Instagram,tiktok etc.
+                    Siempre refleja un metodo de enseñanza claro y directo, con un enfoque en la practica y el DAW de manera profesional.
+
+                    <br>DSDSDSDSDS<br>
+
+                </p>
+                <a href="#contacto" class="btn btn--primary">Más sobre mí</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq">
+        <div class="faq__container container">
+            <h3 class="faq__title">Preguntas frecuentes</h3>
+            
+            <div class="faq__list">
+                <details class="faq__item">
+                    <summary class="faq__question">¿Qué ofrecen los cursos de Graykids Academy?</summary>
+                    <p class="faq__answer">
+                        Los cursos de Graykids Academy están diseñados para ayudarte a perfeccionar tus habilidades de producción musical, independientemente de tu nivel de experiencia. Ofrecemos cursos en una amplia variedad de temas, desde mezcla y mastering hasta sound design y beatmaking. Nuestros cursos están diseñados para ser prácticos y relevantes, y están impartidos por profesionales experimentados de la industria musical.
+                    </p>
+                </details>
+
+                <details class="faq__item">
+                    <summary class="faq__question">¿Cómo funcionan los cursos?</summary>
+                    <p class="faq__answer">
+                        Los cursos de Graykids Academy son completamente en línea, lo que significa que puedes estudiar desde cualquier lugar del mundo en cualquier momento que te resulte conveniente. Los cursos consisten en videos pre-grabados, ejercicios prácticos y tareas para completar. También tendrás la oportunidad de interactuar con tus compañeros de clase y recibir retroalimentación y ayuda de tus instructores.
+                    </p>
+                </details>
+
+                <details class="faq__item">
+                    <summary class="faq__question">¿Hay algún requisito previo para tomar los cursos?</summary>
+                    <p class="faq__answer">
+                        No hay requisitos previos para tomar nuestros cursos. Sin embargo, sugerimos tener al menos un nivel básico de conocimientos de producción musical y estar familiarizado con el software de producción musical que estás utilizando. Pero... para que no te desanimes, tenemos testimonios de primera mano de alumnos que tomaron un curso de producción o de mezcla sin tener experiencia previa, y nos garantizaron que aprendieron a usar el DAW mientras aprendían a producir viendo el curso!
+                    </p>
+                </details>
+
+                <details class="faq__item">
+                    <summary class="faq__question">¿Cómo puedo inscribirme en un curso?</summary>
+                    <p class="faq__answer">
+                        Puedes inscribirte en un curso en nuestro sitio web. Simplemente selecciona el curso que te interesa, completa el formulario de inscripción y realiza el pago. Una vez que hayas completado la inscripción, recibirás un correo electrónico con información sobre cómo acceder al curso.
+                    </p>
+                </details>
+
+                <details class="faq__item">
+                    <summary class="faq__question">¿Qué es Graykids Plus?</summary>
+                    <p class="faq__answer">
+                        Graykids Plus es una membresía que te da acceso a una serie de episodios sobre mezcla, mastering, beatmaking, deconstrucciones, sound design, samples, entre otros temas relacionados con la producción musical y negocios musicales. Se van agregando varios episodios al mes o material relevante dentro de la membresía. Funciona como NETFLIX, por un mínimo cargo al mes o un pago anual (pagando anual ahorras más) obtienes todos los beneficios de Graykids Plus.
+                    </p>
+                </details>
+
+                <details class="faq__item">
+                    <summary class="faq__question">¿Cuáles son los métodos de pago?</summary>
+                    <p class="faq__answer">
+                        Por el momento solo contamos con la pasarela de pagos PayPal, sin embargo, si eres de Perú, puedes hacer tu pago en Soles o Dólares a nuestras números de cuenta disponibles, solo ponte en contacto con nosotros.
+                    </p>
+                </details>
+
+                <details class="faq__item">
+                    <summary class="faq__question">¿Puedo obtener un certificado al completar un curso?</summary>
+                    <p class="faq__answer">
+                        Sí, ofrecemos certificados de finalización para todos nuestros cursos. Para obtener un certificado, debes completar todas las tareas y ejercicios requeridos para el curso.
+                    </p>
+                </details>
+
+                <details class="faq__item">
+                    <summary class="faq__question">¿Cómo puedo ponerme en contacto con el equipo?</summary>
+                    <p class="faq__answer">
+                        Tenemos distintos canales de atención al cliente y de soporte técnico, puedes comunicarte por esos canales, estos son, el correo de soporte, nuestro número de WhatsApp y también a nuestro Instagram @graykidsacademy. Recuerda que estamos aquí para ayudarte y responder a cualquier pregunta que tengas. ¡Gracias por tu interés en Graykids Academy!
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contacto" class="footer">
+        <div class="footer__container container">
+            <div class="footer__logo">
+                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+            </div>
+            <div class="footer__links">
+                <a href="#contacto" class="footer__link">Contact</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="#faq" class="footer__link">FAQ</a>
+            </div>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
+        </div>
+    </footer>
+</body>
+</html>

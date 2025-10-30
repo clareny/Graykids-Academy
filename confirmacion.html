@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/animaciones.js" defer></script>
+    <title>Confirmación - Graykids Academy</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                </a>
+                <span class="header__logo-text">Graykids Academy</span>
+            </div>
+            <nav class="header__nav">
+                <a href="campus.html" class="header__link">Mi Campus</a>
+                <a href="cursos.html" class="header__link">Cursos VIP</a>
+                <a href="GraykidsPlus.html" class="header__link">Graykids Plus</a>
+                <a href="Discord.html" class="header__link">Discord</a>
+                <a href="librerias.html" class="header__link">Librerías</a>
+                <a href="contacto.html" class="header__link">Contacto</a>
+            </nav>
+            <span id="headerAuthButton">
+                <a href="Login.html" class="btn btn--outline">Entrar</a>
+            </span>
+        </div>
+    </header>
+
+    <script>
+        // Check if user is logged in and update header
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const user = localStorage.getItem('user');
+        
+        if (isLoggedIn && user) {
+            const btn = document.getElementById('headerAuthButton');
+            btn.innerHTML = `<a href="campus.html" class="btn btn--primary">Mi Campus</a>`;
+        }
+    </script>
+
+    <!-- CONFIRMATION SECTION -->
+    <section class="confirmation">
+        <div class="confirmation__container container">
+            <div class="confirmation__content">
+                <div class="confirmation__icon">✅</div>
+                <h1 class="confirmation__title">¡Pago Exitoso!</h1>
+                <p class="confirmation__subtitle">Tu compra ha sido procesada correctamente</p>
+                
+                <div class="confirmation__details">
+                    <div class="confirmation__item">
+                        <span class="confirmation__label">Email:</span>
+                        <span class="confirmation__value" id="userEmail">-</span>
+                    </div>
+                    <div class="confirmation__item">
+                        <span class="confirmation__label">Producto:</span>
+                        <span class="confirmation__value" id="productName">-</span>
+                    </div>
+                </div>
+
+                <div class="confirmation__next-steps">
+                    <h3 class="confirmation__next-steps-title">Próximos Pasos:</h3>
+                    <div class="steps-list">
+                        <div class="step-item">
+                            <div class="step-item__number">1</div>
+                            <div class="step-item__content">
+                                <h4 class="step-item__title">Revisa tu email</h4>
+                                <p class="step-item__description">
+                                    Hemos enviado un email a <strong id="emailConfirm">-</strong> con tu información de acceso
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-item__number">2</div>
+                            <div class="step-item__content">
+                                <h4 class="step-item__title">Accede al contenido</h4>
+                                <p class="step-item__description">
+                                    Usa tus credenciales para ingresar al curso o iniciar tu membresía
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-item__number">3</div>
+                            <div class="step-item__content">
+                                <h4 class="step-item__title">Únete a Discord</h4>
+                                <p class="step-item__description">
+                                    Conecta con otros miembros en nuestra comunidad exclusiva
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="confirmation__actions">
+                    <a href="#" class="btn btn--primary btn--large" id="accessBtn">Acceder al Contenido</a>
+                    <a href="index.html" class="btn btn--outline btn--large">Volver al Inicio</a>
+                </div>
+
+                <div class="confirmation__help">
+                    <p class="confirmation__help-text">
+                        ¿No recibiste el email? Revisa tu carpeta de spam o 
+                        <a href="contacto.html" class="confirmation__help-link">contáctanos</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contacto" class="footer">
+        <div class="footer__container container">
+            <div class="footer__logo">
+                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+            </div>
+            <div class="footer__links">
+                <a href="contacto.html" class="footer__link">Contact</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="index.html#faq" class="footer__link">FAQ</a>
+            </div>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
+        </div>
+    </footer>
+
+    <script>
+        // Get data from localStorage
+        const paymentData = JSON.parse(localStorage.getItem('paymentData') || '{}');
+        
+        // Update UI with user data
+        if (paymentData.userData && paymentData.userData.email) {
+            document.getElementById('userEmail').textContent = paymentData.userData.email;
+            document.getElementById('emailConfirm').textContent = paymentData.userData.email;
+        }
+        
+        // Update product name
+        if (paymentData.type === 'course') {
+            const courseMap = {
+                'curso-beats': 'Cómo Hacer Beats',
+                'curso-mezcla-beats': 'Cómo Mezclar Beats',
+                'curso-voces': 'Mezcla y Grabación de Voces',
+                'curso-sound-design': 'Sound Design Avanzado',
+                'curso-vender-beats': 'Cómo Vender Beats Online',
+                'curso-piano': 'Piano de Cero a Experto'
+            };
+            document.getElementById('productName').textContent = courseMap[paymentData.courseId] || 'Curso';
+            
+            // If it's the voces course, redirect to course player
+            if (paymentData.courseId === 'curso-voces') {
+                // Save current course to localStorage
+                localStorage.setItem('currentCourse', paymentData.courseId);
+                
+                // Update button to go to course player
+                document.getElementById('accessBtn').href = 'curso-player.html';
+                document.getElementById('accessBtn').textContent = 'Ir al Curso';
+                
+                // Optional: Auto-redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'curso-player.html';
+                }, 3000);
+            } else {
+                document.getElementById('accessBtn').href = `cursos.html#${paymentData.courseId}`;
+            }
+        } else if (paymentData.plan) {
+            const planMap = {
+                'monthly': 'Plan Mensual',
+                'yearly': 'Plan Anual',
+                'lifetime': 'Plan Vitalicio'
+            };
+            document.getElementById('productName').textContent = planMap[paymentData.plan] || 'Graykids Plus';
+            document.getElementById('accessBtn').href = 'GraykidsPlus.html?payment=success';
+        }
+
+        // Simulate sending confirmation email
+        console.log('Sending confirmation email to:', paymentData.userData?.email);
+        
+        // In production, you would make an API call here to send the email
+        // Example: 
+        // fetch('/api/send-confirmation-email', {
+        //     method: 'POST',
+        //     body: JSON.stringify(paymentData)
+        // });
+    </script>
+</body>
+</html>
+

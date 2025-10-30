@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/animaciones.js" defer></script>
+    <title>Checkout - Graykids Academy</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                </a>
+                <span class="header__logo-text">Graykids Academy</span>
+            </div>
+            <nav class="header__nav">
+                <a href="campus.html" class="header__link">Mi Campus</a>
+                <a href="cursos.html" class="header__link">Cursos VIP</a>
+                <a href="GraykidsPlus.html" class="header__link">Graykids Plus</a>
+                <a href="Discord.html" class="header__link">Discord</a>
+                <a href="librerias.html" class="header__link">Librerías</a>
+                <a href="contacto.html" class="header__link">Contacto</a>
+            </nav>
+            <span id="headerAuthButton">
+                <a href="Login.html" class="btn btn--outline">Entrar</a>
+            </span>
+        </div>
+    </header>
+
+    <script>
+        // Check if user is logged in and update header
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const user = localStorage.getItem('user');
+        
+        if (isLoggedIn && user) {
+            const btn = document.getElementById('headerAuthButton');
+            btn.innerHTML = `<a href="campus.html" class="btn btn--primary">Mi Campus</a>`;
+        }
+    </script>
+
+    <!-- CHECKOUT SECTION -->
+    <section class="checkout">
+        <div class="checkout__container container">
+            <div class="checkout__header">
+                <h1 class="checkout__title" id="checkoutTitle">Completar Compra</h1>
+                <p class="checkout__subtitle" id="checkoutSubtitle">Completa tus datos para continuar</p>
+            </div>
+
+            <!-- USER DATA FORM -->
+            <div class="checkout__user-form" id="userDataForm">
+                <h3 class="checkout__user-form-title">Datos de Facturación</h3>
+                <p class="checkout__user-form-subtitle">Completa tus datos para procesar el pago</p>
+                <form id="userInfoForm" class="user-info-form">
+                    <div class="form-group--inline">
+                        <div class="form-group">
+                            <label for="userName">Nombre</label>
+                            <input type="text" id="userName" placeholder="Tu nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userLastName">Apellidos</label>
+                            <input type="text" id="userLastName" placeholder="Tus apellidos" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Correo Electrónico</label>
+                        <input type="email" id="userEmail" placeholder="tu@email.com" required>
+                    </div>
+                    <div class="form-group--inline">
+                        <div class="form-group">
+                            <label for="userPhone">Teléfono</label>
+                            <input type="tel" id="userPhone" placeholder="+51 999 999 999" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userCountry">País</label>
+                            <select id="userCountry" required>
+                                <option value="">Selecciona tu país</option>
+                                <option value="PE">Perú</option>
+                                <option value="MX">México</option>
+                                <option value="CO">Colombia</option>
+                                <option value="AR">Argentina</option>
+                                <option value="ES">España</option>
+                                <option value="US">Estados Unidos</option>
+                                <option value="other">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--block">Continuar al Pago</button>
+                </form>
+            </div>
+
+            <div class="checkout__grid" id="checkoutGrid" style="display: none;">
+                <!-- INFO DEL PLAN/CURSO -->
+                <div class="checkout__plan" id="planSection">
+                    <h3 class="checkout__plan-title" id="planSectionTitle">Resumen</h3>
+                    
+                    <!-- INFO DEL PRODUCTO -->
+                    <div class="checkout__plan-info" id="planInfo">
+                        <div class="checkout__plan-item">
+                            <span class="checkout__plan-label">Item:</span>
+                            <span class="checkout__plan-value" id="planName">-</span>
+                        </div>
+                        <div class="checkout__plan-item">
+                            <span class="checkout__plan-label">Precio:</span>
+                            <span class="checkout__plan-value" id="planPrice">-</span>
+                        </div>
+                        <div class="checkout__plan-item checkout__plan-item--total">
+                            <span class="checkout__plan-label">Total:</span>
+                            <span class="checkout__plan-value checkout__plan-value--large" id="planTotal">-</span>
+                        </div>
+                    </div>
+
+                    <!-- BENEFICIOS (para cursos) -->
+                    <div class="checkout__benefits" id="benefitsSection" style="display: none;">
+                        <h4 class="checkout__benefits-title">Incluye:</h4>
+                        <ul class="checkout__benefits-list" id="benefitsList"></ul>
+                    </div>
+                </div>
+
+                <!-- MÉTODOS DE PAGO -->
+                <div class="checkout__methods">
+                    <h3 class="checkout__methods-title">Métodos de pago</h3>
+
+                    <!-- PAYPAL -->
+                    <div class="payment-method">
+                        <input type="radio" id="paypal" name="payment" value="paypal" class="payment-method__radio">
+                        <label for="paypal" class="payment-method__label">
+                            <div class="payment-method__icon">💳</div>
+                            <div class="payment-method__info">
+                                <h4 class="payment-method__title">PayPal</h4>
+                                <p class="payment-method__description">Pago seguro con PayPal</p>
+                            </div>
+                        </label>
+                        <div class="payment-method__content">
+                            <p class="payment-method__instructions">
+                                Serás redirigido a PayPal para completar el pago de forma segura.
+                            </p>
+                            <a href="https://paypal.me/graykidsacademy" target="_blank" class="btn btn--primary btn--block" id="paypalBtn">
+                                Pagar con PayPal
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- TARJETA DE CRÉDITO -->
+                    <div class="payment-method">
+                        <input type="radio" id="card" name="payment" value="card" class="payment-method__radio">
+                        <label for="card" class="payment-method__label">
+                            <div class="payment-method__icon">💳</div>
+                            <div class="payment-method__info">
+                                <h4 class="payment-method__title">Tarjeta de Crédito/Débito</h4>
+                                <p class="payment-method__description">Visa, Mastercard, American Express</p>
+                            </div>
+                        </label>
+                        <div class="payment-method__content">
+                            <form class="card-form" id="cardForm">
+                                <div class="form-group">
+                                    <label for="cardNumber">Número de tarjeta</label>
+                                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                                </div>
+                                <div class="form-group form-group--inline">
+                                    <div class="form-group">
+                                        <label for="expiryDate">Vence</label>
+                                        <input type="text" id="expiryDate" placeholder="MM/AA" maxlength="5" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cvv">CVV</label>
+                                        <input type="text" id="cvv" placeholder="123" maxlength="3" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardName">Nombre en la tarjeta</label>
+                                    <input type="text" id="cardName" placeholder="Nombre completo" required>
+                                </div>
+                                <button type="submit" class="btn btn--primary btn--block">
+                                    Pagar Ahora
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- TRANSFERENCIA/EFECTIVO (PERÚ) -->
+                    <div class="payment-method">
+                        <input type="radio" id="bank" name="payment" value="bank" class="payment-method__radio">
+                        <label for="bank" class="payment-method__label">
+                            <div class="payment-method__icon">🏦</div>
+                            <div class="payment-method__info">
+                                <h4 class="payment-method__title">Transferencia Bancaria</h4>
+                                <p class="payment-method__description">Solo para Perú - Efectivo o Transferencia</p>
+                            </div>
+                        </label>
+                        <div class="payment-method__content">
+                            <div class="bank-info">
+                                <h4 class="bank-info__title">Información de Cuenta</h4>
+                                <div class="bank-info__item">
+                                    <span class="bank-info__label">Banco:</span>
+                                    <span class="bank-info__value">BCP / Interbank</span>
+                                </div>
+                                <div class="bank-info__item">
+                                    <span class="bank-info__label">Tipo:</span>
+                                    <span class="bank-info__value">Cuenta de Ahorros / Corriente</span>
+                                </div>
+                                <div class="bank-info__item">
+                                    <span class="bank-info__label">Número de Cuenta:</span>
+                                    <span class="bank-info__value">000-000-000000</span>
+                                </div>
+                                <div class="bank-info__item">
+                                    <span class="bank-info__label">CCI:</span>
+                                    <span class="bank-info__value">00000000000000000</span>
+                                </div>
+                                <div class="bank-info__item">
+                                    <span class="bank-info__label">Beneficiario:</span>
+                                    <span class="bank-info__value">Clareny © - Graykids Academy</span>
+                                </div>
+                                <p class="bank-info__note">
+                                    📧 Después de realizar el pago, envía el comprobante a soporte@graykidsacademy.com 
+                                    con tu nombre y email para activar tu acceso.
+                                </p>
+                                <button type="button" class="btn btn--primary btn--block" onclick="confirmBankPayment()">
+                                    Confirmar Transferencia
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- YAPE / PLIN -->
+                    <div class="payment-method">
+                        <input type="radio" id="yape" name="payment" value="yape" class="payment-method__radio">
+                        <label for="yape" class="payment-method__label">
+                            <div class="payment-method__icon">📱</div>
+                            <div class="payment-method__info">
+                                <h4 class="payment-method__title">Yape / Plin</h4>
+                                <p class="payment-method__description">Pago rápido y seguro</p>
+                            </div>
+                        </label>
+                        <div class="payment-method__content">
+                            <div class="mobile-payment">
+                                <div class="mobile-payment__item">
+                                    <h4 class="mobile-payment__title">Yape</h4>
+                                    <p class="mobile-payment__number">999 999 999</p>
+                                    <p class="mobile-payment__name">Clareny</p>
+                                </div>
+                                <div class="mobile-payment__item">
+                                    <h4 class="mobile-payment__title">Plin</h4>
+                                    <p class="mobile-payment__number">999 999 999</p>
+                                    <p class="mobile-payment__name">Clareny</p>
+                                </div>
+                                <p class="mobile-payment__note">
+                                    📧 Después de realizar el pago, envía el comprobante de Yape/Plin 
+                                    con tu nombre y email a soporte@graykidsacademy.com
+                                </p>
+                                <button type="button" class="btn btn--primary btn--block" onclick="confirmMobilePayment()">
+                                    Confirmar Pago Móvil
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEGURIDAD -->
+            <div class="checkout__security" id="securitySection">
+                <div class="security-badge">
+                    <span class="security-badge__icon">🔒</span>
+                    <span class="security-badge__text">Pago 100% seguro y encriptado</span>
+                </div>
+                <div class="security-badge">
+                    <span class="security-badge__icon">✓</span>
+                    <span class="security-badge__text">Garantía de satisfacción o reembolso</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contacto" class="footer">
+        <div class="footer__container container">
+            <div class="footer__logo">
+                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+            </div>
+            <div class="footer__links">
+                <a href="contacto.html" class="footer__link">Contact</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="index.html#faq" class="footer__link">FAQ</a>
+            </div>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
+        </div>
+    </footer>
+
+    <script>
+        // Courses data
+        const coursesData = {
+            'curso-beats': {
+                name: 'Cómo Hacer Beats',
+                price: 79.99,
+                benefits: [
+                    'Acceso al curso completo online',
+                    'Servidor exclusivo en Discord',
+                    'Material descargable (PDFs, recursos)',
+                    'Comunidad y comentarios',
+                    'Sesiones Q&A en vivo',
+                    'Resolución de dudas personalizada'
+                ]
+            },
+            'curso-mezcla-beats': {
+                name: 'Cómo Mezclar Beats',
+                price: 89.99,
+                benefits: [
+                    'Acceso al curso completo online',
+                    'Técnicas profesionales de mezcla',
+                    'Plantillas y proyectos',
+                    'Comunidad Discord exclusiva',
+                    'Sesiones en vivo',
+                    'Feedback en tus mezclas'
+                ]
+            },
+            'curso-voces': {
+                name: 'Mezcla y Grabación de Voces',
+                price: 99.99,
+                benefits: [
+                    'Curso completo paso a paso',
+                    'Técnicas de grabación profesional',
+                    'Sesiones Q&A exclusivas',
+                    'Recursos descargables',
+                    'Comunidad Discord',
+                    'Mezcla de voces avanzada'
+                ]
+            },
+            'curso-sound-design': {
+                name: 'Sound Design Avanzado',
+                price: 94.99,
+                benefits: [
+                    'Diseño de sonidos desde cero',
+                    'Baterías, bajos, leads y más',
+                    'Proyectos descargables',
+                    'Comunidad exclusiva',
+                    'Sesiones en vivo',
+                    'Presets y plantillas'
+                ]
+            },
+            'curso-vender-beats': {
+                name: 'Cómo Vender Beats Online',
+                price: 69.99,
+                benefits: [
+                    'Estrategias de monetización',
+                    'Marketing en redes sociales',
+                    'Plataformas de venta',
+                    'Comunidad de apoyo',
+                    'Casos de estudio reales',
+                    'Plantillas de negocios'
+                ]
+            },
+            'curso-piano': {
+                name: 'Piano de Cero a Experto',
+                price: 84.99,
+                benefits: [
+                    'Enseñanza completa de piano',
+                    'Acordes y escalas',
+                    'Proyectos musicales',
+                    'Comunidad en Discord',
+                    'Clases en vivo',
+                    'Material educativo'
+                ]
+            }
+        };
+
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get('type'); // 'course' or 'membership'
+        const plan = urlParams.get('plan');
+        const courseId = urlParams.get('id');
+        const price = urlParams.get('price');
+        const name = urlParams.get('name');
+
+        // User data object
+        let userData = {};
+
+        // Update page based on type
+        if (type === 'course' && courseId) {
+            const course = coursesData[courseId];
+            if (course) {
+                document.getElementById('checkoutTitle').textContent = 'Comprar Curso';
+                document.getElementById('checkoutSubtitle').textContent = course.name;
+                document.getElementById('planName').textContent = course.name;
+                document.getElementById('planPrice').textContent = '$' + course.price;
+                document.getElementById('planTotal').textContent = '$' + course.price;
+                
+                // Show benefits
+                const benefitsList = document.getElementById('benefitsList');
+                course.benefits.forEach(benefit => {
+                    const li = document.createElement('li');
+                    li.textContent = benefit;
+                    benefitsList.appendChild(li);
+                });
+                document.getElementById('benefitsSection').style.display = 'block';
+            }
+        } else if (plan && price && name) {
+            // Membership
+            document.getElementById('checkoutTitle').textContent = 'Completar Suscripción';
+            document.getElementById('checkoutSubtitle').textContent = 'Completa tus datos para continuar';
+            document.getElementById('planSectionTitle').textContent = 'Resumen del Plan';
+            document.getElementById('planName').textContent = name;
+            document.getElementById('planPrice').textContent = '$' + price;
+            document.getElementById('planTotal').textContent = '$' + price;
+        }
+
+        // Initially hide payment grid
+        document.getElementById('checkoutGrid').style.display = 'none';
+        document.getElementById('securitySection').style.display = 'none';
+
+        // Handle user data form submission
+        document.getElementById('userInfoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect user data
+            userData = {
+                name: document.getElementById('userName').value,
+                lastName: document.getElementById('userLastName').value,
+                email: document.getElementById('userEmail').value,
+                phone: document.getElementById('userPhone').value,
+                country: document.getElementById('userCountry').value
+            };
+
+            // Validate email
+            if (!validateEmail(userData.email)) {
+                alert('Por favor ingresa un email válido');
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            // Hide user form and show payment grid
+            document.getElementById('userDataForm').style.display = 'none';
+            document.getElementById('checkoutGrid').style.display = 'grid';
+            document.getElementById('securitySection').style.display = 'flex';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Email validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Show/hide payment method content
+        document.querySelectorAll('.payment-method__radio').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.payment-method__content').forEach(content => {
+                    content.classList.remove('payment-method__content--active');
+                });
+                if (this.checked) {
+                    this.closest('.payment-method').querySelector('.payment-method__content').classList.add('payment-method__content--active');
+                }
+            });
+        });
+
+        // Card form validation
+        document.getElementById('cardForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const paymentData = {
+                type: type,
+                courseId: courseId,
+                plan: plan,
+                userData: userData,
+                paymentMethod: 'card',
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('paymentData', JSON.stringify(paymentData));
+            
+            // Redirect to confirmation page
+            window.location.href = 'confirmacion.html';
+        });
+
+        // PayPal button
+        document.getElementById('paypalBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const paymentData = {
+                type: type,
+                courseId: courseId,
+                plan: plan,
+                userData: userData,
+                paymentMethod: 'paypal',
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('paymentData', JSON.stringify(paymentData));
+            
+            // Simulate PayPal payment (in production, this would open PayPal payment page)
+            alert('Redirigiendo a PayPal...');
+            
+            // After PayPal confirmation, redirect to confirmation page
+            setTimeout(() => {
+                window.location.href = 'confirmacion.html';
+            }, 1500);
+        });
+
+        // Card number formatting
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formatted;
+        });
+
+        // Expiry date formatting
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // Bank transfer confirmation
+        function confirmBankPayment() {
+            const paymentData = {
+                type: type,
+                courseId: courseId,
+                plan: plan,
+                userData: userData,
+                paymentMethod: 'bank-transfer',
+                timestamp: new Date().toISOString(),
+                status: 'pending-verification'
+            };
+            
+            localStorage.setItem('paymentData', JSON.stringify(paymentData));
+            alert('Gracias por tu pago. Te enviaremos un email cuando verifiquemos tu transferencia.');
+            window.location.href = 'confirmacion.html';
+        }
+
+        // Mobile payment confirmation
+        function confirmMobilePayment() {
+            const paymentData = {
+                type: type,
+                courseId: courseId,
+                plan: plan,
+                userData: userData,
+                paymentMethod: 'mobile-payment',
+                timestamp: new Date().toISOString(),
+                status: 'pending-verification'
+            };
+            
+            localStorage.setItem('paymentData', JSON.stringify(paymentData));
+            alert('Gracias por tu pago. Te enviaremos un email cuando verifiquemos tu comprobante.');
+            window.location.href = 'confirmacion.html';
+        }
+    </script>
+</body>
+</html>

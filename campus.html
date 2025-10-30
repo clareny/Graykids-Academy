@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/animaciones.js" defer></script>
+    <title>Mi Campus - Graykids Academy</title>
+    <style>
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease-out;
+        }
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loading-logo {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            animation: logoPulse 2s ease-in-out infinite;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(57, 243, 212, 0.5));
+        }
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.9; }
+        }
+        .loading-spinner-ring {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(57, 243, 212, 0.1);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 25px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            animation: textFade 2s ease-in-out infinite;
+        }
+        @keyframes textFade {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="campus-body">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy" class="loading-logo">
+        <div class="loading-spinner-ring"></div>
+        <p class="loading-text">CARGANDO</p>
+    </div>
+    <!-- HEADER -->
+    <header class="header header--campus">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                    <span class="header__logo-text">Graykids Academy</span>
+                </a>
+            </div>
+            <nav class="header__nav">
+                <a href="#mis-cursos" class="header__link nav-link active" data-section="campus">Mis Cursos</a>
+                <a href="cursos.html" class="header__link nav-link" data-page="cursos.html">Cursos VIP</a>
+                <a href="GraykidsPlus.html" class="header__link nav-link" data-page="GraykidsPlus.html">Graykids Plus</a>
+                <a href="Discord.html" class="header__link nav-link" data-page="Discord.html">Discord</a>
+                <a href="librerias.html" class="header__link nav-link" data-page="librerias.html">Librerías</a>
+                <a href="contacto.html" class="header__link nav-link" data-page="contacto.html">Contacto</a>
+            </nav>
+            <div class="header__user">
+                <button class="btn btn--outline" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR DINÁMICO -->
+    <div id="campusContentWrapper" class="campus-content-wrapper"></div>
+
+    <!-- CAMPUS HERO -->
+    <section class="campus-hero" id="campus-sections">
+        <div class="campus-hero__container container">
+            <div class="campus-welcome">
+                <h1 class="campus-welcome__title">¡Bienvenido, <span id="userName">Usuario</span>! 👋</h1>
+                <p class="campus-welcome__subtitle">Sigue aprendiendo y creciendo como productor</p>
+            </div>
+            <div class="campus-stats" id="campusStats">
+                <div class="campus-stat">
+                    <div class="campus-stat__number" id="coursesCount">0</div>
+                    <div class="campus-stat__label">Cursos Activos</div>
+                </div>
+                <div class="campus-stat">
+                    <div class="campus-stat__number">100%</div>
+                    <div class="campus-stat__label">Progreso Total</div>
+                </div>
+                <div class="campus-stat">
+                    <div class="campus-stat__number">12h</div>
+                    <div class="campus-stat__label">Tiempo de Estudio</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MI CURSOS -->
+    <section id="mis-cursos" class="my-courses">
+        <div class="my-courses__container container">
+            <h2 class="my-courses__title">Mis Cursos</h2>
+            <p class="my-courses__subtitle">Continúa donde lo dejaste</p>
+
+            <div class="my-courses__grid" id="coursesGrid">
+                <!-- Courses will be dynamically added here -->
+                <div class="empty-state">
+                    <div class="empty-state__icon">📚</div>
+                    <h3 class="empty-state__title">Aún no tienes cursos</h3>
+                    <p class="empty-state__description">
+                        Explora nuestros cursos y comienza tu viaje en la producción musical
+                    </p>
+                    <a href="cursos.html" class="btn btn--primary">Ver Cursos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROGRESO -->
+    <section class="campus-progress">
+        <div class="campus-progress__container container">
+            <h3 class="campus-progress__title">Tu Progreso</h3>
+            <div class="progress-list" id="progressList">
+                <!-- Progress items will be added dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CURSOS DISPONIBLES -->
+    <section class="campus-available-courses">
+        <div class="campus-available-courses__container container">
+            <div class="campus-available-courses__header">
+                <h3 class="campus-available-courses__title">Explora Más Cursos VIP</h3>
+                <p class="campus-available-courses__subtitle">Continúa ampliando tus conocimientos</p>
+            </div>
+
+            <div class="campus-available-courses__grid" id="campusCoursesContainer">
+                <!-- Los cursos se cargarán dinámicamente aquí -->
+            </div>
+            
+            <script src="js/courses-loader.js"></script>
+            <script>
+                // Loading Screen
+                window.addEventListener('load', function() {
+                    const loadingScreen = document.getElementById('loadingScreen');
+                    if (loadingScreen) {
+                        setTimeout(() => {
+                            loadingScreen.classList.add('hidden');
+                            setTimeout(() => {
+                                loadingScreen.style.display = 'none';
+                            }, 200);
+                        }, 300);
+                    }
+                });
+                // Cargar cursos en el campus dinámicamente
+                function loadCampusCourses() {
+                    const container = document.getElementById('campusCoursesContainer');
+                    if (!container) return;
+                    
+                    container.innerHTML = '';
+                    
+                    const coursesInfo = getCoursesInfo();
+                    const defaultCourseIds = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+                    
+                    defaultCourseIds.forEach(courseId => {
+                        const course = getCourseInfo(courseId);
+                        if (!course) return;
+                        
+                        const isAvailable = course.status === 'available' || course.status === undefined;
+                        
+                        const cardHTML = `
+                            <div class="available-course-card">
+                                <div class="available-course-card__icon">${course.icon || '🎓'}</div>
+                                <h4 class="available-course-card__title">${course.name}</h4>
+                                ${isAvailable 
+                                    ? `<p class="available-course-card__price">$${course.price || '0.00'}</p>
+                                       <a href="checkout.html?type=course&id=${courseId}" class="btn btn--secondary">Comprar Curso</a>`
+                                    : `<p class="available-course-card__price" style="opacity: 0.6;">Próximamente</p>
+                                       <span class="btn btn--secondary" style="opacity: 0.6; cursor: not-allowed; pointer-events: none;">Próximamente</span>`
+                                }
+                            </div>
+                        `;
+                        container.innerHTML += cardHTML;
+                    });
+                }
+                
+                document.addEventListener('DOMContentLoaded', loadCampusCourses);
+            </script>
+
+            <div class="campus-available-courses__view-all">
+                <a href="cursos.html" class="btn btn--primary btn--large">Ver Todos los Cursos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__container container">
+            <div class="footer__logo">
+                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+            </div>
+            <div class="footer__links">
+                <a href="contacto.html" class="footer__link">Contact</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="index.html#faq" class="footer__link">FAQ</a>
+            </div>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const user = localStorage.getItem('user');
+            
+            if (!isLoggedIn || !user) {
+                alert('Debes iniciar sesión para acceder al campus');
+                window.location.href = 'Login.html';
+                return;
+            }
+            
+            return JSON.parse(user);
+        }
+
+        // Display user info
+        function displayUserInfo() {
+            const user = checkAuth();
+            if (user) {
+                document.getElementById('userName').textContent = user.name || 'Usuario';
+            }
+        }
+
+        // Get purchased courses from localStorage
+        function getPurchasedCourses() {
+            const paymentData = localStorage.getItem('paymentData');
+            if (!paymentData) return [];
+            
+            try {
+                const data = JSON.parse(paymentData);
+                if (data.type === 'course' && data.courseId) {
+                    return [data.courseId];
+                }
+            } catch (e) {
+                console.error('Error parsing payment data:', e);
+            }
+            
+            return [];
+        }
+
+        // Courses database
+        const coursesDatabase = {
+            'curso-voces': {
+                name: 'Mezcla y Grabación de Voces',
+                description: 'Nivel Avanzado. Aprende técnicas profesionales para grabar y mezclar voces como los grandes productores.',
+                icon: '🎤',
+                price: 99.99,
+                progress: 0,
+                lessons: 60
+            },
+            'curso-maquetizacion': {
+                name: 'Maquetización Composicional',
+                description: 'Nivel Intermedio. Domina el arte de estructurar y organizar tus composiciones musicales.',
+                icon: '🎹',
+                price: 89.99,
+                progress: 0,
+                lessons: 50
+            },
+            'curso-beats': {
+                name: 'Programación de Beats',
+                description: 'Nivel Intermedio. Aprende a programar beats profesionales desde cero.',
+                icon: '🎛️',
+                price: 79.99,
+                progress: 0,
+                lessons: 55
+            }
+        };
+
+        // Display purchased courses
+        function displayCourses() {
+            const purchasedCourses = getPurchasedCourses();
+            const grid = document.getElementById('coursesGrid');
+            
+            if (purchasedCourses.length === 0) {
+                // Empty state already in HTML
+                return;
+            }
+            
+            // Clear empty state
+            grid.innerHTML = '';
+            
+            purchasedCourses.forEach(courseId => {
+                const course = coursesDatabase[courseId];
+                if (!course) return;
+                
+                const courseCard = document.createElement('div');
+                courseCard.className = 'course-card my-course';
+                courseCard.innerHTML = `
+                    <div class="course-card__image">
+                        <div class="course-card__placeholder">
+                            <span class="course-card__icon">${course.icon}</span>
+                        </div>
+                        <div class="course-card__progress" style="width: ${course.progress}%"></div>
+                    </div>
+                    <div class="course-card__content">
+                        <h4 class="course-card__title">${course.name}</h4>
+                        <p class="course-card__description">${course.description}</p>
+                        <div class="course-card__stats">
+                            <span>${course.lessons} Lecciones</span>
+                            <span>${course.progress}% Completado</span>
+                        </div>
+                        <a href="#" class="btn btn--primary" onclick="openCourse('${courseId}')">Continuar Curso</a>
+                    </div>
+                `;
+                
+                grid.appendChild(courseCard);
+            });
+            
+            // Update stats
+            document.getElementById('coursesCount').textContent = purchasedCourses.length;
+        }
+
+        // Open course
+        function openCourse(courseId) {
+            // Save current course to localStorage
+            localStorage.setItem('currentCourse', courseId);
+            
+            // Redirect to course player
+            window.location.href = 'curso-player.html';
+        }
+
+        // Display progress
+        function displayProgress() {
+            const purchasedCourses = getPurchasedCourses();
+            const progressList = document.getElementById('progressList');
+            
+            if (purchasedCourses.length === 0) {
+                progressList.innerHTML = '<p>No hay progreso aún. Compra un curso para comenzar!</p>';
+                return;
+            }
+            
+            purchasedCourses.forEach(courseId => {
+                const course = coursesDatabase[courseId];
+                if (!course) return;
+                
+                const progressItem = document.createElement('div');
+                progressItem.className = 'progress-item';
+                progressItem.innerHTML = `
+                    <div class="progress-item__info">
+                        <h4 class="progress-item__title">${course.name}</h4>
+                        <span class="progress-item__lessons">0 / ${course.lessons} lecciones</span>
+                    </div>
+                    <div class="progress-item__bar">
+                        <div class="progress-item__fill" style="width: ${course.progress}%"></div>
+                    </div>
+                `;
+                
+                progressList.appendChild(progressItem);
+            });
+        }
+
+        // Cookie functions
+        function deleteCookie(name) {
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('¿Estás seguro que quieres cerrar sesión?')) {
+                // Limpiar localStorage
+                localStorage.removeItem('user');
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('currentCourse');
+                
+                // Limpiar cookies
+                deleteCookie('user_session');
+                deleteCookie('is_logged_in');
+                
+                // Limpiar sessionStorage
+                sessionStorage.removeItem('oauth_redirect_from');
+                sessionStorage.removeItem('google_user_email');
+                
+                window.location.href = 'Login.html';
+            }
+        }
+        
+        // Hacer logout disponible globalmente
+        window.logout = logout;
+
+        // Initialize campus
+        displayUserInfo();
+        displayCourses();
+        displayProgress();
+
+        // Check for success message
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('login') === 'success') {
+            setTimeout(() => {
+                alert('¡Bienvenido al campus! 🎉');
+            }, 500);
+        }
+
+        // Navegación dinámica dentro del campus
+        function loadPageInCampus(pageUrl) {
+            const contentWrapper = document.getElementById('campusContentWrapper');
+            const campusSections = document.getElementById('campus-sections');
+            
+            // Ocultar secciones del campus
+            campusSections.style.display = 'none';
+            
+            // Mostrar contenedor dinámico
+            contentWrapper.style.display = 'block';
+            
+            // Agregar parámetro para indicar que está en iframe
+            const separator = pageUrl.includes('?') ? '&' : '?';
+            const iframeUrl = `${pageUrl}${separator}iframe=true`;
+            
+            // Cargar página en iframe
+            contentWrapper.innerHTML = `
+                <div class="campus-iframe-container">
+                    <div class="campus-iframe-header">
+                        <button class="campus-close-btn" onclick="closeExternalPage()">
+                            <span>← Volver al Campus</span>
+                        </button>
+                    </div>
+                    <iframe src="${iframeUrl}" class="campus-iframe"></iframe>
+                </div>
+            `;
+        }
+
+        function closeExternalPage() {
+            const contentWrapper = document.getElementById('campusContentWrapper');
+            const campusSections = document.getElementById('campus-sections');
+            
+            // Mostrar secciones del campus
+            campusSections.style.display = 'block';
+            
+            // Ocultar contenedor dinámico
+            contentWrapper.style.display = 'none';
+            
+            // Remover iframe
+            contentWrapper.innerHTML = '';
+            
+            // Quitar active de todos los enlaces
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Marcar "Mis Cursos" como activo
+            document.querySelector('[data-section="campus"]').classList.add('active');
+        }
+
+        // Agregar event listeners a los enlaces
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remover active de todos
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                
+                // Agregar active al clickeado
+                this.classList.add('active');
+                
+                // Si tiene data-page, cargar en iframe
+                if (this.dataset.page) {
+                    loadPageInCampus(this.dataset.page);
+                } else if (this.dataset.section === 'campus') {
+                    closeExternalPage();
+                    // Scroll a la sección
+                    const section = document.querySelector('#mis-cursos');
+                    if (section) {
+                        section.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        window.closeExternalPage = closeExternalPage;
+    </script>
+</body>
+</html>
+

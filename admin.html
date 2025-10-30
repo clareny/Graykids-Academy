@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/config.js"></script>
+    <title>Panel de Administrador - Graykids Academy</title>
+    <style>
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease-out;
+        }
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loading-logo {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            animation: logoPulse 2s ease-in-out infinite;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(57, 243, 212, 0.5));
+        }
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.9; }
+        }
+        .loading-spinner-ring {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(57, 243, 212, 0.1);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 25px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            animation: textFade 2s ease-in-out infinite;
+        }
+        @keyframes textFade {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+    </style>
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 100px auto 50px;
+            padding: 20px;
+        }
+        
+        .admin-header {
+            background: var(--dark-secondary);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .admin-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .course-selector {
+            margin: 20px 0;
+        }
+        
+        .course-selector select {
+            background: var(--dark-tertiary);
+            color: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 400px;
+            cursor: pointer;
+        }
+        
+        .admin-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .admin-section {
+            background: var(--dark-secondary);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .module-form, .lesson-form {
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--dark-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .btn-add {
+            background: var(--gradient-primary);
+            color: var(--dark-bg);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+        }
+        
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(57, 243, 212, 0.3);
+        }
+        
+        .modules-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .module-item {
+            background: var(--dark-tertiary);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .module-header h3 {
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .lesson-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .lesson-info {
+            flex: 1;
+        }
+        
+        .lesson-info h4 {
+            color: white;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .lesson-info span {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .btn-remove {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        
+        .btn-save {
+            background: var(--gradient-primary);
+            color: var(--dark-bg);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .admin-tab {
+            background: var(--dark-tertiary);
+            color: var(--text-secondary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .admin-tab:hover {
+            background: var(--dark-secondary);
+            color: white;
+        }
+        
+        .admin-tab.active {
+            background: var(--dark-secondary);
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .admin-panel {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+        
+        .alert {
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(57, 243, 212, 0.3);
+            z-index: 9999;
+            position: relative;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .alert-success {
+            background: rgba(57, 243, 212, 0.25);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            box-shadow: 0 6px 25px rgba(57, 243, 212, 0.4);
+        }
+
+        .admin-toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 11000;
+        }
+
+        .admin-toast {
+            min-width: 260px;
+            max-width: 360px;
+            background: rgba(57, 243, 212, 0.15);
+            border: 1px solid rgba(57, 243, 212, 0.6);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 10px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: toastSlideIn 0.35s ease, toastFadeOut 0.35s ease forwards;
+            animation-delay: 0s, var(--toast-duration, 3s);
+        }
+
+        .admin-toast__icon {
+            font-size: 1.3rem;
+        }
+
+        .admin-toast__message {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        @keyframes toastSlideIn {
+            0% { opacity: 0; transform: translateX(20px) translateY(-10px); }
+            100% { opacity: 1; transform: translateX(0) translateY(0); }
+        }
+
+        @keyframes toastFadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+        
+        @media (max-width: 968px) {
+            .admin-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                    <span class="header__logo-text">Graykids Academy</span>
+                </a>
+            </div>
+            <nav class="header__nav">
+                <a href="campus.html" class="header__link">← Volver al Campus</a>
+                <a href="cursos.html" class="header__link">Cursos</a>
+            </nav>
+            <div class="header__user">
+                <button class="btn btn--outline" onclick="logout()" style="background: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--dark-bg)'" onmouseout="this.style.background='transparent'; this.style.color='var(--primary-color)'">Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy" class="loading-logo">
+        <div class="loading-spinner-ring"></div>
+        <p class="loading-text">CARGANDO</p>
+    </div>
+    
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>🎛️ Panel de Administrador</h1>
+            <p style="color: var(--text-secondary);">Gestiona los videos y contenido de tus cursos</p>
+            <div style="margin-top: 15px; padding: 15px; background: rgba(57, 243, 212, 0.1); border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                <p style="color: var(--text-secondary); margin-bottom: 10px;">
+                    <strong style="color: var(--primary-color);">Usuario actual:</strong> 
+                    <span id="currentAdminEmail" style="color: white;"></span>
+                </p>
+                <button class="btn btn--secondary" onclick="configureAdminEmails()" style="background: var(--dark-tertiary); border: 1px solid var(--primary-color); color: var(--primary-color);">
+                    ⚙️ Configurar Administradores
+                </button>
+            </div>
+            
+        </div>
+
+        <div class="alert alert-success" id="alertMessage"></div>
+
+        <!-- TABS -->
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--dark-tertiary);">
+            <button class="admin-tab active" onclick="switchTab('videos')" id="tabVideos">🎓 Gestionar Cursos</button>
+            <button class="admin-tab" onclick="switchTab('newCourse')" id="tabNewCourse">➕ Nuevo Curso</button>
+            <button class="admin-tab" onclick="switchTab('users')" id="tabUsers">👥 Usuarios Registrados</button>
+        </div>
+
+        <!-- TAB: GESTIONAR CURSOS -->
+        <div id="panelVideos" class="admin-panel">
+            <!-- VISTA: Lista de Cursos -->
+            <div id="coursesListView">
+                <div style="margin-bottom: 30px;">
+                    <h2 style="color: var(--primary-color); margin-bottom: 10px;">🎓 Tus Cursos</h2>
+                    <p style="color: var(--text-secondary); font-size: 1rem;">
+                        Selecciona un curso para editarlo, agregar módulos y videos, o realizar cambios.
+                    </p>
+                </div>
+                
+                <div id="coursesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; margin-top: 30px;">
+                    <!-- Los cursos se cargarán aquí -->
+                </div>
+            </div>
+
+        <!-- TAB: USUARIOS REGISTRADOS -->
+        <div id="panelUsers" class="admin-panel" style="display: none;">
+            <div style="margin-bottom: 30px;">
+                <h2 style="color: var(--primary-color); margin-bottom: 10px;">👥 Usuarios Registrados</h2>
+                <p style="color: var(--text-secondary); font-size: 1rem;">
+                    Visualiza y gestiona todos los usuarios registrados en la plataforma.
+                </p>
+            </div>
+            
+            <div id="usersListContainer" style="margin-top: 20px;">
+                <!-- Los usuarios se cargarán aquí -->
+            </div>
+        </div>
+
+            <!-- VISTA: Editar Curso Específico -->
+            <div id="courseEditView" style="display: none;">
+                <div style="margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                    <button onclick="showCoursesList()" style="background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+                        ← Volver a Cursos
+                    </button>
+                    <div>
+                        <h2 id="editingCourseTitle" style="color: var(--primary-color); margin: 0; font-size: 1.8rem;"></h2>
+                        <p id="editingCourseStats" style="color: var(--text-secondary); margin: 5px 0 0 0; font-size: 0.9rem;"></p>
+                    </div>
+                </div>
+
+                <div class="admin-content">
+                    <!-- LEFT: Add Modules and Lessons -->
+                    <div class="admin-section">
+                        <div style="margin-bottom: 25px;">
+                            <h3 style="color: var(--primary-color); margin-bottom: 10px; font-size: 1.3rem;">➕ Agregar Contenido</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                                Crea módulos y agrega videos a este curso.
+                            </p>
+                        </div>
+                        
+                        <div class="module-form" style="background: rgba(57, 243, 212, 0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(57, 243, 212, 0.2); margin-bottom: 25px;">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem; font-weight: 700;" id="moduleFormTitle">📦 Crear Nuevo Módulo</h4>
+                            <input type="hidden" id="editingModuleId" value="">
+                            <div class="form-group">
+                                <label>Título del Módulo</label>
+                                <input type="text" id="moduleTitle" placeholder="Ej: Introducción a la Producción">
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn-add" onclick="saveModule()" id="moduleSaveBtn">Agregar Módulo</button>
+                                <button class="btn-add" onclick="cancelEditModule()" id="moduleCancelBtn" style="display: none; background: var(--dark-tertiary);">Cancelar</button>
+                            </div>
+                        </div>
+
+                        <div class="lesson-form" style="background: rgba(57, 243, 212, 0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(57, 243, 212, 0.2);">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem; font-weight: 700;" id="lessonFormTitle">🎬 Agregar Nuevo Video/Lección</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Completa los campos para agregar un video a un módulo del curso</p>
+                            <input type="hidden" id="editingLessonId" value="">
+                            <input type="hidden" id="editingLessonModuleId" value="">
+                            <div class="form-group">
+                                <label style="font-weight: 600; color: white;">📦 Selecciona Módulo</label>
+                                <select id="lessonModule" style="background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); border-radius: 8px; padding: 12px; width: 100%; cursor: pointer; font-weight: 500;" onchange="document.getElementById('editingLessonModuleId').value = this.value;">
+                                    <option value="">👉 Selecciona un módulo para agregar el video</option>
+                                </select>
+                                <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 5px;">💡 También puedes usar el botón "➕ Agregar Video" en cada módulo</p>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-weight: 600; color: white;">📝 Título de la Lección</label>
+                                <input type="text" id="lessonTitle" placeholder="Ej: Introducción a la Mezcla Vocales" style="border: 2px solid rgba(255, 255, 255, 0.1);">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-weight: 600; color: white;">⏱️ Duración (formato: MM:SS)</label>
+                                <input type="text" id="lessonDuration" placeholder="Ej: 15:30" style="border: 2px solid rgba(255, 255, 255, 0.1);">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-weight: 600; color: white;">🎥 URL del Video</label>
+                                <input type="text" id="lessonVideoUrl" placeholder="https://www.youtube.com/watch?v=... o URL directa" style="border: 2px solid rgba(255, 255, 255, 0.1);">
+                                <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 5px;">🔗 Acepta: YouTube, Vimeo, o URLs directas de videos</p>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn-add" onclick="saveLesson()" id="lessonSaveBtn" style="flex: 1; padding: 15px; font-size: 1.1rem; font-weight: 700;">✅ Agregar Video</button>
+                                <button class="btn-add" onclick="cancelEditLesson()" id="lessonCancelBtn" style="display: none; background: var(--dark-tertiary); padding: 15px;">❌ Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: View Modules and Lessons -->
+                    <div class="admin-section">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="margin: 0; color: var(--primary-color);">📚 Módulos y Videos</h3>
+                        </div>
+                        <div style="padding: 15px; background: rgba(57, 243, 212, 0.1); border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                                <strong style="color: var(--primary-color);">💡 Guía rápida:</strong> 
+                                Haz clic en <strong>"✏️ Editar"</strong> para modificar módulos o videos. 
+                                Usa <strong>"➕ Agregar Video"</strong> en cada módulo para agregar videos rápidamente.
+                            </p>
+                        </div>
+                        <div class="modules-list" id="modulesList">
+                            <!-- Modules will be loaded here -->
+                        </div>
+                        <div style="margin-top: 25px; padding: 20px; background: rgba(57, 243, 212, 0.1); border-radius: 10px; border: 2px solid rgba(57, 243, 212, 0.3);">
+                            <p style="color: var(--text-secondary); margin: 0 0 15px 0; font-size: 0.95rem;">
+                                <strong style="color: var(--primary-color);">💾 Guardar Cambios:</strong> 
+                                Después de agregar, editar o eliminar módulos y videos, haz clic en el botón de abajo para guardar todos los cambios permanentemente.
+                            </p>
+                            <button class="btn-save" onclick="saveCourseData()" style="width: 100%; padding: 18px; font-size: 1.2rem; font-weight: 700;">💾 Guardar Todos los Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: Editar Información del Curso -->
+        <div id="courseInfoModal" onclick="if(event.target === this) closeCourseInfoModal();" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10000; overflow-y: auto; align-items: flex-start; padding-top: 50px;">
+            <div onclick="event.stopPropagation();" style="max-width: 600px; margin: 0 auto 50px auto; background: var(--dark-bg); border-radius: 15px; padding: 30px; border: 2px solid var(--primary-color); position: relative; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);">
+                <button onclick="closeCourseInfoModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700; transition: transform 0.2s;" onmouseover="this.style.transform='rotate(90deg)'" onmouseout="this.style.transform='rotate(0deg)'">×</button>
+                
+                <h2 style="color: var(--primary-color); margin-bottom: 25px; font-size: 1.8rem;">📝 Editar Información del Curso</h2>
+                
+                <div class="form-group">
+                    <label style="font-weight: 600; color: white;">Título del Curso</label>
+                    <input type="text" id="modalCourseName" placeholder="Ej: Mezcla y Grabación de Voces" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                </div>
+                
+                <div class="form-group">
+                    <label style="font-weight: 600; color: white;">Descripción del Curso</label>
+                    <textarea id="modalCourseDescription" placeholder="Describe el curso..." style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; min-height: 120px; resize: vertical;"></textarea>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label style="font-weight: 600; color: white;">Nivel</label>
+                        <select id="modalCourseLevel" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; cursor: pointer;">
+                            <option value="Intermedio">Intermedio</option>
+                            <option value="Avanzado">Avanzado</option>
+                            <option value="Principiante">Principiante</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="font-weight: 600; color: white;">Precio ($)</label>
+                        <input type="number" id="modalCoursePrice" placeholder="99.99" step="0.01" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label style="font-weight: 600; color: white;">Estado del Curso</label>
+                    <select id="modalCourseStatus" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; cursor: pointer;">
+                        <option value="available">✅ Lanzado</option>
+                        <option value="pre-sale">💰 Pre-Venta</option>
+                        <option value="coming-soon">⏳ Próximamente</option>
+                    </select>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 5px;">Lanzado: Disponible para comprar | Pre-Venta: Disponible con descuento | Próximamente: En desarrollo</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label style="font-weight: 600; color: white;">Icono (emoji)</label>
+                        <input type="text" id="modalCourseIcon" placeholder="🎤" maxlength="2" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="font-weight: 600; color: white;">Nivel de Badge</label>
+                        <select id="modalCourseBadge" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; cursor: pointer;">
+                            <option value="Intermedio">Intermedio</option>
+                            <option value="Avanzado">Avanzado</option>
+                            <option value="Principiante">Principiante</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 25px;">
+                    <button onclick="saveCourseInfoFromModal()" class="btn-save" style="flex: 1; padding: 15px; font-size: 1.1rem; font-weight: 700;">💾 Guardar Cambios</button>
+                    <button onclick="closeCourseInfoModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 15px 25px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">❌ Cancelar</button>
+                </div>
+                
+                <div id="modalDeleteBtnContainer" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <button onclick="deleteCourseFromModal()" style="width: 100%; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">🗑️ Eliminar Curso</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: NUEVO CURSO -->
+        <div id="panelNewCourse" class="admin-panel" style="display: none;">
+            <div class="admin-content">
+                <div class="admin-section" style="grid-column: 1 / -1;">
+                    <h2>➕ Crear Nuevo Curso</h2>
+                    <div id="newCourseMessage" class="alert alert-success" style="display: none; margin-bottom: 20px;"></div>
+                    
+                    <div class="form-group">
+                        <label>ID del Curso (sin espacios, usa guiones: curso-nuevo)</label>
+                        <input type="text" id="newCourseId" placeholder="curso-nuevo">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Título del Curso</label>
+                        <input type="text" id="newCourseName" placeholder="Ej: Nuevo Curso">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea id="newCourseDescription" placeholder="Describe el curso..."></textarea>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label>Nivel</label>
+                            <select id="newCourseLevel" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px; width: 100%; cursor: pointer;">
+                                <option value="Intermedio">Intermedio</option>
+                                <option value="Avanzado">Avanzado</option>
+                                <option value="Principiante">Principiante</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Precio ($)</label>
+                            <input type="number" id="newCoursePrice" placeholder="99.99" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Icono (emoji)</label>
+                            <input type="text" id="newCourseIcon" placeholder="🎤" maxlength="2">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select id="newCourseStatus" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px; width: 100%; cursor: pointer;">
+                            <option value="available">✅ Lanzado (Disponible para comprar)</option>
+                            <option value="pre-sale">💰 Pre-Venta</option>
+                            <option value="coming-soon">⏳ Próximamente</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-save" onclick="createNewCourse()">➕ Crear Nuevo Curso</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para ocultar loading screen
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden');
+                setTimeout(() => {
+                    if (loadingScreen) {
+                        loadingScreen.style.display = 'none';
+                    }
+                }, 200);
+            }
+        }
+        
+        // Verificar al cargar la página (usando función de config.js)
+        let checkAdminAttempts = 0;
+        const maxCheckAttempts = 20; // Máximo 2 segundos esperando
+        
+        function checkAdminAccess() {
+            // Primero, asegurarse de ocultar el loading después de un tiempo máximo
+            if (checkAdminAttempts === 0) {
+                setTimeout(() => {
+                    hideLoadingScreen();
+                }, 1500); // Ocultar después de 1.5s máximo
+            }
+            
+            checkAdminAttempts++;
+            
+            // Si se superó el límite de intentos, ocultar loading y permitir acceso (modo desarrollo)
+            if (checkAdminAttempts > maxCheckAttempts) {
+                console.error('⚠️ Timeout esperando config.js. Ocultando loading y permitiendo acceso.');
+                hideLoadingScreen();
+                return; // Permitir acceso en caso de timeout (para desarrollo)
+            }
+            
+            // Esperar a que config.js se cargue
+            if (typeof isCurrentUserAdmin !== 'function') {
+                console.warn('config.js no cargado aún, reintentando... (' + checkAdminAttempts + ')');
+                setTimeout(checkAdminAccess, 100);
+                return;
+            }
+            
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            
+            console.log('Verificando acceso admin:', {
+                isLoggedIn: isLoggedIn,
+                userEmail: user.email,
+                userIsAdmin: user.isAdmin
+            });
+            
+            // Ocultar loading antes de verificar
+            hideLoadingScreen();
+            
+            // Verificar si está logueado
+            if (!isLoggedIn || !user || !user.email) {
+                console.warn('Usuario no logueado, redirigiendo a Login');
+                setTimeout(() => {
+                    alert('⚠️ Por favor inicia sesión para acceder al panel de administrador.');
+                    window.location.href = 'Login.html';
+                }, 500); // Esperar a que el loading se oculte
+                return;
+            }
+            
+            // Verificar si es administrador
+            if (!isCurrentUserAdmin()) {
+                console.warn('Usuario no es administrador:', user.email);
+                setTimeout(() => {
+                    alert('⚠️ Acceso denegado. Solo los administradores pueden acceder a esta página.\n\nTu email: ' + user.email + '\n\nContacta al administrador si necesitas acceso.');
+                    window.location.href = 'Login.html';
+                }, 500); // Esperar a que el loading se oculte
+                return;
+            }
+            
+            console.log('✅ Acceso de administrador confirmado:', user.email);
+            // Loading ya fue ocultado arriba
+        }
+        
+        // Ejecutar verificación cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkAdminAccess);
+        } else {
+            checkAdminAccess();
+        }
+        
+        let currentCourseId = 'curso-voces';
+        let courseData = {
+            id: currentCourseId,
+            title: 'Mezcla y Grabación de Voces',
+            modules: []
+        };
+
+        const courseNames = {
+            'curso-voces': 'Mezcla y Grabación de Voces',
+            'curso-maquetizacion': 'Maquetización Composicional',
+            'curso-beats': 'Programación de Beats'
+        };
+
+        // Inicializar cursos por defecto si no existen
+        function initializeDefaultCourses() {
+            const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            const defaultCourseIds = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+            
+            defaultCourseIds.forEach(courseId => {
+                // Inicializar estructura de videos si no existe
+                if (!storedCourses[courseId]) {
+                    storedCourses[courseId] = {
+                        id: courseId,
+                        title: courseNames[courseId],
+                        modules: []
+                    };
+                }
+                
+                // Inicializar información del curso si no existe
+                if (!coursesInfo[courseId]) {
+                    coursesInfo[courseId] = {
+                        name: courseNames[courseId],
+                        description: getDefaultDescription(courseId),
+                        level: courseId === 'curso-voces' ? 'Avanzado' : 'Intermedio',
+                        price: courseId === 'curso-voces' ? 99.99 : courseId === 'curso-maquetizacion' ? 89.99 : 79.99,
+                        icon: courseId === 'curso-voces' ? '🎤' : courseId === 'curso-maquetizacion' ? '🎹' : '🎛️',
+                        videos: '0+',
+                        hours: '0+ Horas',
+                        status: courseId === 'curso-voces' ? 'available' : 'coming-soon'
+                    };
+                }
+            });
+            
+            // Guardar los datos inicializados
+            localStorage.setItem('coursesData', JSON.stringify(storedCourses));
+            localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
+        }
+        
+        // Obtener descripción por defecto
+        function getDefaultDescription(courseId) {
+            const descriptions = {
+                'curso-voces': 'Nivel Avanzado. Aprende técnicas profesionales para grabar y mezclar voces como los grandes productores. Domina el proceso completo desde la grabación hasta la mezcla final con estándares de la industria.',
+                'curso-maquetizacion': 'Nivel Intermedio. Domina el arte de estructurar y organizar tus composiciones musicales. Aprende a crear arreglos profesionales y maquetas que conecten con tu audiencia desde el primer segundo.',
+                'curso-beats': 'Nivel Intermedio. Aprende a programar beats profesionales desde cero. Domina la creación de ritmos, patrones de batería y técnicas avanzadas de programación que harán que tus producciones destaquen.'
+            };
+            return descriptions[courseId] || '';
+        }
+        
+        // Función para editar contenido del curso
+        function editCourseContent(courseId) {
+            if (!courseId || courseId === 'q' || courseId === '') {
+                console.error('Error: courseId inválido:', courseId);
+                alert('Error: No se pudo identificar el curso. Por favor, inténtalo de nuevo.');
+                return;
+            }
+            const encodedCourseId = encodeURIComponent(courseId);
+            window.location.href = `curso-player.html?course=${encodedCourseId}&admin=true`;
+        }
+        
+        // Hacer función disponible globalmente
+        window.editCourseContent = editCourseContent;
+        
+        // Cargar lista de cursos
+        function loadCoursesList() {
+            const coursesGrid = document.getElementById('coursesGrid');
+            if (!coursesGrid) return;
+            
+            coursesGrid.innerHTML = '';
+            
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            const coursesData = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            const deletedCourses = JSON.parse(localStorage.getItem('deletedCourses') || '[]');
+            
+            // Combinar todos los cursos disponibles
+            const allCourseIds = new Set([
+                ...Object.keys(defaultCoursesInfo || {}),
+                ...Object.keys(coursesInfo)
+            ]);
+            
+            // Filtrar eliminados y renderizar
+            const validCourseIds = Array.from(allCourseIds).filter(id => !deletedCourses.includes(id));
+            console.log('📚 Cursos a mostrar:', validCourseIds);
+            
+            if (validCourseIds.length === 0) {
+                coursesGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">📚</div>
+                        <h3 style="color: var(--text-secondary); margin-bottom: 10px;">No hay cursos aún</h3>
+                        <p style="color: var(--text-secondary);">Ve a la pestaña "➕ Nuevo Curso" para crear tu primer curso.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            validCourseIds.forEach(courseId => {
+                    const courseInfo = getCourseInfoForList(courseId, coursesInfo);
+                    const courseData = coursesData[courseId] || { modules: [] };
+                    const defaultInfo = defaultCoursesInfo[courseId] || {};
+                    const totalModules = courseData.modules ? courseData.modules.length : 0;
+                    const totalVideos = courseData.modules ? courseData.modules.reduce((total, m) => total + (m.lessons ? m.lessons.length : 0), 0) : 0;
+                    
+                    const card = document.createElement('div');
+                    card.setAttribute('data-course-id', courseId); // Agregar atributo para encontrar el curso después
+                    card.style.cssText = 'background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(57, 243, 212, 0.1) 100%); border-radius: 15px; padding: 25px; border: 2px solid rgba(57, 243, 212, 0.3); cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;';
+                    card.onmouseover = function() {
+                        this.style.transform = 'translateY(-5px)';
+                        this.style.borderColor = 'var(--primary-color)';
+                        this.style.boxShadow = '0 10px 30px rgba(57, 243, 212, 0.3)';
+                    };
+                    card.onmouseout = function() {
+                        this.style.transform = 'translateY(0)';
+                        this.style.borderColor = 'rgba(57, 243, 212, 0.3)';
+                        this.style.boxShadow = 'none';
+                    };
+                    card.onclick = function(e) {
+                        // Evitar que el click del botón "Editar Curso" también dispare el onclick del card
+                        if (e.target.closest('button')) {
+                            return;
+                        }
+                        // Abrir curso-player.html en modo admin
+                        window.location.href = `curso-player.html?course=${courseId}&admin=true`;
+                    };
+                    
+                    // Determinar estado del curso
+                    let statusBadge = '';
+                    let statusColor = '';
+                    let statusText = '';
+                    
+                    // Determinar estado del curso con mejor lógica
+                    let courseStatus = courseInfo.status;
+                    if (!courseStatus && defaultInfo.status) {
+                        courseStatus = defaultInfo.status;
+                    }
+                    if (!courseStatus) {
+                        // Por defecto, curso-voces es available, otros son coming-soon
+                        courseStatus = courseId === 'curso-voces' ? 'available' : 'coming-soon';
+                    }
+                    
+                    if (courseStatus === 'available') {
+                        statusText = 'Lanzado';
+                        statusColor = '#4ade80';
+                        statusBadge = `<span style="background: ${statusColor}; color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block;">✅ ${statusText}</span>`;
+                    } else if (courseStatus === 'pre-sale') {
+                        statusText = 'Pre-Venta';
+                        statusColor = '#ff9800';
+                        statusBadge = `<span style="background: ${statusColor}; color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block;">💰 ${statusText}</span>`;
+                    } else {
+                        statusText = 'Próximamente';
+                        statusColor = 'rgba(255, 255, 255, 0.3)';
+                        statusBadge = `<span style="background: ${statusColor}; color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block;">⏳ ${statusText}</span>`;
+                    }
+                    
+                    const price = courseInfo.price ? `$${courseInfo.price.toFixed(2)}` : '$0.00';
+                    
+                    // Crear contenido HTML (sin el botón de editar contenido que será añadido después)
+                    card.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <div style="font-size: 3rem;">${courseInfo.icon || '🎓'}</div>
+                            <div style="flex: 1;">
+                                <h3 style="color: var(--primary-color); margin: 0 0 5px 0; font-size: 1.3rem; font-weight: 700;">${courseInfo.name}</h3>
+                                ${statusBadge}
+                            </div>
+                        </div>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px; line-height: 1.5;">
+                            ${courseInfo.description ? (courseInfo.description.length > 120 ? courseInfo.description.substring(0, 120) + '...' : courseInfo.description) : 'Sin descripción'}
+                        </p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div style="text-align: center;">
+                                <div style="color: var(--primary-color); font-size: 1.5rem; font-weight: 700;">${totalModules}</div>
+                                <div style="color: var(--text-secondary); font-size: 0.8rem;">Módulos</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="color: var(--primary-color); font-size: 1.5rem; font-weight: 700;">${totalVideos}</div>
+                                <div style="color: var(--text-secondary); font-size: 0.8rem;">Videos</div>
+                            </div>
+                        </div>
+                        <div style="padding: 12px; background: rgba(57, 243, 212, 0.1); border-radius: 8px; margin-bottom: 15px; border-left: 3px solid var(--primary-color);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 3px;">Precio</div>
+                                    <div style="color: var(--primary-color); font-size: 1.3rem; font-weight: 700;">${price}</div>
+                                </div>
+                                <button onclick="editCourseInfoInPanel('${courseId}', event)" style="background: rgba(57, 243, 212, 0.2); color: var(--primary-color); border: 1px solid var(--primary-color); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--dark-bg)'" onmouseout="this.style.background='rgba(57, 243, 212, 0.2)'; this.style.color='var(--primary-color)'">
+                                    ✏️ Editar Info
+                                </button>
+                            </div>
+                        </div>
+                        <div id="editContentBtnContainer-${courseId}" style="display: flex; gap: 10px;">
+                            <!-- Botones serán creados programáticamente aquí -->
+                        </div>
+                    `;
+                    
+                    // Crear botones de "Editar Contenido" y "Eliminar" programáticamente
+                    const editBtnContainer = card.querySelector(`#editContentBtnContainer-${courseId}`);
+                    if (editBtnContainer) {
+                        // Botón de Editar Contenido
+                        const editBtn = document.createElement('button');
+                        editBtn.textContent = '✏️ Editar Contenido';
+                        editBtn.style.cssText = 'flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: transform 0.2s;';
+                        editBtn.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
+                        editBtn.onmouseout = function() { this.style.transform = 'scale(1)'; };
+                        editBtn.onclick = function(e) {
+                            e.stopPropagation();
+                            console.log('CourseId capturado:', courseId); // Debug
+                            editCourseContent(courseId);
+                        };
+                        editBtnContainer.appendChild(editBtn);
+                        
+                        // Botón de Eliminar (solo para cursos no principales)
+                        const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+                        if (!defaultCourses.includes(courseId)) {
+                            const deleteBtn = document.createElement('button');
+                            deleteBtn.textContent = '🗑️ Eliminar';
+                            deleteBtn.style.cssText = 'flex: 1; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 2px solid #ff4d4d; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: all 0.2s;';
+                            deleteBtn.onmouseover = function() { 
+                                this.style.background = '#ff4d4d'; 
+                                this.style.color = 'white';
+                                this.style.transform = 'scale(1.05)';
+                            };
+                            deleteBtn.onmouseout = function() { 
+                                this.style.background = 'rgba(255, 77, 77, 0.2)'; 
+                                this.style.color = '#ff4d4d';
+                                this.style.transform = 'scale(1)';
+                            };
+                            deleteBtn.onclick = function(e) {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                
+                                const courseName = courseInfo.name || defaultInfo.name || courseId;
+                                
+                                if (confirm(`⚠️ ¿Estás seguro de eliminar el curso "${courseName}"?\n\nEsta acción eliminará el curso completamente y no se puede deshacer.`)) {
+                                    console.log('🗑️ Eliminando curso:', courseId);
+                                    deleteCourse(courseId);
+                                    
+                                    // Recargar la lista después de eliminar
+                                    setTimeout(() => {
+                                        loadCoursesList();
+                                        showAlert('✅ Curso "' + courseName + '" eliminado exitosamente');
+                                    }, 300);
+                                }
+                            };
+                            editBtnContainer.appendChild(deleteBtn);
+                        } else {
+                            // Mostrar mensaje informativo para cursos principales
+                            console.log('ℹ️ Curso principal no se puede eliminar:', courseId);
+                        }
+                    }
+                    
+                    coursesGrid.appendChild(card);
+                });
+            
+            // Si no hay cursos, mostrar mensaje
+            if (coursesGrid.children.length === 0) {
+                coursesGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">📚</div>
+                        <h3 style="color: var(--text-secondary); margin-bottom: 10px;">No hay cursos aún</h3>
+                        <p style="color: var(--text-secondary);">Ve a la pestaña "➕ Nuevo Curso" para crear tu primer curso.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Obtener información de curso para la lista
+        function getCourseInfoForList(courseId, coursesInfo) {
+            if (coursesInfo[courseId]) {
+                return coursesInfo[courseId];
+            }
+            // Cargar desde defaults
+            const defaultInfo = defaultCoursesInfo[courseId];
+            if (defaultInfo) {
+                return {
+                    name: defaultInfo.name,
+                    description: defaultInfo.description,
+                    icon: defaultInfo.icon,
+                    level: defaultInfo.level,
+                    status: defaultInfo.status
+                };
+            }
+            return { name: 'Curso sin nombre', description: '', icon: '🎓', status: 'coming-soon' };
+        }
+        
+        // Abrir editor de curso específico
+        function openCourseEditor(courseId) {
+            currentCourseId = courseId;
+            
+            // Ocultar lista, mostrar editor
+            document.getElementById('coursesListView').style.display = 'none';
+            document.getElementById('courseEditView').style.display = 'block';
+            
+            // Cargar datos del curso
+            loadCourseData();
+        }
+        
+        // Mostrar lista de cursos
+        function showCoursesList() {
+            document.getElementById('coursesListView').style.display = 'block';
+            document.getElementById('courseEditView').style.display = 'none';
+            loadCoursesList();
+        }
+        
+        // Load course data (cuando se abre un curso específico)
+        function loadCourseData() {
+            if (!currentCourseId) return;
+            
+            // Cargar desde localStorage
+            const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            
+            // Obtener título del curso desde coursesInfo si existe
+            const courseInfo = coursesInfo[currentCourseId];
+            const courseTitle = courseInfo ? courseInfo.name : (courseNames[currentCourseId] || 'Nuevo Curso');
+            
+            // Actualizar título en el editor
+            const titleElement = document.getElementById('editingCourseTitle');
+            if (titleElement) {
+                titleElement.textContent = courseTitle;
+            }
+            
+            if (storedCourses[currentCourseId]) {
+                courseData = storedCourses[currentCourseId];
+                courseData.title = courseTitle;
+            } else {
+                courseData = {
+                    id: currentCourseId,
+                    title: courseTitle,
+                    modules: []
+                };
+            }
+            
+            // Actualizar estadísticas
+            const totalModules = courseData.modules ? courseData.modules.length : 0;
+            const totalVideos = courseData.modules ? courseData.modules.reduce((total, m) => total + (m.lessons ? m.lessons.length : 0), 0) : 0;
+            const statsElement = document.getElementById('editingCourseStats');
+            if (statsElement) {
+                statsElement.textContent = `${totalModules} módulo(s) | ${totalVideos} video(s)`;
+            }
+            
+            // Cancelar cualquier edición en curso
+            cancelEditModule();
+            cancelEditLesson();
+            
+            renderModules();
+            updateModuleSelector();
+        }
+
+        // Save/Add module
+        function saveModule() {
+            const title = document.getElementById('moduleTitle').value.trim();
+            if (!title) {
+                alert('Por favor ingresa un título para el módulo');
+                return;
+            }
+            
+            const editingModuleId = document.getElementById('editingModuleId').value;
+            
+            if (editingModuleId) {
+                // Editar módulo existente
+                const module = courseData.modules.find(m => m.id === editingModuleId);
+                if (module) {
+                    module.title = title;
+                    showAlert('✅ Módulo actualizado exitosamente');
+                }
+            } else {
+                // Agregar nuevo módulo
+                const moduleId = 'modulo-' + (Date.now());
+                courseData.modules.push({
+                    id: moduleId,
+                    title: title,
+                    lessons: []
+                });
+                showAlert('✅ Módulo agregado exitosamente');
+            }
+            
+            // Limpiar formulario
+            document.getElementById('moduleTitle').value = '';
+            document.getElementById('editingModuleId').value = '';
+            cancelEditModule();
+            renderModules();
+            updateModuleSelector();
+        }
+        
+        // Edit module
+        function editModule(moduleId) {
+            const module = courseData.modules.find(m => m.id === moduleId);
+            if (!module) return;
+            
+            document.getElementById('moduleTitle').value = module.title;
+            document.getElementById('editingModuleId').value = moduleId;
+            document.getElementById('moduleFormTitle').textContent = '✏️ Editar Módulo';
+            document.getElementById('moduleSaveBtn').textContent = '💾 Guardar Cambios';
+            document.getElementById('moduleCancelBtn').style.display = 'block';
+            
+            // Scroll to form
+            document.querySelector('.module-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Cancel edit module
+        function cancelEditModule() {
+            document.getElementById('moduleTitle').value = '';
+            document.getElementById('editingModuleId').value = '';
+            document.getElementById('moduleFormTitle').textContent = 'Nuevo Módulo';
+            document.getElementById('moduleSaveBtn').textContent = 'Agregar Módulo';
+            document.getElementById('moduleCancelBtn').style.display = 'none';
+        }
+
+        // Save/Add lesson
+        function saveLesson() {
+            const moduleId = document.getElementById('lessonModule').value || document.getElementById('editingLessonModuleId').value;
+            const title = document.getElementById('lessonTitle').value.trim();
+            const duration = document.getElementById('lessonDuration').value.trim();
+            const videoUrl = document.getElementById('lessonVideoUrl').value.trim();
+            
+            if (!moduleId || !title || !duration) {
+                alert('Por favor completa todos los campos requeridos (Módulo, Título, Duración)');
+                return;
+            }
+            
+            const module = courseData.modules.find(m => m.id === moduleId);
+            if (!module) {
+                alert('Módulo no encontrado');
+                return;
+            }
+            
+            const editingLessonId = parseInt(document.getElementById('editingLessonId').value);
+            
+            if (editingLessonId) {
+                // Editar lección existente
+                const lesson = module.lessons.find(l => l.id === editingLessonId);
+                if (lesson) {
+                    lesson.title = title;
+                    lesson.duration = duration;
+                    lesson.videoUrl = videoUrl || '';
+                    showAlert('✅ Lección actualizada exitosamente');
+                }
+            } else {
+                // Agregar nueva lección
+                const lessonId = module.lessons.length > 0 
+                    ? Math.max(...module.lessons.map(l => l.id)) + 1 
+                    : 1;
+                
+                module.lessons.push({
+                    id: lessonId,
+                    title: title,
+                    duration: duration,
+                    videoUrl: videoUrl || '',
+                    completed: false
+                });
+                showAlert('✅ Lección agregada exitosamente');
+            }
+            
+            // Limpiar formulario
+            document.getElementById('lessonTitle').value = '';
+            document.getElementById('lessonDuration').value = '';
+            document.getElementById('lessonVideoUrl').value = '';
+            document.getElementById('editingLessonId').value = '';
+            document.getElementById('editingLessonModuleId').value = '';
+            cancelEditLesson();
+            renderModules();
+            updateModuleSelector();
+        }
+        
+        // Edit lesson
+        function editLesson(moduleId, lessonId) {
+            const module = courseData.modules.find(m => m.id === moduleId);
+            if (!module) return;
+            
+            const lesson = module.lessons.find(l => l.id === lessonId);
+            if (!lesson) return;
+            
+            // Asegurarse de que el selector esté actualizado
+            updateModuleSelector();
+            
+            // Llenar formulario
+            setTimeout(() => {
+                document.getElementById('lessonModule').value = moduleId;
+                document.getElementById('lessonTitle').value = lesson.title;
+                document.getElementById('lessonDuration').value = lesson.duration;
+                document.getElementById('lessonVideoUrl').value = lesson.videoUrl || '';
+                document.getElementById('editingLessonId').value = lessonId;
+                document.getElementById('editingLessonModuleId').value = moduleId;
+            }, 100);
+            
+            // Cambiar título y botón
+            document.getElementById('lessonFormTitle').textContent = '✏️ Editar Lección';
+            document.getElementById('lessonSaveBtn').textContent = '💾 Guardar Cambios';
+            document.getElementById('lessonCancelBtn').style.display = 'block';
+            
+            // Scroll to form
+            setTimeout(() => {
+                document.querySelector('.lesson-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 150);
+        }
+        
+        // Cancel edit lesson
+        function cancelEditLesson() {
+            document.getElementById('lessonTitle').value = '';
+            document.getElementById('lessonDuration').value = '';
+            document.getElementById('lessonVideoUrl').value = '';
+            document.getElementById('editingLessonId').value = '';
+            document.getElementById('editingLessonModuleId').value = '';
+            document.getElementById('lessonFormTitle').textContent = 'Nueva Lección';
+            document.getElementById('lessonSaveBtn').textContent = 'Agregar Lección';
+            document.getElementById('lessonCancelBtn').style.display = 'none';
+            document.getElementById('lessonModule').value = '';
+        }
+        
+        // Quick add lesson to specific module
+        function quickAddLesson(moduleId) {
+            // Asegurar que el selector esté actualizado
+            updateModuleSelector();
+            
+            // Establecer el módulo seleccionado
+            setTimeout(() => {
+                document.getElementById('lessonModule').value = moduleId;
+                document.getElementById('editingLessonModuleId').value = moduleId;
+                
+                // Limpiar formulario para nueva lección
+                cancelEditLesson();
+                document.getElementById('lessonModule').value = moduleId;
+                document.getElementById('editingLessonModuleId').value = moduleId;
+                
+                // Scroll al formulario
+                document.querySelector('.lesson-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Resaltar el formulario
+                const form = document.querySelector('.lesson-form');
+                form.style.border = '2px solid var(--primary-color)';
+                form.style.borderRadius = '12px';
+                form.style.padding = '20px';
+                form.style.transition = 'all 0.3s';
+                setTimeout(() => {
+                    form.style.border = '';
+                    form.style.padding = '';
+                }, 2000);
+            }, 100);
+        }
+
+        // Remove module
+        function removeModule(moduleId) {
+            if (confirm('¿Estás seguro de eliminar este módulo y todas sus lecciones?')) {
+                courseData.modules = courseData.modules.filter(m => m.id !== moduleId);
+                renderModules();
+                updateModuleSelector();
+                showAlert('Módulo eliminado');
+            }
+        }
+
+        // Remove lesson
+        function removeLesson(moduleId, lessonId) {
+            if (confirm('¿Estás seguro de eliminar esta lección?')) {
+                const module = courseData.modules.find(m => m.id === moduleId);
+                if (module) {
+                    module.lessons = module.lessons.filter(l => l.id !== lessonId);
+                    renderModules();
+                    showAlert('Lección eliminada');
+                }
+            }
+        }
+
+        // Render modules
+        function renderModules() {
+            const container = document.getElementById('modulesList');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // Actualizar estadísticas en el editor
+            if (courseData && currentCourseId) {
+                const totalModules = courseData.modules ? courseData.modules.length : 0;
+                const totalVideos = courseData.modules ? courseData.modules.reduce((total, m) => total + (m.lessons ? m.lessons.length : 0), 0) : 0;
+                const statsElement = document.getElementById('editingCourseStats');
+                if (statsElement) {
+                    statsElement.textContent = `${totalModules} módulo(s) | ${totalVideos} video(s)`;
+                }
+            }
+            
+            if (courseData.modules.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">No hay módulos agregados. Crea uno nuevo usando el formulario de la izquierda.</p>';
+                return;
+            }
+            
+            courseData.modules.forEach((module, moduleIndex) => {
+                const moduleDiv = document.createElement('div');
+                moduleDiv.className = 'module-item';
+                moduleDiv.innerHTML = `
+                    <div class="module-item" style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 2px solid rgba(57, 243, 212, 0.2);">
+                    <div class="module-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid rgba(57, 243, 212, 0.3);">
+                        <div>
+                            <h3 style="color: var(--primary-color); margin: 0; font-size: 1.3rem; font-weight: 700;">📦 Módulo ${moduleIndex + 1}: ${module.title}</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 5px 0 0 0;">
+                                ${module.lessons ? module.lessons.length : 0} video(s) en este módulo
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-edit" onclick="editModule('${module.id}')" style="background: var(--primary-color); color: var(--dark-bg); padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">✏️ Editar Nombre</button>
+                            <button class="btn-remove" onclick="removeModule('${module.id}')" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; padding: 10px 18px; border: 2px solid #ff4d4d; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">🗑️ Eliminar Módulo</button>
+                        </div>
+                    </div>
+                    <div class="lessons-container">
+                        <div style="margin-bottom: 15px; padding: 15px; background: rgba(57, 243, 212, 0.15); border: 2px dashed var(--primary-color); border-radius: 10px; text-align: center;">
+                            <button onclick="quickAddLesson('${module.id}')" style="background: var(--gradient-primary); color: var(--dark-bg); padding: 12px 24px; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 1.05rem; width: 100%; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(57, 243, 212, 0.3);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 20px rgba(57, 243, 212, 0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 15px rgba(57, 243, 212, 0.3)'">
+                                ➕ Agregar Nuevo Video a este Módulo
+                            </button>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 10px; margin-bottom: 0;">📹 Agrega videos directamente a este módulo</p>
+                        </div>
+                        ${module.lessons.length === 0 
+                            ? '<div style="text-align: center; padding: 30px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; margin-top: 10px; border: 2px dashed rgba(255, 255, 255, 0.1);"><p style="color: var(--text-secondary); font-size: 0.95rem;">📹 Este módulo no tiene videos aún. Usa el botón de arriba para agregar el primer video.</p></div>'
+                            : '<div style="margin-bottom: 10px;"><strong style="color: var(--primary-color); font-size: 0.9rem;">📹 Videos en este módulo (' + module.lessons.length + '):</strong></div>' + module.lessons.map((lesson, lessonIndex) => `
+                                <div class="lesson-item" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: linear-gradient(135deg, rgba(57, 243, 212, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%); border-radius: 10px; margin-bottom: 12px; border-left: 5px solid var(--primary-color); transition: transform 0.2s;" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
+                                    <div class="lesson-info" style="flex: 1; min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap;">
+                                            <span style="background: var(--gradient-primary); color: var(--dark-bg); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; box-shadow: 0 2px 8px rgba(57, 243, 212, 0.3);">Video #${lessonIndex + 1}</span>
+                                            <h4 style="color: white; margin: 0; font-size: 1.05rem; font-weight: 600; flex: 1; min-width: 200px;">${lesson.title}</h4>
+                                        </div>
+                                        <div style="display: flex; gap: 20px; font-size: 0.85rem; color: var(--text-secondary); flex-wrap: wrap; margin-top: 8px;">
+                                            <span style="display: flex; align-items: center; gap: 5px;">
+                                                <span style="font-size: 1.1rem;">⏱️</span>
+                                                <strong style="color: white;">${lesson.duration || 'N/A'}</strong>
+                                            </span>
+                                            ${lesson.videoUrl ? 
+                                                `<span style="color: #4ade80; display: flex; align-items: center; gap: 5px;">
+                                                    <span>✅</span>
+                                                    <strong>Video disponible</strong>
+                                                </span>` : 
+                                                `<span style="color: #ff4d4d; display: flex; align-items: center; gap: 5px;">
+                                                    <span>❌</span>
+                                                    <strong>Sin video asignado</strong>
+                                                </span>`
+                                            }
+                                            ${lesson.videoUrl ? `
+                                                <span style="color: var(--primary-color); font-size: 0.75rem; word-break: break-all; max-width: 400px; background: rgba(57, 243, 212, 0.1); padding: 4px 8px; border-radius: 5px;">
+                                                    🔗 ${lesson.videoUrl.length > 45 ? lesson.videoUrl.substring(0, 45) + '...' : lesson.videoUrl}
+                                                </span>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 10px; flex-shrink: 0; margin-left: 15px;">
+                                        <button class="btn-edit" onclick="editLesson('${module.id}', ${lesson.id})" style="background: var(--primary-color); color: var(--dark-bg); padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; white-space: nowrap; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(57, 243, 212, 0.3);" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Editar título, duración y URL del video">✏️ Editar</button>
+                                        <button class="btn-remove" onclick="removeLesson('${module.id}', ${lesson.id})" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; padding: 10px 18px; border: 2px solid #ff4d4d; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; white-space: nowrap; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Eliminar este video permanentemente">🗑️ Eliminar</button>
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                    </div>
+                `;
+                container.appendChild(moduleDiv);
+            });
+        }
+
+        // Update module selector
+        function updateModuleSelector() {
+            const selector = document.getElementById('lessonModule');
+            selector.innerHTML = '<option value="">Selecciona un módulo</option>';
+            
+            courseData.modules.forEach(module => {
+                const option = document.createElement('option');
+                option.value = module.id;
+                option.textContent = module.title;
+                selector.appendChild(option);
+            });
+        }
+
+        // Save course data
+        function saveCourseData() {
+            const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            storedCourses[currentCourseId] = courseData;
+            localStorage.setItem('coursesData', JSON.stringify(storedCourses));
+            
+            // Actualizar estadísticas después de guardar
+            renderModules();
+            
+            showAlert('✅ Curso guardado exitosamente! Los cambios se verán reflejados en el curso-player cuando los usuarios accedan al curso.');
+            
+            // Recargar lista de cursos para actualizar estadísticas
+            setTimeout(() => {
+                if (document.getElementById('coursesListView').style.display === 'block') {
+                    loadCoursesList();
+                }
+            }, 1000);
+        }
+
+        // Show alert
+        function showAlert(message) {
+            const alertElement = document.getElementById('alertMessage');
+            if (!alertElement) {
+                console.error('❌ Elemento alertMessage no encontrado');
+                // Fallback: usar alert nativo
+                window.alert(message);
+                return;
+            }
+            
+            console.log('📢 Mostrando mensaje:', message);
+            
+            alertElement.innerHTML = message; // Permitir HTML para mejor formato
+            alertElement.style.display = 'block';
+            alertElement.style.opacity = '1';
+            alertElement.style.visibility = 'visible';
+            alertElement.style.animation = 'fadeIn 0.3s ease-in';
+            
+            // Scroll para asegurar que sea visible
+            setTimeout(() => {
+                alertElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+            
+            // Duración más larga para mensajes importantes
+            const duration = message.includes('✅') ? 5000 : 3000;
+            
+            setTimeout(() => {
+                alertElement.style.animation = 'fadeOut 0.3s ease-out';
+                alertElement.style.opacity = '0';
+                setTimeout(() => {
+                    alertElement.style.display = 'none';
+                    alertElement.style.visibility = 'hidden';
+                }, 300);
+            }, duration);
+        }
+        
+        // Hacer showAlert disponible globalmente
+        window.showAlert = showAlert;
+
+        function showInlineNewCourseMessage(message) {
+            const inlineMessage = document.getElementById('newCourseMessage');
+            if (!inlineMessage) {
+                showToast(message, { icon: '🎓' });
+                return;
+            }
+
+            inlineMessage.innerHTML = message;
+            inlineMessage.style.display = 'block';
+            inlineMessage.style.opacity = '1';
+            inlineMessage.style.visibility = 'visible';
+
+            inlineMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            clearTimeout(inlineMessage._timeoutId);
+            inlineMessage._timeoutId = setTimeout(() => {
+                inlineMessage.style.opacity = '0';
+                setTimeout(() => {
+                    inlineMessage.style.display = 'none';
+                    inlineMessage.style.visibility = 'hidden';
+                    inlineMessage.style.opacity = '';
+                }, 300);
+            }, 4500);
+        }
+
+        function getToastContainer() {
+            let container = document.querySelector('.admin-toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'admin-toast-container';
+                document.body.appendChild(container);
+            }
+            return container;
+        }
+
+        function showToast(message, options = {}) {
+            const { duration = 3200, icon = '✅' } = options;
+            const container = getToastContainer();
+            const toast = document.createElement('div');
+            toast.className = 'admin-toast';
+            toast.style.setProperty('--toast-duration', `${duration / 1000}s`);
+            toast.innerHTML = `
+                <span class="admin-toast__icon">${icon}</span>
+                <span class="admin-toast__message">${message}</span>
+            `;
+            container.appendChild(toast);
+
+            const removalDelay = duration + 700;
+            setTimeout(() => {
+                toast.remove();
+                if (!container.hasChildNodes()) {
+                    container.remove();
+                }
+            }, removalDelay);
+        }
+
+        window.showToast = showToast;
+
+        // Show current admin email
+        function showCurrentAdmin() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            document.getElementById('currentAdminEmail').textContent = user.email || 'No identificado';
+        }
+        
+        // Configurar emails de administradores
+        function configureAdminEmails() {
+            const currentAdmins = getAdminEmails();
+            const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+            
+            let adminList = prompt(
+                'Ingresa los emails de los administradores (separados por comas):\n\n' +
+                'Email actual: ' + currentUser.email + '\n\n' +
+                'Email por defecto: ' + ADMIN_CONFIG.defaultAdminEmail + '\n\n' +
+                'Emails actuales: ' + (currentAdmins.length > 0 ? currentAdmins.join(', ') : 'Ninguno'),
+                currentAdmins.length > 0 ? currentAdmins.join(', ') : ADMIN_CONFIG.defaultAdminEmail
+            );
+            
+            if (adminList !== null) {
+                const emails = adminList.split(',').map(e => e.trim()).filter(e => e);
+                setAdminEmails(emails);
+                showAlert('✅ Lista de administradores actualizada');
+                
+                // Si el usuario actual no está en la lista, agregarlo
+                if (currentUser.email && !emails.some(e => e.toLowerCase() === currentUser.email.toLowerCase())) {
+                    if (confirm('¿Quieres agregar tu email actual a la lista de administradores?')) {
+                        emails.push(currentUser.email);
+                        setAdminEmails(emails);
+                        showAlert('✅ Tu email ha sido agregado como administrador');
+                    }
+                }
+            }
+        }
+        
+        // ========================================
+        // FUNCIONES DE TABS
+        // ========================================
+        function switchTab(tabName) {
+            // Ocultar todos los paneles
+            document.getElementById('panelVideos').style.display = 'none';
+            document.getElementById('panelNewCourse').style.display = 'none';
+            
+            // Remover active de todos los tabs
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Mostrar panel seleccionado
+            if (tabName === 'videos') {
+                document.getElementById('panelVideos').style.display = 'block';
+                document.getElementById('panelNewCourse').style.display = 'none';
+                document.getElementById('panelUsers').style.display = 'none';
+                document.getElementById('tabVideos').classList.add('active');
+                // Mostrar lista de cursos
+                showCoursesList();
+                loadCoursesList(); // Asegurar que se carga la lista
+            } else if (tabName === 'newCourse') {
+                document.getElementById('panelNewCourse').style.display = 'block';
+                document.getElementById('panelVideos').style.display = 'none';
+                document.getElementById('panelUsers').style.display = 'none';
+                document.getElementById('tabNewCourse').classList.add('active');
+                updateCourseSelector(); // Actualizar selector de cursos
+            } else if (tabName === 'users') {
+                document.getElementById('panelUsers').style.display = 'block';
+                document.getElementById('panelVideos').style.display = 'none';
+                document.getElementById('panelNewCourse').style.display = 'none';
+                document.getElementById('tabUsers').classList.add('active');
+                loadUsersList(); // Cargar lista de usuarios
+            }
+        }
+        
+        // Hacer switchTab disponible globalmente
+        window.switchTab = switchTab;
+        
+        // ========================================
+        // FUNCIONES DE INFORMACIÓN DEL CURSO (MODAL)
+        // ========================================
+        
+        // Abrir modal para editar información del curso
+        function editCourseInfoInPanel(courseId, event) {
+            if (event) event.stopPropagation();
+            
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            const courseInfo = coursesInfo[courseId] || {};
+            const defaultInfo = defaultCoursesInfo[courseId] || {};
+            
+            // Llenar formulario del modal
+            document.getElementById('modalCourseName').value = courseInfo.name || defaultInfo.name || courseNames[courseId] || '';
+            document.getElementById('modalCourseDescription').value = courseInfo.description || defaultInfo.description || '';
+            document.getElementById('modalCourseLevel').value = courseInfo.level || defaultInfo.level || 'Intermedio';
+            document.getElementById('modalCoursePrice').value = courseInfo.price || defaultInfo.price || '';
+            document.getElementById('modalCourseStatus').value = courseInfo.status || defaultInfo.status || 'coming-soon';
+            document.getElementById('modalCourseIcon').value = courseInfo.icon || defaultInfo.icon || '🎓';
+            
+            // Ocultar botón eliminar para cursos principales
+            const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+            const deleteBtnContainer = document.getElementById('modalDeleteBtnContainer');
+            if (deleteBtnContainer) {
+                deleteBtnContainer.style.display = defaultCourses.includes(courseId) ? 'none' : 'block';
+            }
+            
+            // Guardar ID del curso siendo editado
+            document.getElementById('courseInfoModal').setAttribute('data-course-id', courseId);
+            
+            // Mostrar modal
+            document.getElementById('courseInfoModal').style.display = 'flex';
+        }
+        
+        // Cerrar modal
+        function closeCourseInfoModal() {
+            document.getElementById('courseInfoModal').style.display = 'none';
+        }
+        
+        // Guardar información del curso desde el modal
+        function saveCourseInfoFromModal() {
+            const courseId = document.getElementById('courseInfoModal').getAttribute('data-course-id');
+            if (!courseId) return;
+            
+            const name = document.getElementById('modalCourseName').value.trim();
+            const description = document.getElementById('modalCourseDescription').value.trim();
+            const level = document.getElementById('modalCourseLevel').value;
+            const price = parseFloat(document.getElementById('modalCoursePrice').value) || 0;
+            const status = document.getElementById('modalCourseStatus').value;
+            const icon = document.getElementById('modalCourseIcon').value.trim();
+            
+            if (!name) {
+                alert('Por favor ingresa el título del curso');
+                return;
+            }
+            
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            coursesInfo[courseId] = {
+                name: name,
+                description: description,
+                level: level,
+                price: price,
+                status: status,
+                icon: icon,
+                videos: coursesInfo[courseId]?.videos || '0+',
+                hours: coursesInfo[courseId]?.hours || '0+ Horas'
+            };
+            
+            localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
+            
+            // Actualizar lista de cursos
+            loadCoursesList();
+            
+            // Cerrar modal
+            closeCourseInfoModal();
+            
+            showAlert('✅ Información del curso guardada! Los cambios se reflejarán automáticamente en todas las páginas.');
+        }
+        
+        // Eliminar curso desde modal
+        function deleteCourseFromModal() {
+            const courseId = document.getElementById('courseInfoModal').getAttribute('data-course-id');
+            if (!courseId) return;
+            
+            closeCourseInfoModal();
+            deleteCourse(courseId);
+        }
+        
+        // Cargar información del curso actual (función antigua - mantener por compatibilidad)
+        function loadCourseInfo() {
+            const courseInfo = getCourseInfo(currentCourseId);
+            
+            // Si no hay info guardada, usar valores por defecto
+            const defaultCourseNames = {
+                'curso-voces': 'Mezcla y Grabación de Voces',
+                'curso-maquetizacion': 'Maquetización Composicional',
+                'curso-beats': 'Programación de Beats'
+            };
+            
+            const defaultDescriptions = {
+                'curso-voces': 'Nivel Avanzado. Aprende técnicas profesionales para grabar y mezclar voces como los grandes productores. Domina el proceso completo desde la grabación hasta la mezcla final con estándares de la industria.',
+                'curso-maquetizacion': 'Nivel Intermedio. Domina el arte de estructurar y organizar tus composiciones musicales. Aprende a crear arreglos profesionales y maquetas que conecten con tu audiencia desde el primer segundo.',
+                'curso-beats': 'Nivel Intermedio. Aprende a programar beats profesionales desde cero. Domina la creación de ritmos, patrones de batería y técnicas avanzadas de programación que harán que tus producciones destaquen.'
+            };
+            
+            const defaultLevels = {
+                'curso-voces': 'Avanzado',
+                'curso-maquetizacion': 'Intermedio',
+                'curso-beats': 'Intermedio'
+            };
+            
+            const defaultPrices = {
+                'curso-voces': 99.99,
+                'curso-maquetizacion': 89.99,
+                'curso-beats': 79.99
+            };
+            
+            const defaultIcons = {
+                'curso-voces': '🎤',
+                'curso-maquetizacion': '🎹',
+                'curso-beats': '🎛️'
+            };
+            
+            if (courseInfo) {
+                document.getElementById('courseName').value = courseInfo.name || defaultCourseNames[currentCourseId] || '';
+                document.getElementById('courseDescription').value = courseInfo.description || defaultDescriptions[currentCourseId] || '';
+                document.getElementById('courseLevel').value = courseInfo.level || defaultLevels[currentCourseId] || 'Intermedio';
+                document.getElementById('coursePrice').value = courseInfo.price || defaultPrices[currentCourseId] || '';
+                document.getElementById('courseImage').value = courseInfo.image || '';
+                document.getElementById('courseIcon').value = courseInfo.icon || defaultIcons[currentCourseId] || '🎓';
+                document.getElementById('courseVideos').value = courseInfo.videos || '';
+                document.getElementById('courseHours').value = courseInfo.hours || '';
+                if (document.getElementById('courseStatus')) {
+                    document.getElementById('courseStatus').value = courseInfo.status || (currentCourseId === 'curso-voces' ? 'available' : 'coming-soon');
+                }
+            } else {
+                // Cargar valores por defecto
+                document.getElementById('courseName').value = defaultCourseNames[currentCourseId] || '';
+                document.getElementById('courseDescription').value = defaultDescriptions[currentCourseId] || '';
+                document.getElementById('courseLevel').value = defaultLevels[currentCourseId] || 'Intermedio';
+                document.getElementById('coursePrice').value = defaultPrices[currentCourseId] || '';
+                document.getElementById('courseImage').value = '';
+                document.getElementById('courseIcon').value = defaultIcons[currentCourseId] || '🎓';
+                document.getElementById('courseVideos').value = '';
+                document.getElementById('courseHours').value = '';
+                if (document.getElementById('courseStatus')) {
+                    document.getElementById('courseStatus').value = currentCourseId === 'curso-voces' ? 'available' : 'coming-soon';
+                }
+            }
+            
+            // Mostrar u ocultar botón de eliminar según si es curso default
+            const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+            const deleteBtn = document.getElementById('deleteCourseBtn');
+            if (deleteBtn) {
+                if (defaultCourses.includes(currentCourseId)) {
+                    deleteBtn.style.display = 'none';
+                } else {
+                    deleteBtn.style.display = 'block';
+                }
+            }
+        }
+        
+        // Obtener información de un curso
+        function getCourseInfo(courseId) {
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            return coursesInfo[courseId] || null;
+        }
+        
+        // Guardar información del curso
+        function saveCourseInfo() {
+            const name = document.getElementById('courseName').value.trim();
+            const description = document.getElementById('courseDescription').value.trim();
+            const level = document.getElementById('courseLevel').value;
+            const price = parseFloat(document.getElementById('coursePrice').value);
+            const image = document.getElementById('courseImage').value.trim();
+            const icon = document.getElementById('courseIcon').value.trim();
+            const videos = document.getElementById('courseVideos').value;
+            const hours = document.getElementById('courseHours').value.trim();
+            const status = document.getElementById('courseStatus') ? document.getElementById('courseStatus').value : 'available';
+            
+            if (!name) {
+                alert('Por favor ingresa el título del curso');
+                return;
+            }
+            
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            coursesInfo[currentCourseId] = {
+                name: name,
+                description: description,
+                level: level,
+                price: price,
+                image: image,
+                icon: icon,
+                videos: videos,
+                hours: hours,
+                status: status
+            };
+            
+            localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
+            
+            // Actualizar selector de cursos si el nombre cambió
+            updateCourseSelector();
+            
+            // Mostrar o ocultar botón de eliminar según si es curso default
+            const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+            const deleteBtn = document.getElementById('deleteCourseBtn');
+            if (deleteBtn) {
+                if (defaultCourses.includes(currentCourseId)) {
+                    deleteBtn.style.display = 'none';
+                } else {
+                    deleteBtn.style.display = 'block';
+                }
+            }
+            
+            showAlert('✅ Información del curso guardada! Los cambios se reflejarán automáticamente en la página de cursos y en todas las demás páginas.');
+        }
+        
+        // ========================================
+        // FUNCIONES DE NUEVO CURSO
+        // ========================================
+        
+        function createNewCourse() {
+            console.log('🚀 createNewCourse() llamada');
+            
+            // Obtener valores de los campos
+            const courseIdInput = document.getElementById('newCourseId');
+            const nameInput = document.getElementById('newCourseName');
+            const descriptionInput = document.getElementById('newCourseDescription');
+            
+            if (!courseIdInput || !nameInput || !descriptionInput) {
+                console.error('❌ Campos del formulario no encontrados');
+                window.alert('❌ Error: Los campos del formulario no se encontraron. Por favor recarga la página.');
+                return;
+            }
+            
+            const courseId = courseIdInput.value.trim();
+            const name = nameInput.value.trim();
+            const description = descriptionInput.value.trim();
+            const level = document.getElementById('newCourseLevel') ? document.getElementById('newCourseLevel').value : 'Intermedio';
+            const price = document.getElementById('newCoursePrice') ? parseFloat(document.getElementById('newCoursePrice').value) || 0 : 0;
+            const icon = document.getElementById('newCourseIcon') ? document.getElementById('newCourseIcon').value.trim() || '🎓' : '🎓';
+            const status = document.getElementById('newCourseStatus') ? document.getElementById('newCourseStatus').value : 'coming-soon';
+            
+            console.log('📝 Datos del formulario:', { courseId, name, description, level, price, icon, status });
+            
+            if (!courseId || !name || !description) {
+                window.alert('⚠️ Por favor completa todos los campos requeridos:\n- ID del Curso\n- Nombre del Curso\n- Descripción');
+                if (typeof showAlert === 'function') {
+                    showAlert('❌ Por favor completa todos los campos requeridos');
+                }
+                if (typeof showToast === 'function') {
+                    showToast('Completa los campos requeridos antes de crear el curso.', { icon: '⚠️', duration: 3800 });
+                }
+                return;
+            }
+            
+            console.log('🚀 Creando nuevo curso:', { courseId, name, description });
+            
+            // Guardar información del curso
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            coursesInfo[courseId] = {
+                name: name,
+                description: description,
+                level: level,
+                price: price,
+                icon: icon,
+                status: status,
+                videos: 0,
+                hours: '0+ Horas'
+            };
+            localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
+            
+            // Inicializar estructura de videos con módulos por defecto (estructura de producción musical)
+            const coursesData = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            
+            // Estructura por defecto de módulos para producción musical
+            const defaultModules = [
+                {
+                    id: 'modulo-1',
+                    title: 'Introducción',
+                    lessons: [
+                        { id: 1, title: 'Bienvenida al Curso', duration: '5:00', videoUrl: '', description: 'Presentación del curso y recomendaciones para aprovechar cada módulo.', completed: false },
+                        { id: 2, title: '¿Qué es la Producción Musical?', duration: '10:00', videoUrl: '', description: 'Contexto general del mundo de la producción y conceptos clave para principiantes.', completed: false }
+                    ]
+                },
+                {
+                    id: 'modulo-2',
+                    title: 'Fundamentos del Audio',
+                    lessons: [
+                        { id: 1, title: 'El Sonido y sus Características', duration: '12:00', videoUrl: '', description: 'Define conceptos como frecuencia, amplitud y fase con ejemplos prácticos.', completed: false },
+                        { id: 2, title: 'Frecuencias y Ecualización', duration: '15:00', videoUrl: '', description: 'Guía básica de EQ para identificar problemas y realzar elementos en la mezcla.', completed: false }
+                    ]
+                },
+                {
+                    id: 'modulo-3',
+                    title: 'Herramientas de Producción',
+                    lessons: [
+                        { id: 1, title: 'Introducción al DAW', duration: '18:00', videoUrl: '', description: 'Recorrido por la interfaz del DAW y configuración inicial del proyecto.', completed: false },
+                        { id: 2, title: 'Plugins y Efectos', duration: '20:00', videoUrl: '', description: 'Tipos de plugins imprescindibles y cómo integrarlos a tu flujo de trabajo.', completed: false }
+                    ]
+                },
+                {
+                    id: 'modulo-4',
+                    title: 'Composición Musical',
+                    lessons: [
+                        { id: 1, title: 'Estructura de una Canción', duration: '14:00', videoUrl: '', description: 'Analiza las partes de una canción moderna y cómo distribuir la energía.', completed: false },
+                        { id: 2, title: 'Creación de Melodías', duration: '16:00', videoUrl: '', description: 'Técnicas sencillas para crear melodías memorables utilizando escalas y motivos.', completed: false }
+                    ]
+                },
+                {
+                    id: 'modulo-5',
+                    title: 'Mezcla y Masterización',
+                    lessons: [
+                        { id: 1, title: 'Fundamentos de la Mezcla', duration: '22:00', videoUrl: '', description: 'Proceso básico de mezcla y checklist de balance, paneo y dinámica.', completed: false },
+                        { id: 2, title: 'Técnicas de Masterización', duration: '25:00', videoUrl: '', description: 'Pasos finales para preparar tu canción para su distribución.', completed: false }
+                    ]
+                }
+            ];
+            
+            coursesData[courseId] = {
+                id: courseId,
+                title: name,
+                modules: defaultModules
+            };
+            localStorage.setItem('coursesData', JSON.stringify(coursesData));
+            
+            // Actualizar selector
+            updateCourseSelector();
+            
+            console.log('✅ Curso guardado en localStorage:', { courseId, name });
+            
+            // Validar que todo se guardó correctamente
+            const savedInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            const savedData = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            console.log('📋 Verificación - Info guardada:', !!savedInfo[courseId]);
+            console.log('📋 Verificación - Data guardada:', !!savedData[courseId]);
+            
+            // Mostrar mensaje INMEDIATAMENTE con alert nativo (siempre funciona)
+            try {
+                window.alert('✅ ¡Curso agregado correctamente!\n\nEl curso "' + name + '" ha sido creado exitosamente.\n\nRedirigiendo a "Gestionar Cursos"...');
+                console.log('✅ Alert nativo mostrado');
+            } catch (e) {
+                console.error('❌ Error al mostrar alert:', e);
+            }
+            
+            // También mostrar mensaje visual
+            try {
+                if (typeof showAlert === 'function') {
+                    showAlert('✅ ¡Curso agregado correctamente! Redirigiendo a "Gestionar Cursos"...');
+                    console.log('✅ Mensaje visual mostrado');
+                } else {
+                    console.error('❌ showAlert no está definida');
+                }
+                if (typeof showInlineNewCourseMessage === 'function') {
+                    showInlineNewCourseMessage('✅ El curso <strong>' + name + '</strong> se creó exitosamente. En unos segundos te llevaremos a "Gestionar Cursos".');
+                }
+            } catch (e) {
+                console.error('❌ Error al mostrar mensaje visual:', e);
+            }
+
+            if (typeof showToast === 'function') {
+                showToast(`¡${name} ha sido creado!`, { icon: '🎓', duration: 4500 });
+            }
+            
+            console.log('✅ Curso creado:', { courseId, name, coursesInfo, coursesData });
+            
+            // Limpiar formulario primero
+            document.getElementById('newCourseId').value = '';
+            document.getElementById('newCourseName').value = '';
+            document.getElementById('newCourseDescription').value = '';
+            document.getElementById('newCoursePrice').value = '';
+            document.getElementById('newCourseIcon').value = '';
+            
+            // Esperar un momento para que se vea el mensaje y luego cambiar a gestionar cursos
+            setTimeout(() => {
+                // Cambiar a la pestaña de gestionar cursos
+                switchTab('videos');
+                
+                // Esperar a que la vista se actualice y luego recargar la lista
+                setTimeout(() => {
+                    console.log('🔄 Recargando lista de cursos...');
+                    loadCoursesList();
+                    
+                    // Mostrar mensaje final de éxito
+                    setTimeout(() => {
+                        showAlert('✅ ' + name + ' está disponible en "Gestionar Cursos"');
+                        
+                        // Desplazarse al curso recién creado después de que se renderice
+                        setTimeout(() => {
+                            const newCourseCard = document.querySelector(`[data-course-id="${courseId}"]`);
+                            console.log('🔍 Buscando curso:', courseId, 'Encontrado:', !!newCourseCard);
+                            if (newCourseCard) {
+                                newCourseCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                // Resaltar el curso nuevo por 3 segundos
+                                newCourseCard.style.border = '3px solid var(--primary-color)';
+                                newCourseCard.style.boxShadow = '0 0 25px rgba(57, 243, 212, 0.6)';
+                                newCourseCard.style.transform = 'scale(1.02)';
+                                setTimeout(() => {
+                                    newCourseCard.style.border = '';
+                                    newCourseCard.style.boxShadow = '';
+                                    newCourseCard.style.transform = '';
+                                }, 3000);
+                            } else {
+                                console.warn('⚠️ Curso creado pero no se encontró en la vista:', courseId);
+                                console.log('📋 Cursos disponibles en localStorage:', Object.keys(JSON.parse(localStorage.getItem('coursesInfo') || '{}')));
+                            }
+                        }, 800);
+                    }, 300);
+                }, 400);
+            }, 800);
+        }
+        
+        // Hacer createNewCourse disponible globalmente
+        window.createNewCourse = createNewCourse;
+        
+        // Eliminar curso completamente
+        function deleteCourse(courseId) {
+            console.log('🗑️ deleteCourse llamada con courseId:', courseId);
+            
+            // No permitir eliminar cursos por defecto
+            const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+            if (defaultCourses.includes(courseId)) {
+                showAlert('⚠️ No puedes eliminar los cursos principales. Solo puedes marcarlos como "Próximamente".');
+                console.warn('⚠️ Intento de eliminar curso principal:', courseId);
+                return false;
+            }
+            
+            if (!courseId || courseId.trim() === '') {
+                console.error('❌ Error: courseId inválido');
+                showAlert('❌ Error: No se pudo identificar el curso a eliminar');
+                return false;
+            }
+            
+            console.log('✅ Eliminando curso:', courseId);
+            
+            // Agregar a lista de cursos eliminados
+            const deletedCourses = JSON.parse(localStorage.getItem('deletedCourses') || '[]');
+            if (!deletedCourses.includes(courseId)) {
+                deletedCourses.push(courseId);
+                localStorage.setItem('deletedCourses', JSON.stringify(deletedCourses));
+                console.log('📋 Curso agregado a lista de eliminados');
+            }
+            
+            // Eliminar de coursesInfo
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            if (coursesInfo[courseId]) {
+                delete coursesInfo[courseId];
+                localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
+                console.log('✅ Eliminado de coursesInfo');
+            }
+            
+            // Eliminar de coursesData
+            const coursesData = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            if (coursesData[courseId]) {
+                delete coursesData[courseId];
+                localStorage.setItem('coursesData', JSON.stringify(coursesData));
+                console.log('✅ Eliminado de coursesData');
+            }
+            
+            // Actualizar selector (quitar curso eliminado)
+            if (typeof updateCourseSelector === 'function') {
+                updateCourseSelector();
+            }
+            
+            // Si el curso eliminado estaba seleccionado, cambiar a otro
+            const selector = document.getElementById('courseSelector');
+            if (selector && selector.value === courseId) {
+                selector.value = 'curso-voces';
+                if (typeof loadCourseData === 'function') {
+                    loadCourseData();
+                }
+            }
+            
+            console.log('✅ Curso eliminado completamente:', courseId);
+            return true;
+        }
+        
+        // Hacer deleteCourse disponible globalmente
+        window.deleteCourse = deleteCourse;
+        
+        // Actualizar selector de cursos
+        function updateCourseSelector() {
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            const deletedCourses = JSON.parse(localStorage.getItem('deletedCourses') || '[]');
+            const selector = document.getElementById('courseSelector');
+            
+            // Guardar valor actual
+            const currentValue = selector.value;
+            
+            // Crear lista de cursos por defecto
+            const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+            
+            // Remover todas las opciones excepto las default
+            Array.from(selector.options).forEach(option => {
+                if (!defaultCourses.includes(option.value)) {
+                    option.remove();
+                }
+            });
+            
+            // Agregar nuevos cursos creados (solo los que no están eliminados)
+            Object.keys(coursesInfo).forEach(courseId => {
+                if (!defaultCourses.includes(courseId) && !deletedCourses.includes(courseId)) {
+                    const existingOption = Array.from(selector.options).find(o => o.value === courseId);
+                    if (existingOption) {
+                        // Actualizar nombre si cambió
+                        existingOption.textContent = coursesInfo[courseId].name;
+                    } else {
+                        // Agregar nuevo curso
+                        const option = document.createElement('option');
+                        option.value = courseId;
+                        option.textContent = coursesInfo[courseId].name;
+                        selector.appendChild(option);
+                    }
+                } else if (defaultCourses.includes(courseId)) {
+                    // Actualizar nombres de cursos default si cambiaron
+                    const option = Array.from(selector.options).find(o => o.value === courseId);
+                    if (option && coursesInfo[courseId]) {
+                        option.textContent = coursesInfo[courseId].name;
+                    }
+                }
+            });
+            
+            // Remover opciones de cursos eliminados
+            Array.from(selector.options).forEach(option => {
+                if (deletedCourses.includes(option.value)) {
+                    option.remove();
+                }
+            });
+            
+            // Restaurar selección (si el curso seleccionado fue eliminado, cambiar a default)
+            if (currentValue && !deletedCourses.includes(currentValue)) {
+                selector.value = currentValue;
+            } else if (deletedCourses.includes(currentValue)) {
+                selector.value = 'curso-voces';
+                loadCourseData();
+            }
+        }
+        
+        // ========================================
+        // INICIALIZACIÓN
+        // ========================================
+        
+        // Variable global para cursos por defecto
+        const defaultCoursesInfo = {
+            'curso-voces': {
+                name: 'Mezcla y Grabación de Voces',
+                description: 'Nivel Avanzado. Aprende técnicas profesionales para grabar y mezclar voces como los grandes productores.',
+                icon: '🎤',
+                level: 'Avanzado',
+                status: 'available'
+            },
+            'curso-maquetizacion': {
+                name: 'Maquetización Composicional',
+                description: 'Nivel Intermedio. Domina el arte de estructurar y organizar tus composiciones musicales.',
+                icon: '🎹',
+                level: 'Intermedio',
+                status: 'coming-soon'
+            },
+            'curso-beats': {
+                name: 'Programación de Beats',
+                description: 'Nivel Intermedio. Aprende a programar beats profesionales desde cero.',
+                icon: '🎛️',
+                level: 'Intermedio',
+                status: 'coming-soon'
+            }
+        };
+        
+        // ========================================
+        // FUNCIONES DE GESTIÓN DE USUARIOS
+        // ========================================
+        
+        function loadUsersList() {
+            const usersContainer = document.getElementById('usersListContainer');
+            if (!usersContainer) return;
+            
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            const userList = Object.keys(users);
+            
+            if (userList.length === 0) {
+                usersContainer.innerHTML = `
+                    <div style="text-align: center; padding: 40px; background: var(--dark-secondary); border-radius: 12px; border: 2px dashed var(--text-muted);">
+                        <p style="color: var(--text-secondary); font-size: 1.1rem;">📭 No hay usuarios registrados aún</p>
+                        <p style="color: var(--text-muted); margin-top: 10px; font-size: 0.9rem;">Los usuarios aparecerán aquí cuando se registren en la plataforma</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(57, 243, 212, 0.1); border-radius: 10px; border-left: 4px solid var(--primary-color);">
+                    <strong style="color: var(--primary-color); font-size: 1.1rem;">Total de usuarios: ${userList.length}</strong>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+            `;
+            
+            userList.forEach(email => {
+                const user = users[email];
+                const userSession = JSON.parse(localStorage.getItem('user') || '{}');
+                const isCurrentUser = userSession.email === email;
+                const isAdmin = typeof isAdminEmail === 'function' ? isAdminEmail(email) : false;
+                
+                html += `
+                    <div style="background: var(--dark-secondary); border-radius: 12px; padding: 20px; border: 2px solid ${isAdmin ? 'var(--primary-color)' : 'rgba(255,255,255,0.1)'}; position: relative;">
+                        ${isAdmin ? '<span style="position: absolute; top: 10px; right: 10px; background: var(--primary-color); color: var(--dark-bg); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">👑 ADMIN</span>' : ''}
+                        ${isCurrentUser ? '<span style="position: absolute; top: 10px; left: 10px; background: #4ade80; color: var(--dark-bg); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">✓ TÚ</span>' : ''}
+                        <div style="margin-bottom: 15px;">
+                            <h3 style="color: var(--primary-color); margin: 0 0 8px 0; font-size: 1.2rem; font-weight: 700;">${user.name || email.split('@')[0]}</h3>
+                            <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem; word-break: break-all;">📧 ${email}</p>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button onclick="viewUserDetails('${email}')" style="flex: 1; background: var(--dark-tertiary); color: white; border: 1px solid var(--primary-color); padding: 8px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">
+                                👁️ Ver Detalles
+                            </button>
+                            ${!isAdmin && !isCurrentUser ? `
+                            <button onclick="deleteUser('${email}')" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">
+                                🗑️ Eliminar
+                            </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            usersContainer.innerHTML = html;
+        }
+        
+        function viewUserDetails(email) {
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            const user = users[email];
+            const purchasedCourses = JSON.parse(localStorage.getItem('purchasedCourses') || '{}');
+            const userPurchases = purchasedCourses[email] || [];
+            
+            if (!user) {
+                alert('Usuario no encontrado');
+                return;
+            }
+            
+            const detailsHtml = `
+                <div style="background: var(--dark-bg); padding: 25px; border-radius: 15px; max-width: 600px; margin: 0 auto; border: 2px solid var(--primary-color);">
+                    <h2 style="color: var(--primary-color); margin-bottom: 20px;">👤 Detalles del Usuario</h2>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: var(--text-secondary);">Nombre:</strong>
+                        <p style="color: white; margin-top: 5px;">${user.name || 'No especificado'}</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: var(--text-secondary);">Email:</strong>
+                        <p style="color: white; margin-top: 5px; word-break: break-all;">${email}</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: var(--text-secondary);">Cursos Comprados:</strong>
+                        <p style="color: white; margin-top: 5px;">${userPurchases.length > 0 ? userPurchases.join(', ') : 'Ninguno'}</p>
+                    </div>
+                    <button onclick="this.closest('.modal-overlay')?.remove()" style="width: 100%; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; margin-top: 15px;">
+                        Cerrar
+                    </button>
+                </div>
+            `;
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 20px;';
+            modal.innerHTML = detailsHtml;
+            modal.onclick = function(e) {
+                if (e.target === modal) modal.remove();
+            };
+            document.body.appendChild(modal);
+        }
+        
+        function deleteUser(email) {
+            if (!confirm(`¿Estás seguro de eliminar al usuario ${email}?\n\nEsta acción no se puede deshacer.`)) {
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            delete users[email];
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // También eliminar de purchasedCourses si existe
+            const purchasedCourses = JSON.parse(localStorage.getItem('purchasedCourses') || '{}');
+            if (purchasedCourses[email]) {
+                delete purchasedCourses[email];
+                localStorage.setItem('purchasedCourses', JSON.stringify(purchasedCourses));
+            }
+            
+            alert('✅ Usuario eliminado exitosamente');
+            loadUsersList(); // Recargar lista
+        }
+        
+        // Hacer funciones disponibles globalmente
+        window.loadUsersList = loadUsersList;
+        window.viewUserDetails = viewUserDetails;
+        window.deleteUser = deleteUser;
+        
+        // ========================================
+        // INICIALIZACIÓN
+        // ========================================
+        
+        // ========================================
+        // FUNCIÓN DE CERRAR SESIÓN
+        // ========================================
+        
+        function deleteCookie(name) {
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+        }
+        
+        function logout() {
+            if (confirm('¿Estás seguro que quieres cerrar sesión?')) {
+                // Limpiar localStorage
+                localStorage.removeItem('user');
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('currentCourse');
+                
+                // Limpiar cookies
+                deleteCookie('user_session');
+                deleteCookie('is_logged_in');
+                
+                // Limpiar sessionStorage
+                sessionStorage.removeItem('oauth_redirect_from');
+                sessionStorage.removeItem('google_user_email');
+                
+                window.location.href = 'Login.html';
+            }
+        }
+        
+        // Hacer logout disponible globalmente
+        window.logout = logout;
+        
+        // Initialize
+        showCurrentAdmin();
+        initializeDefaultCourses(); // Inicializar cursos por defecto primero
+        updateCourseSelector(); // Actualizar selector para otras pestañas
+        loadCoursesList(); // Cargar lista de cursos
+        
+        // Loading Screen - Backup (en caso de que checkAdminAccess no lo oculte)
+        window.addEventListener('load', function() {
+            // El loading se oculta desde checkAdminAccess, pero esto es un backup
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loadingScreen');
+                if (loadingScreen && loadingScreen.style.display !== 'none') {
+                    console.log('Backup: ocultando loading screen');
+                    loadingScreen.classList.add('hidden');
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 200);
+                }
+            }, 2000); // Backup después de 2 segundos
+        });
+    </script>
+</body>
+</html>
+

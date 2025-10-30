@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/animaciones.js" defer></script>
+    <script src="js/config.js"></script>
+    <title>Curso - Graykids Academy</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__container container">
+            <div class="header__logo">
+                <a href="campus.html">
+                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                </a>
+                <span class="header__logo-text">Graykids Academy</span>
+            </div>
+            <nav class="header__nav">
+                <a href="campus.html" class="header__link">← Volver al Campus</a>
+                <a href="admin.html" id="adminLink" class="header__link" style="display: none;">🎛️ Panel Admin</a>
+                <span id="adminCourseIndicator" style="display: none; color: var(--primary-color); font-weight: 700; padding: 8px 15px; background: rgba(57, 243, 212, 0.1); border-radius: 8px; border: 1px solid var(--primary-color); margin-left: 10px; font-size: 0.9rem;">
+                    ✏️ Editando: <span id="headerCourseName">Curso</span>
+                </span>
+            </nav>
+            
+        </div>
+    </header>
+    
+
+    <!-- COURSE CONTENT -->
+    <section class="course-player">
+        <div class="course-player__container">
+            <div class="course-player__grid">
+                <!-- LEFT: VIDEO PLAYER -->
+                <div class="course-player__main">
+                    <!-- Video Player -->
+                    <div class="video-player">
+                        <div class="video-player__placeholder">
+                            <div class="video-player__overlay">
+                                <button class="video-player__play" onclick="playVideo()">
+                                    <span class="play-icon">▶</span>
+                                </button>
+                            </div>
+                            <div class="video-player__info">
+                                <h3 class="video-player__title" id="currentLessonTitle">Introducción al Curso</h3>
+                                <p class="video-player__description" id="videoPlayerDescription">Da clic en el botón play para comenzar la lección</p>
+                                <div id="adminVideoEdit" class="admin-video-edit-card" style="display: none; margin-top: 20px;">
+                                    <button id="adminVideoEditToggle" type="button" onclick="toggleAdminVideoEditor()" style="width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; background: rgba(57, 243, 212, 0.15); color: var(--primary-color); border: 1px solid rgba(57, 243, 212, 0.4); padding: 12px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.95rem;">
+                                        <span style="display: inline-flex; align-items: center; gap: 10px;">
+                                            <span>🎬 Configurar video de la lección</span>
+                                            <small id="adminVideoEditStatus" style="color: rgba(255,255,255,0.7); font-weight: 500;">(sin video)</small>
+                                        </span>
+                                        <span id="adminVideoEditToggleIcon" style="font-size: 1.1rem;">▼</span>
+                                    </button>
+                                    <div id="adminVideoEditContent" style="display: none; margin-top: 12px; padding: 16px; background: rgba(0,0,0,0.45); border-radius: 12px; border: 1px solid rgba(57, 243, 212, 0.25); display: grid; gap: 14px;">
+                                        <div style="color: white; font-weight: 600;">🎥 Fuente del video:</div>
+                                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                                            <label style="color: white; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                                                <input type="radio" name="videoSourceType" value="youtube" checked>
+                                                <span>YouTube / Vimeo</span>
+                                            </label>
+                                            <label style="color: white; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                                                <input type="radio" name="videoSourceType" value="direct">
+                                                <span>Enlace directo MP4</span>
+                                            </label>
+                                            <label style="color: white; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                                                <input type="radio" name="videoSourceType" value="file">
+                                                <span>Subir archivo (local)</span>
+                                            </label>
+                                        </div>
+
+                                        <div id="videoInputYoutube" style="display: block;">
+                                            <label style="color: white; font-weight: 600; display: block; margin-bottom: 6px;">URL (YouTube/Vimeo)</label>
+                                            <input type="text" id="lessonVideoUrlInput" placeholder="https://www.youtube.com/watch?v=..." style="width: 100%; padding: 10px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px;">
+                                        </div>
+
+                                        <div id="videoInputDirect" style="display: none;">
+                                            <label style="color: white; font-weight: 600; display: block; margin-bottom: 6px;">URL directa (MP4/M3U8)</label>
+                                            <input type="text" id="lessonVideoDirectInput" placeholder="https://cdn.tu-host.com/video.mp4" style="width: 100%; padding: 10px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px;">
+                                        </div>
+
+                                        <div id="videoInputFile" style="display: none;">
+                                            <label style="color: white; font-weight: 600; display: block; margin-bottom: 6px;">Archivo local (MP4)</label>
+                                            <input type="file" id="lessonVideoFileInput" accept="video/mp4,video/webm" style="width: 100%; padding: 8px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;">
+                                            <small style="color: #bbb; display: block; margin-top: 6px;">Nota: el archivo se previsualiza usando un enlace temporal del navegador. No persiste tras recargar.</small>
+                                        </div>
+
+                                        <div style="display: flex; gap: 10px;">
+                                            <button onclick="saveLessonVideo()" style="background: var(--primary-color); color: var(--dark-bg); border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem;">💾 Guardar Video</button>
+                                            <button type="button" onclick="toggleAdminVideoEditor(false)" style="background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="lessonIframeContainer" style="display:none; width: 100%;">
+                            <iframe id="lessonIframe" width="100%" height="480" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius: 12px;"></iframe>
+                        </div>
+                        <video id="lessonVideo" class="video-player__video" style="display: none; width: 100%; max-height: 600px; border-radius: 12px;" controls>
+                            <source src="#" type="video/mp4">
+                            Tu navegador no soporta la reproducción de video.
+                        </video>
+                        
+                        <!-- Navegación entre lecciones -->
+                        <div id="lessonNavigation" style="display: none; margin-top: 20px; flex-direction: column; gap: 15px; padding: 15px; background: rgba(57, 243, 212, 0.1); border-radius: 10px; border: 1px solid var(--primary-color);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+                                <button id="prevLessonBtn" onclick="navigateLesson('prev')" style="flex: 1; background: var(--dark-tertiary); color: white; border: 1px solid var(--primary-color); padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s;" onmouseover="if(!this.disabled) {this.style.background='var(--primary-color)'; this.style.color='var(--dark-bg)'}" onmouseout="if(!this.disabled) {this.style.background='var(--dark-tertiary)'; this.style.color='white'}">⬅️ Lección Anterior</button>
+                                <span id="lessonCounter" style="color: var(--text-secondary); font-weight: 600; padding: 0 15px; min-width: 60px; text-align: center;">1 / 1</span>
+                                <button id="nextLessonBtn" onclick="navigateLesson('next')" style="flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: transform 0.2s;" onmouseover="if(!this.disabled) {this.style.transform='scale(1.05)'}" onmouseout="if(!this.disabled) {this.style.transform='scale(1)'}">Siguiente Lección ➡️</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lesson Info -->
+                    <div class="lesson-info">
+                        <div class="lesson-info__header">
+                            <div style="display: flex; justify-content: space-between; align-items: start; gap: 15px;">
+                                <div style="flex: 1;">
+                            <h2 class="lesson-info__title" id="lessonTitle">Bienvenido al Curso</h2>
+                                    <input type="text" id="lessonTitleInput" style="display: none; width: 100%; padding: 10px; background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); border-radius: 8px; font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">
+                            <div class="lesson-info__meta">
+                                <span class="lesson-info__badge">Lección 1 de 50</span>
+                                        <span class="lesson-info__duration" id="lessonDuration">15:30 minutos</span>
+                                        <input type="text" id="lessonDurationInput" style="display: none; padding: 5px 10px; background: var(--dark-tertiary); color: white; border: 1px solid var(--primary-color); border-radius: 6px; font-size: 0.9rem; margin-left: 10px;">
+                                    </div>
+                                </div>
+                                <div id="adminLessonEdit" style="display: none;">
+                                    <button onclick="editCurrentLesson()" style="background: var(--primary-color); color: var(--dark-bg); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; margin-right: 8px;">✏️ Editar</button>
+                                    <button onclick="deleteCurrentLesson()" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">🗑️ Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lesson-info__content" style="margin-top: 15px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
+                                <h3 class="lesson-info__subtitle" style="margin: 0;">Descripción de la lección</h3>
+                                <div id="lessonDescriptionActions" style="display: none; gap: 10px; flex-wrap: wrap;">
+                                    <button id="editLessonDescriptionBtn" onclick="startLessonDescriptionEdit()" style="background: rgba(57, 243, 212, 0.15); color: var(--primary-color); border: 1px solid rgba(57, 243, 212, 0.4); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">✏️ Editar</button>
+                                    <button id="saveLessonDescriptionBtn" onclick="saveLessonDescription()" style="display: none; background: var(--primary-color); color: var(--dark-bg); border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem;">💾 Guardar</button>
+                                    <button id="cancelLessonDescriptionBtn" onclick="cancelLessonDescriptionEdit()" style="display: none; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">❌ Cancelar</button>
+                                    </div>
+                                    </div>
+                            <div id="lessonDescription" style="margin-top: 15px; color: rgba(255,255,255,0.9); line-height: 1.6; font-size: 1rem;"></div>
+                            <textarea id="lessonDescriptionInput" placeholder="Escribe la descripción detallada de la lección..." style="display: none; width: 100%; min-height: 160px; margin-top: 15px; padding: 15px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; font-size: 0.95rem; line-height: 1.5; resize: vertical;"></textarea>
+                            </div>
+
+                        <div id="lessonDiscussion" style="margin-top: 35px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                                <h3 style="margin: 0; color: white; font-size: 1.2rem;">Retroalimentación y Preguntas</h3>
+                                <span id="lessonDiscussionCount" style="color: var(--text-secondary); font-weight: 600;">0 preguntas</span>
+                            </div>
+                            <p style="color: var(--text-secondary); margin-top: 10px; font-size: 0.95rem;">Comparte tus dudas y revisa las respuestas de tus compañeros y del equipo de Graykids Academy.</p>
+
+                            <div id="lessonDiscussionList" style="margin-top: 18px; display: flex; flex-direction: column; gap: 18px;"></div>
+
+                            <div style="margin-top: 22px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; display: flex; flex-direction: column; gap: 12px;">
+                                <label for="lessonQuestionInput" style="color: white; font-weight: 600;">Enviar una nueva pregunta</label>
+                                <textarea id="lessonQuestionInput" rows="4" placeholder="Escribe tu pregunta aquí..." style="width: 100%; padding: 14px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; resize: vertical;"></textarea>
+                                <button onclick="submitLessonQuestion()" style="align-self: flex-end; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 10px 24px; border-radius: 8px; cursor: pointer; font-weight: 700;">Enviar pregunta</button>
+                                <small style="color: var(--text-secondary);">Tu pregunta será visible para todos los estudiantes del curso.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: SIDEBAR -->
+                <div class="course-player__sidebar">
+                    <!-- Admin Controls -->
+                    <div id="adminControls" style="display: none; margin-bottom: 20px;">
+                        <div style="padding: 20px; background: rgba(57, 243, 212, 0.15); border-radius: 12px; border: 2px solid var(--primary-color); margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid rgba(57, 243, 212, 0.3);">
+                                <div>
+                                    <h3 style="color: var(--primary-color); margin: 0 0 5px 0; font-size: 1.2rem; font-weight: 700;">🎛️ Modo Administrador</h3>
+                                    <p style="color: var(--text-secondary); margin: 0; font-size: 0.85rem; font-weight: 600;">Editando: <span id="adminCurrentCourseName" style="color: var(--primary-color); font-weight: 700;">Cargando...</span></p>
+                                </div>
+                            </div>
+                            <button onclick="showAddModuleModal()" style="width: 100%; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; margin-bottom: 10px; font-size: 1rem;">
+                                ➕ Agregar Módulo
+                            </button>
+                            <button onclick="showAddLessonModal()" style="width: 100%; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; margin-bottom: 10px; font-size: 1rem;">
+                                🎬 Agregar Video/Lección
+                            </button>
+                            <button onclick="saveCourseDataFromPlayer()" style="width: 100%; background: rgba(57, 243, 212, 0.3); color: white; border: 2px solid var(--primary-color); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem;">
+                                💾 Guardar Cambios
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- MODAL: Agregar Módulo -->
+                    <div id="addModuleModal" onclick="if(event.target === this) closeAddModuleModal();" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10001; align-items: center; justify-content: center;">
+                        <div onclick="event.stopPropagation();" style="background: var(--dark-bg); border-radius: 15px; padding: 30px; border: 2px solid var(--primary-color); max-width: 500px; width: 90%; position: relative;">
+                            <button onclick="closeAddModuleModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700;">×</button>
+                            <h3 style="color: var(--primary-color); margin-bottom: 20px; font-size: 1.5rem;">➕ Agregar Nuevo Módulo</h3>
+                            <div style="margin-bottom: 15px;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Nombre del Módulo:</label>
+                                <input type="text" id="newModuleTitleInput" placeholder="Ej: Introducción a la Producción Musical" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem;">
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button onclick="saveNewModule()" style="flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem;">✅ Agregar</button>
+                                <button onclick="closeAddModuleModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">❌ Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- MODAL: Agregar Video/Lección -->
+                    <div id="addLessonModal" onclick="if(event.target === this) closeAddLessonModal();" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10001; align-items: center; justify-content: center;">
+                        <div onclick="event.stopPropagation();" style="background: var(--dark-bg); border-radius: 15px; padding: 30px; border: 2px solid var(--primary-color); max-width: 600px; width: 90%; position: relative;">
+                            <button onclick="closeAddLessonModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700;">×</button>
+                            <h3 style="color: var(--primary-color); margin-bottom: 20px; font-size: 1.5rem;">🎬 Agregar Nuevo Video/Lección</h3>
+                            <div style="margin-bottom: 15px;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Selecciona el Módulo:</label>
+                                <select id="lessonModuleSelect" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem; cursor: pointer;">
+                                    <option value="">-- Selecciona un módulo --</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Título de la Lección:</label>
+                                <input type="text" id="newLessonTitleInput" placeholder="Ej: Introducción al DAW" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Duración (MM:SS):</label>
+                                <input type="text" id="newLessonDurationInput" placeholder="15:30" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem;">
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 10px;">Fuente del video:</label>
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <label style="color: white; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                                        <input type="radio" name="newLessonVideoSourceType" value="youtube" checked>
+                                        <span>YouTube / Vimeo</span>
+                                    </label>
+                                    <label style="color: white; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                                        <input type="radio" name="newLessonVideoSourceType" value="direct">
+                                        <span>Enlace directo MP4</span>
+                                    </label>
+                                    <label style="color: white; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                                        <input type="radio" name="newLessonVideoSourceType" value="file">
+                                        <span>Subir archivo</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div id="newLessonVideoInputYoutube" style="margin-bottom: 15px;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">URL (YouTube/Vimeo):</label>
+                                <input type="text" id="newLessonVideoUrlInput" placeholder="https://www.youtube.com/watch?v=..." style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem;">
+                            </div>
+
+                            <div id="newLessonVideoInputDirect" style="margin-bottom: 15px; display: none;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">URL Directa (MP4/M3U8):</label>
+                                <input type="text" id="newLessonVideoDirectInput" placeholder="https://cdn.tu-host.com/video.mp4" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem;">
+                            </div>
+
+                            <div id="newLessonVideoInputFile" style="margin-bottom: 15px; display: none;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Archivo local (MP4/WebM):</label>
+                                <input type="file" id="newLessonVideoFileInput" accept="video/mp4,video/webm" style="width: 100%; padding: 10px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;">
+                                <small style="color: #bbb; display: block; margin-top: 6px;">El archivo se previsualiza en esta sesión y no se almacena en el servidor.</small>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Descripción de la lección</label>
+                                <textarea id="newLessonDescriptionInput" placeholder="Describe los objetivos, temas y tareas de esta lección..." style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; min-height: 120px; resize: vertical;"></textarea>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button onclick="saveNewLesson()" style="flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem;">✅ Agregar Video</button>
+                                <button onclick="closeAddLessonModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">❌ Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Course Progress (hide in admin mode) -->
+                    <div class="course-progress-widget" id="courseProgress" style="display: none;">
+                        <h3 class="course-progress-widget__title">Tu Progreso</h3>
+                        <div class="course-progress-widget__bar">
+                            <div class="course-progress-widget__fill" style="width: 15%"></div>
+                        </div>
+                        <p class="course-progress-widget__text">3 de 20 lecciones completadas</p>
+                    </div>
+
+                    <!-- Course Menu -->
+                    <div class="course-menu">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 class="course-menu__title" id="courseMenuTitle">Contenido del Curso</h3>
+                            <span id="editCourseTitle" style="display: none; color: var(--primary-color); font-size: 0.85rem; cursor: pointer; font-weight: 600;" onclick="editCourseTitle()">✏️ Editar Título</span>
+                        </div>
+                        <input type="text" id="courseTitleInput" style="display: none; width: 100%; padding: 10px; background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); border-radius: 8px; margin-bottom: 15px; font-size: 1.1rem;">
+                        <div class="course-modules" id="courseModules">
+                            <!-- Modules will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__container container">
+            <div class="footer__logo">
+                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+            </div>
+            <div class="footer__links">
+                <a href="contacto.html" class="footer__link">Contact</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="index.html#faq" class="footer__link">FAQ</a>
+            </div>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if admin mode from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        let isAdminMode = false;
+        
+        function userHasAdminAccess() {
+                if (typeof isCurrentUserAdmin === 'function') {
+                    return isCurrentUserAdmin();
+            }
+
+                    const isLoggedIn = localStorage.getItem('isLoggedIn');
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    const adminEmails = JSON.parse(localStorage.getItem('adminEmails') || '[]');
+            const defaultAdminEmail = 'spieronilton@gmail.com';
+                    
+            if (!isLoggedIn || !user.email) {
+                return false;
+            }
+
+                        const emailLower = user.email.toLowerCase();
+                        if (adminEmails.length > 0) {
+                            return adminEmails.some(e => e.toLowerCase() === emailLower);
+                        }
+                        return emailLower === defaultAdminEmail.toLowerCase();
+                    }
+
+        // Verificar si es modo admin (esperar a que config.js se cargue si es necesario)
+        function checkAdminMode() {
+            const adminParam = urlParams.get('admin') === 'true';
+            if (!adminParam) {
+            return false;
+            }
+            return userHasAdminAccess();
+        }
+        
+        isAdminMode = checkAdminMode();
+        const courseFromUrl = urlParams.get('course');
+        
+        // Get current course from URL or localStorage
+        const currentCourseId = courseFromUrl || localStorage.getItem('currentCourse') || 'curso-voces';
+        
+        // Save course ID if came from URL
+        if (courseFromUrl) {
+            localStorage.setItem('currentCourse', courseFromUrl);
+        }
+        
+        // Load course data from localStorage (set by admin)
+        function getCourseData() {
+            const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            
+            // Default course data if not found
+            const defaultCourses = {
+                'curso-voces': {
+                    id: 'curso-voces',
+                    title: 'Mezcla y Grabación de Voces',
+            modules: [
+                {
+                    id: 'modulo-1',
+                    title: 'Introducción',
+                    lessons: [
+                                { id: 1, title: 'Bienvenida al Curso', duration: '5:30', videoUrl: '', description: 'Conoce al instructor, el objetivo general del curso y cómo sacar el máximo provecho del campus.', completed: false },
+                                { id: 2, title: 'Fundamentos de Grabación', duration: '8:15', videoUrl: '', description: 'Repaso de la cadena de audio, niveles y configuraciones esenciales antes de grabar voces.', completed: false }
+                            ]
+                        }
+                    ]
+                }
+            };
+            
+            return storedCourses[currentCourseId] || defaultCourses[currentCourseId] || defaultCourses['curso-voces'];
+        }
+        
+        // Course data loaded dynamically
+        let courseData = getCourseData();
+
+        function generateUniqueId(prefix = 'id') {
+            const randomPart = Math.random().toString(16).slice(2, 8);
+            return `${prefix}-${Date.now()}-${randomPart}`;
+        }
+
+        function normalizeCourseData(course) {
+            if (!course || typeof course !== 'object') {
+                return { id: currentCourseId, title: 'Curso sin título', modules: [] };
+            }
+
+            const normalized = { ...course };
+            normalized.modules = Array.isArray(course.modules) ? [...course.modules] : [];
+
+            const usedModuleIds = new Set();
+            const usedLessonIds = new Set();
+
+            normalized.modules = normalized.modules.map((module, moduleIndex) => {
+                const moduleCopy = { ...module };
+                if (!moduleCopy.id || usedModuleIds.has(moduleCopy.id)) {
+                    moduleCopy.id = generateUniqueId(`module-${moduleIndex + 1}`);
+                }
+                usedModuleIds.add(moduleCopy.id);
+
+                const lessons = Array.isArray(moduleCopy.lessons) ? [...moduleCopy.lessons] : [];
+                moduleCopy.lessons = lessons.map((lesson, lessonIndex) => {
+                    const lessonCopy = { ...lesson };
+                    let lessonId = lessonCopy.id;
+
+                    if (lessonId == null) {
+                        lessonId = generateUniqueId(`lesson-${moduleIndex + 1}-${lessonIndex + 1}`);
+                    }
+
+                    lessonId = String(lessonId);
+
+                    while (usedLessonIds.has(lessonId)) {
+                        lessonId = generateUniqueId(`lesson-${moduleIndex + 1}-${lessonIndex + 1}`);
+                    }
+
+                    lessonCopy.id = lessonId;
+                    usedLessonIds.add(lessonId);
+
+                    if (!lessonCopy.videoType && lessonCopy.videoUrl) {
+                        if (/youtu(?:\.be|be\.com)/i.test(lessonCopy.videoUrl) || /vimeo\.com/i.test(lessonCopy.videoUrl)) {
+                            lessonCopy.videoType = 'youtube';
+                        } else {
+                            lessonCopy.videoType = 'direct';
+                        }
+                    }
+
+                    if (typeof lessonCopy.description !== 'string') {
+                        lessonCopy.description = '';
+                    }
+
+                    return lessonCopy;
+                });
+
+                return moduleCopy;
+            });
+
+            return normalized;
+        }
+
+        function findLessonById(lessonId) {
+            if (!lessonId) {
+                return { lesson: null, module: null, moduleIndex: -1, lessonIndex: -1 };
+            }
+            for (let mIndex = 0; mIndex < courseData.modules.length; mIndex++) {
+                const module = courseData.modules[mIndex];
+                const lessonIndex = module.lessons.findIndex(l => l.id === lessonId);
+                if (lessonIndex !== -1) {
+                    return {
+                        lesson: module.lessons[lessonIndex],
+                        module,
+                        moduleIndex: mIndex,
+                        lessonIndex
+                    };
+                }
+            }
+            return { lesson: null, module: null, moduleIndex: -1, lessonIndex: -1 };
+        }
+
+        function getAllLessons() {
+            const lessons = [];
+            courseData.modules.forEach((module, moduleIndex) => {
+                module.lessons.forEach((lesson, lessonIndex) => {
+                    lessons.push({
+                        ...lesson,
+                        moduleId: module.id,
+                        moduleTitle: module.title,
+                        moduleIndex,
+                        lessonIndex
+                    });
+                });
+            });
+            return lessons;
+        }
+
+        function formatLessonDescriptionHtml(text) {
+            const content = (text || '').trim();
+            if (!content) {
+                return '<p style="color: var(--text-secondary); margin: 0;">Esta lección aún no tiene una descripción. Usa el botón "Editar" para añadir una guía para tus estudiantes.</p>';
+            }
+            return content
+                .split(/\n{2,}/)
+                .map(paragraph => {
+                    const safe = escapeHtml(paragraph.trim());
+                    return `<p style="margin: 0 0 12px;">${safe.replace(/\n/g, '<br>')}</p>`;
+                })
+                .join('');
+        }
+
+        function updateLessonDescriptionContent(lesson) {
+            if (!lessonDescriptionDisplay) return;
+            const descriptionText = lesson && typeof lesson.description === 'string' ? lesson.description : '';
+            lessonDescriptionDisplay.innerHTML = formatLessonDescriptionHtml(descriptionText);
+            if (!isEditingLessonDescription && lessonDescriptionInput) {
+                lessonDescriptionInput.value = descriptionText;
+            }
+        }
+
+        function resetLessonDescriptionEditor() {
+            if (lessonDescriptionInput) {
+                lessonDescriptionInput.style.display = 'none';
+            }
+            if (lessonDescriptionSaveBtn) lessonDescriptionSaveBtn.style.display = 'none';
+            if (lessonDescriptionCancelBtn) lessonDescriptionCancelBtn.style.display = 'none';
+            if (lessonDescriptionEditBtn) {
+                lessonDescriptionEditBtn.style.display = checkAdminMode() ? 'inline-flex' : 'none';
+            }
+            if (lessonDescriptionDisplay) lessonDescriptionDisplay.style.display = 'block';
+            isEditingLessonDescription = false;
+        }
+
+        function ensureLessonDescriptionActionsVisibility() {
+            if (!lessonDescriptionActions) return;
+            if (checkAdminMode()) {
+                lessonDescriptionActions.style.display = 'flex';
+                if (!isEditingLessonDescription) {
+                    resetLessonDescriptionEditor();
+                }
+            } else {
+                lessonDescriptionActions.style.display = 'none';
+                resetLessonDescriptionEditor();
+            }
+        }
+
+        function updateAdminVideoEditorStatus(lesson) {
+            if (!adminVideoEditStatus) return;
+            if (lesson && lesson.videoUrl) {
+                let sourceLabel = 'configurado';
+                if (lesson.videoType === 'youtube') {
+                    sourceLabel = 'YouTube/Vimeo';
+                } else if (lesson.videoType === 'direct') {
+                    sourceLabel = 'Enlace directo';
+                } else if (lesson.videoType === 'file') {
+                    sourceLabel = 'Archivo local';
+                }
+                adminVideoEditStatus.textContent = `(configurado · ${sourceLabel})`;
+            } else {
+                adminVideoEditStatus.textContent = '(sin video)';
+            }
+        }
+
+        function setAdminVideoEditorState(open) {
+            if (!adminVideoEditContent || !adminVideoEditToggleIcon) return;
+            isVideoEditorOpen = !!open;
+            adminVideoEditContent.style.display = isVideoEditorOpen ? 'grid' : 'none';
+            adminVideoEditToggleIcon.textContent = isVideoEditorOpen ? '▲' : '▼';
+        }
+
+        function toggleAdminVideoEditor(forceState) {
+            if (!checkAdminMode()) return;
+            const nextState = typeof forceState === 'boolean' ? forceState : !isVideoEditorOpen;
+            setAdminVideoEditorState(nextState);
+        }
+
+        function startLessonDescriptionEdit() {
+            if (!checkAdminMode()) return;
+            const { lesson } = findLessonById(currentLessonId);
+            if (!lesson) {
+                alert('Selecciona una lección para editar la descripción.');
+                return;
+            }
+            isEditingLessonDescription = true;
+            if (lessonDescriptionDisplay) {
+                lessonDescriptionDisplay.style.display = 'none';
+            }
+            if (lessonDescriptionInput) {
+                lessonDescriptionInput.style.display = 'block';
+                lessonDescriptionInput.value = lesson.description || '';
+                lessonDescriptionInput.focus();
+                if (typeof lessonDescriptionInput.setSelectionRange === 'function') {
+                    const length = lessonDescriptionInput.value.length;
+                    lessonDescriptionInput.setSelectionRange(length, length);
+                }
+            }
+            if (lessonDescriptionEditBtn) lessonDescriptionEditBtn.style.display = 'none';
+            if (lessonDescriptionSaveBtn) lessonDescriptionSaveBtn.style.display = 'inline-flex';
+            if (lessonDescriptionCancelBtn) lessonDescriptionCancelBtn.style.display = 'inline-flex';
+        }
+
+        function cancelLessonDescriptionEdit() {
+            const { lesson } = findLessonById(currentLessonId);
+            updateLessonDescriptionContent(lesson || null);
+            resetLessonDescriptionEditor();
+            ensureLessonDescriptionActionsVisibility();
+        }
+
+        function saveLessonDescription() {
+            if (!checkAdminMode()) return;
+            const { lesson } = findLessonById(currentLessonId);
+            if (!lesson) {
+                alert('No se encontró la lección actual.');
+                resetLessonDescriptionEditor();
+                return;
+            }
+            const newDescription = lessonDescriptionInput ? lessonDescriptionInput.value : '';
+            lesson.description = newDescription.trim();
+            updateLessonDescriptionContent(lesson);
+            resetLessonDescriptionEditor();
+            ensureLessonDescriptionActionsVisibility();
+            saveCourseDataFromPlayer();
+        }
+
+        function refreshCourseTitles(newTitle) {
+            const fallback = newTitle && newTitle.trim() ? newTitle.trim() : 'Curso sin título';
+            const courseMenuTitle = document.getElementById('courseMenuTitle');
+            if (courseMenuTitle) {
+                courseMenuTitle.textContent = fallback;
+            }
+            const headerCourseName = document.getElementById('headerCourseName');
+            if (headerCourseName) {
+                headerCourseName.textContent = fallback;
+            }
+            const adminCurrentCourseName = document.getElementById('adminCurrentCourseName');
+            if (adminCurrentCourseName) {
+                adminCurrentCourseName.textContent = fallback;
+            }
+            const pageTitle = document.querySelector('title');
+            if (pageTitle) {
+                pageTitle.textContent = `${fallback} - Graykids Academy`;
+            }
+        }
+
+        function handleVideoSourceTypeChange(type) {
+            const map = {
+                youtube: document.getElementById('videoInputYoutube'),
+                direct: document.getElementById('videoInputDirect'),
+                file: document.getElementById('videoInputFile')
+            };
+            Object.entries(map).forEach(([key, element]) => {
+                if (!element) return;
+                element.style.display = key === type ? 'block' : 'none';
+            });
+        }
+
+        function registerVideoSourceTypeListeners() {
+            const inputs = document.querySelectorAll('input[name="videoSourceType"]');
+            inputs.forEach(input => {
+                input.addEventListener('change', () => handleVideoSourceTypeChange(input.value));
+            });
+        }
+
+        function handleNewLessonVideoSourceChange(type) {
+            const youtube = document.getElementById('newLessonVideoInputYoutube');
+            const direct = document.getElementById('newLessonVideoInputDirect');
+            const file = document.getElementById('newLessonVideoInputFile');
+            if (youtube) youtube.style.display = type === 'youtube' ? 'block' : 'none';
+            if (direct) direct.style.display = type === 'direct' ? 'block' : 'none';
+            if (file) file.style.display = type === 'file' ? 'block' : 'none';
+        }
+
+        function registerNewLessonVideoSourceListeners() {
+            const inputs = document.querySelectorAll('input[name="newLessonVideoSourceType"]');
+            inputs.forEach(input => {
+                input.addEventListener('change', () => handleNewLessonVideoSourceChange(input.value));
+            });
+        }
+
+        function editCourseTitle() {
+            if (!checkAdminMode()) {
+                return;
+            }
+
+            const titleDisplay = document.getElementById('courseMenuTitle');
+            const titleInput = document.getElementById('courseTitleInput');
+            if (!titleDisplay || !titleInput) {
+                return;
+            }
+
+            if (titleInput.dataset.editing === 'true') {
+                return;
+            }
+
+            titleInput.dataset.editing = 'true';
+            titleInput.value = courseData.title || titleDisplay.textContent || '';
+            titleDisplay.style.display = 'none';
+            titleInput.style.display = 'block';
+            titleInput.focus();
+            titleInput.select();
+
+            const cleanup = () => {
+                titleInput.dataset.editing = 'false';
+                titleInput.style.display = 'none';
+                titleDisplay.style.display = 'block';
+                titleInput.removeEventListener('blur', handleBlur);
+                titleInput.removeEventListener('keydown', handleKeyDown);
+            };
+
+            const commit = () => {
+                const newTitle = titleInput.value.trim() || 'Curso sin título';
+                courseData.title = newTitle;
+                refreshCourseTitles(newTitle);
+                cleanup();
+                saveCourseDataFromPlayer();
+            };
+
+            const cancel = () => {
+                titleInput.value = courseData.title || titleDisplay.textContent || '';
+                cleanup();
+            };
+
+            const handleBlur = () => {
+                commit();
+            };
+
+            const handleKeyDown = (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    commit();
+                } else if (event.key === 'Escape') {
+                    event.preventDefault();
+                    cancel();
+                }
+            };
+
+            titleInput.addEventListener('blur', handleBlur);
+            titleInput.addEventListener('keydown', handleKeyDown);
+        }
+
+        courseData = normalizeCourseData(courseData);
+
+        const DISCUSSIONS_STORAGE_KEY = 'courseDiscussions';
+
+        function loadDiscussionsData() {
+            try {
+                return JSON.parse(localStorage.getItem(DISCUSSIONS_STORAGE_KEY) || '{}');
+            } catch (error) {
+                console.error('Error al cargar discusiones', error);
+                return {};
+            }
+        }
+
+        let discussionsData = loadDiscussionsData();
+
+        function saveDiscussionsData() {
+            localStorage.setItem(DISCUSSIONS_STORAGE_KEY, JSON.stringify(discussionsData));
+        }
+
+        function ensureDiscussionBuckets(courseId) {
+            if (!discussionsData[courseId]) {
+                discussionsData[courseId] = {};
+            }
+            return discussionsData[courseId];
+        }
+
+        function getLessonDiscussions(courseId, lessonId) {
+            if (!courseId || !lessonId) return [];
+            const courseBucket = ensureDiscussionBuckets(courseId);
+            if (!Array.isArray(courseBucket[lessonId])) {
+                courseBucket[lessonId] = [];
+            }
+            return courseBucket[lessonId];
+        }
+
+        function findQuestionInLesson(courseId, lessonId, questionId) {
+            const discussions = getLessonDiscussions(courseId, lessonId);
+            return discussions.find(question => question.id === questionId) || null;
+        }
+
+        function escapeHtml(unsafe) {
+            if (typeof unsafe !== 'string') return '';
+            return unsafe
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function formatDateTime(isoString) {
+            if (!isoString) return '';
+            try {
+                return new Date(isoString).toLocaleString('es-ES', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                });
+            } catch (error) {
+                return isoString;
+            }
+        }
+
+        // Current lesson id (unique per course)
+        let currentLessonId = null;
+
+        // Show/hide admin controls
+        function showAdminControls() {
+            // Verificar nuevamente el modo admin por si config.js se cargó después
+            const reCheckAdmin = checkAdminMode();
+            isAdminModeGlobal = reCheckAdmin;
+            
+            if (reCheckAdmin) {
+                const adminControls = document.getElementById('adminControls');
+                const adminLink = document.getElementById('adminLink');
+                const adminCourseIndicator = document.getElementById('adminCourseIndicator');
+                const headerCourseName = document.getElementById('headerCourseName');
+                const courseProgress = document.getElementById('courseProgress');
+                const editCourseTitle = document.getElementById('editCourseTitle');
+                const adminLessonEdit = document.getElementById('adminLessonEdit');
+                const lessonNavigation = document.getElementById('lessonNavigation');
+                
+                if (adminControls) adminControls.style.display = 'block';
+                if (adminLink) adminLink.style.display = 'inline-block';
+                if (adminCourseIndicator) adminCourseIndicator.style.display = 'inline-block';
+                if (courseProgress) courseProgress.style.display = 'none';
+                if (editCourseTitle) editCourseTitle.style.display = 'inline-block';
+                if (adminVideoEditCard) {
+                    adminVideoEditCard.style.display = 'block';
+                    setAdminVideoEditorState(isVideoEditorOpen);
+                }
+                if (adminLessonEdit) adminLessonEdit.style.display = 'block';
+                if (lessonNavigation) lessonNavigation.style.display = 'flex';
+                ensureLessonDescriptionActionsVisibility();
+
+                const { lesson } = findLessonById(currentLessonId);
+                updateAdminVideoEditorStatus(lesson || null);
+                
+                // Mostrar nombre del curso que se está editando
+                const courseTitle = courseData && courseData.title ? courseData.title : 'Curso sin título';
+                refreshCourseTitles(courseTitle);
+                
+                return true;
+            } else {
+                if (urlParams.get('admin') === 'true') {
+                    alert('⚠️ No tienes permisos de administrador. Redirigiendo...');
+                    window.location.href = 'campus.html';
+                }
+                if (adminVideoEditCard) {
+                    adminVideoEditCard.style.display = 'none';
+                    setAdminVideoEditorState(false);
+                }
+                ensureLessonDescriptionActionsVisibility();
+                return false;
+            }
+        }
+        
+        // Variable global para saber si estamos en modo admin
+        let isAdminModeGlobal = false;
+        let isEditingLessonDescription = false;
+        let isVideoEditorOpen = false;
+
+        const lessonDescriptionDisplay = document.getElementById('lessonDescription');
+        const lessonDescriptionInput = document.getElementById('lessonDescriptionInput');
+        const lessonDescriptionActions = document.getElementById('lessonDescriptionActions');
+        const lessonDescriptionEditBtn = document.getElementById('editLessonDescriptionBtn');
+        const lessonDescriptionSaveBtn = document.getElementById('saveLessonDescriptionBtn');
+        const lessonDescriptionCancelBtn = document.getElementById('cancelLessonDescriptionBtn');
+
+        const adminVideoEditCard = document.getElementById('adminVideoEdit');
+        const adminVideoEditContent = document.getElementById('adminVideoEditContent');
+        const adminVideoEditToggle = document.getElementById('adminVideoEditToggle');
+        const adminVideoEditToggleIcon = document.getElementById('adminVideoEditToggleIcon');
+        const adminVideoEditStatus = document.getElementById('adminVideoEditStatus');
+
+        updateLessonDescriptionContent(null);
+        updateAdminVideoEditorStatus(null);
+        setAdminVideoEditorState(false);
+        
+        // Intentar mostrar controles inmediatamente
+        showAdminControls();
+        
+        // Reintentar después de que la página cargue completamente (por si config.js se carga después)
+        setTimeout(() => {
+            showAdminControls();
+        }, 500);
+
+        // Generate course menu
+        function generateCourseMenu() {
+            const container = document.getElementById('courseModules');
+            container.innerHTML = ''; // Limpiar contenido existente
+            
+            // Actualizar estado admin global
+            isAdminModeGlobal = checkAdminMode();
+            
+            courseData.modules.forEach((module, moduleIndex) => {
+                const moduleElement = document.createElement('div');
+                moduleElement.className = 'course-module';
+                
+                const moduleHeader = document.createElement('div');
+                moduleHeader.className = 'course-module__header';
+                
+                if (isAdminModeGlobal) {
+                    moduleHeader.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <div style="flex: 1;">
+                                <h4 class="course-module__title" id="moduleTitle-${moduleIndex}">${module.title}</h4>
+                                <input type="text" id="moduleTitleInput-${moduleIndex}" style="display: none; width: 100%; padding: 8px; background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); border-radius: 6px; font-size: 1rem; margin-top: 5px;">
+                            </div>
+                            <div style="display: flex; gap: 8px; margin-left: 10px;">
+                                <button onclick="editModuleTitle(${moduleIndex}, '${module.id}')" style="background: var(--primary-color); color: var(--dark-bg); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">✏️</button>
+                                <button onclick="deleteModule('${module.id}')" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">🗑️</button>
+                            </div>
+                        </div>
+                        <span class="course-module__count">${module.lessons.length} lecciones</span>
+                    `;
+                } else {
+                moduleHeader.innerHTML = `
+                    <h4 class="course-module__title">${module.title}</h4>
+                    <span class="course-module__count">${module.lessons.length} lecciones</span>
+                `;
+                }
+                
+                moduleHeader.onclick = (e) => {
+                    // No toggle si se hace click en botones de admin
+                    if (isAdminModeGlobal && e.target.closest('button')) {
+                        return;
+                    }
+                    toggleModule(moduleIndex);
+                };
+                moduleElement.appendChild(moduleHeader);
+                
+                const moduleLessons = document.createElement('div');
+                moduleLessons.className = 'course-module__lessons';
+                
+                module.lessons.forEach((lesson, lessonIndex) => {
+                    const lessonElement = document.createElement('div');
+                    const hasVideo = lesson.videoUrl && lesson.videoUrl !== '';
+                    const lessonNumberDisplay = `${moduleIndex + 1}.${lessonIndex + 1}`;
+                    const isActiveLesson = currentLessonId === lesson.id;
+                    lessonElement.className = `lesson-item ${lesson.completed ? 'lesson-item--completed' : ''} ${isActiveLesson ? 'lesson-item--active' : ''} ${!hasVideo ? 'lesson-item--no-video' : ''}`;
+                    lessonElement.setAttribute('data-lesson-id', lesson.id);
+                    lessonElement.setAttribute('data-module-id', module.id);
+                    lessonElement.setAttribute('data-lesson-index', lessonIndex);
+                    lessonElement.setAttribute('data-module-index', moduleIndex);
+                    
+                    if (isAdminModeGlobal) {
+                        lessonElement.innerHTML = `
+                            <div class="lesson-item__left" style="flex: 1;">
+                                <span class="lesson-item__number">${lessonNumberDisplay}</span>
+                                <div class="lesson-item__info">
+                                    <h5 class="lesson-item__title">${lesson.title}</h5>
+                                    <span class="lesson-item__duration">${lesson.duration}</span>
+                                    ${!hasVideo ? '<span class="lesson-item__warning" style="font-size: 0.8rem; color: #ff9800;">Sin video</span>' : ''}
+                                </div>
+                            </div>
+                            <div class="lesson-item__right" style="display: flex; gap: 8px; align-items: center;">
+                                <button onclick="editLessonInPlayer('${module.id}', '${lesson.id}', event)" style="background: var(--primary-color); color: var(--dark-bg); border: none; padding: 4px 10px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.75rem;">✏️</button>
+                                <button onclick="deleteLessonInPlayer('${module.id}', '${lesson.id}', event)" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 4px 10px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.75rem;">🗑️</button>
+                                ${lesson.completed ? '<span class="lesson-item__check">✓</span>' : ''}
+                            </div>
+                        `;
+                    } else {
+                    lessonElement.innerHTML = `
+                        <div class="lesson-item__left">
+                            <span class="lesson-item__number">${lessonNumberDisplay}</span>
+                            <div class="lesson-item__info">
+                                <h5 class="lesson-item__title">${lesson.title}</h5>
+                                <span class="lesson-item__duration">${lesson.duration}</span>
+                                    ${!hasVideo ? '<span class="lesson-item__warning" style="font-size: 0.8rem; color: #ff9800;">Sin video</span>' : ''}
+                            </div>
+                        </div>
+                        <div class="lesson-item__right">
+                            ${lesson.completed ? '<span class="lesson-item__check">✓</span>' : ''}
+                        </div>
+                    `;
+                    }
+                    
+                    lessonElement.onclick = (e) => {
+                        if (isAdminModeGlobal && e.target.closest('button')) {
+                            e.stopPropagation();
+                            return;
+                        }
+                        loadLesson(lesson.id, lesson.title, lesson, e.currentTarget);
+                    };
+                    moduleLessons.appendChild(lessonElement);
+                });
+                
+                moduleElement.appendChild(moduleLessons);
+                container.appendChild(moduleElement);
+            });
+        }
+
+        // Toggle module
+        function toggleModule(index) {
+            const lessons = document.querySelectorAll('.course-module')[index].querySelector('.course-module__lessons');
+            lessons.classList.toggle('course-module__lessons--expanded');
+        }
+        // Guardar video de la lección actual (3 opciones)
+        function saveLessonVideo() {
+            const typeInput = document.querySelector('input[name="videoSourceType"]:checked');
+            const sourceType = typeInput ? typeInput.value : 'youtube';
+            const youtubeUrl = (document.getElementById('lessonVideoUrlInput')?.value || '').trim();
+            const directUrl = (document.getElementById('lessonVideoDirectInput')?.value || '').trim();
+            const fileInput = document.getElementById('lessonVideoFileInput');
+            
+            const { lesson } = findLessonById(currentLessonId);
+            if (!lesson) { alert('❌ No se encontró la lección actual'); return; }
+            
+            // Limpiar campos previos
+            delete lesson.videoDataUrl;
+            lesson.videoType = sourceType;
+            
+            if (sourceType === 'youtube') {
+                if (!youtubeUrl) { alert('⚠️ Ingresa una URL de YouTube/Vimeo'); return; }
+                lesson.videoUrl = youtubeUrl;
+            } else if (sourceType === 'direct') {
+                if (!directUrl) { alert('⚠️ Ingresa una URL directa (MP4/M3U8)'); return; }
+                lesson.videoUrl = directUrl;
+            } else if (sourceType === 'file') {
+                if (!fileInput || !fileInput.files || fileInput.files.length === 0) { alert('⚠️ Selecciona un archivo de video'); return; }
+                const file = fileInput.files[0];
+                const objectUrl = URL.createObjectURL(file); // válida en la sesión
+                lesson.videoUrl = objectUrl;
+                lesson.videoDataUrl = null;
+            }
+            
+            saveCourseDataFromPlayer();
+            updateAdminVideoEditorStatus(lesson);
+            alert('✅ Video guardado');
+            generateCourseMenu();
+            const descEl = document.getElementById('videoPlayerDescription');
+            if (descEl) descEl.textContent = 'Video disponible. Clic en play para reproducir.';
+        }
+        
+        // Play video (soporta YouTube/Vimeo, enlace directo o archivo)
+        function playVideo() {
+            const { lesson: lessonData } = findLessonById(currentLessonId);
+            if (!lessonData || !lessonData.videoUrl) {
+                alert('⚠️ Video no disponible. Contacta al administrador para subir el video de esta lección.');
+                return;
+            }
+            
+            const placeholder = document.querySelector('.video-player__placeholder');
+            const videoEl = document.getElementById('lessonVideo');
+            const iframeC = document.getElementById('lessonIframeContainer');
+            const iframe = document.getElementById('lessonIframe');
+            
+            placeholder.style.display = 'none';
+            
+            const type = lessonData.videoType || 'youtube';
+            if (type === 'youtube') {
+                const embed = getEmbedUrl(lessonData.videoUrl);
+                if (!embed) { alert('❌ URL no válida'); return; }
+                iframe.src = embed;
+                iframeC.style.display = 'block';
+                videoEl.style.display = 'none';
+            } else {
+                iframeC.style.display = 'none';
+                videoEl.style.display = 'block';
+                videoEl.src = lessonData.videoUrl;
+                videoEl.load();
+            }
+        }
+        
+        // Obtener URL embebida para YouTube/Vimeo
+        function getEmbedUrl(url) {
+            if (!url) return null;
+            const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+            if (ytMatch && ytMatch[1]) {
+                return `https://www.youtube.com/embed/${ytMatch[1]}?rel=0&modestbranding=1`;
+            }
+            const vmMatch = url.match(/vimeo\.com\/(\d+)/);
+            if (vmMatch && vmMatch[1]) {
+                return `https://player.vimeo.com/video/${vmMatch[1]}`;
+            }
+            return null;
+        }
+
+        // Check auth
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const user = localStorage.getItem('user');
+            
+            if (!isLoggedIn || !user) {
+                alert('Debes iniciar sesión para acceder al curso');
+                window.location.href = 'Login.html';
+                return false;
+            }
+            return true;
+        }
+
+        // ========================================
+        // ADMIN FUNCTIONS
+        // ========================================
+        
+        // Variables para edición admin
+        let editingModuleId = null;
+        let editingLessonId = null;
+        let editingModuleIndex = null;
+        
+        // Mostrar modal para agregar módulo
+        function showAddModuleModal() {
+            document.getElementById('newModuleTitleInput').value = '';
+            document.getElementById('addModuleModal').style.display = 'flex';
+        }
+        
+        function closeAddModuleModal() {
+            document.getElementById('addModuleModal').style.display = 'none';
+        }
+        
+        function saveNewModule() {
+            const title = document.getElementById('newModuleTitleInput').value.trim();
+            if (!title) {
+                alert('Por favor ingresa un nombre para el módulo');
+                return;
+            }
+            
+            const newModule = {
+                id: generateUniqueId('module'),
+                title: title,
+                lessons: []
+            };
+            courseData.modules.push(newModule);
+            generateCourseMenu();
+            saveCourseDataFromPlayer();
+            closeAddModuleModal();
+            
+            // Mostrar notificación
+            const notification = document.createElement('div');
+            notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: var(--dark-bg); padding: 15px 25px; border-radius: 10px; z-index: 10002; font-weight: 700; box-shadow: 0 4px 15px rgba(57, 243, 212, 0.4);';
+            notification.textContent = '✅ Módulo agregado exitosamente!';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+        }
+        
+        // Mostrar modal para agregar video/lección
+        function showAddLessonModal() {
+            if (courseData.modules.length === 0) {
+                alert('Primero agrega un módulo antes de agregar videos.');
+                return;
+            }
+            
+            // Llenar selector de módulos
+            const moduleSelect = document.getElementById('lessonModuleSelect');
+            moduleSelect.innerHTML = '<option value="">-- Selecciona un módulo --</option>';
+            courseData.modules.forEach((module, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = module.title;
+                moduleSelect.appendChild(option);
+            });
+            
+            // Limpiar campos
+            document.getElementById('newLessonTitleInput').value = '';
+            document.getElementById('newLessonDurationInput').value = '';
+            document.getElementById('newLessonVideoUrlInput').value = '';
+            const directInput = document.getElementById('newLessonVideoDirectInput');
+            if (directInput) directInput.value = '';
+            const fileInput = document.getElementById('newLessonVideoFileInput');
+            if (fileInput) fileInput.value = '';
+            const descriptionInput = document.getElementById('newLessonDescriptionInput');
+            if (descriptionInput) descriptionInput.value = '';
+
+            const newLessonVideoRadios = document.querySelectorAll('input[name="newLessonVideoSourceType"]');
+            newLessonVideoRadios.forEach(radio => {
+                radio.checked = radio.value === 'youtube';
+            });
+            handleNewLessonVideoSourceChange('youtube');
+            
+            document.getElementById('addLessonModal').style.display = 'flex';
+        }
+        
+        function closeAddLessonModal() {
+            document.getElementById('addLessonModal').style.display = 'none';
+        }
+        
+        function saveNewLesson() {
+            const moduleIndex = parseInt(document.getElementById('lessonModuleSelect').value, 10);
+            const title = document.getElementById('newLessonTitleInput').value.trim();
+            const duration = document.getElementById('newLessonDurationInput').value.trim() || '0:00';
+            const sourceInput = document.querySelector('input[name="newLessonVideoSourceType"]:checked');
+            const videoType = sourceInput ? sourceInput.value : 'youtube';
+            const youtubeUrl = document.getElementById('newLessonVideoUrlInput').value.trim();
+            const directUrl = document.getElementById('newLessonVideoDirectInput')?.value.trim() || '';
+            const fileInput = document.getElementById('newLessonVideoFileInput');
+            const description = document.getElementById('newLessonDescriptionInput')?.value.trim() || '';
+            
+            if (isNaN(moduleIndex) || moduleIndex < 0 || moduleIndex >= courseData.modules.length) {
+                alert('Por favor selecciona un módulo válido.');
+                return;
+            }
+            
+            if (!title) {
+                alert('Por favor ingresa un título para la lección');
+                return;
+            }
+            
+            let finalVideoUrl = '';
+            let tempFileName = '';
+            if (videoType === 'youtube') {
+                if (!youtubeUrl) {
+                    alert('Ingresa la URL del video.');
+                    return;
+                }
+                finalVideoUrl = youtubeUrl;
+            } else if (videoType === 'direct') {
+                if (!directUrl) {
+                    alert('Ingresa una URL directa del archivo de video.');
+                    return;
+                }
+                finalVideoUrl = directUrl;
+            } else if (videoType === 'file') {
+                if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+                    alert('Selecciona un archivo de video.');
+                    return;
+                }
+                const file = fileInput.files[0];
+                finalVideoUrl = URL.createObjectURL(file);
+                tempFileName = file.name;
+            }
+            
+            const module = courseData.modules[moduleIndex];
+            const newLessonId = generateUniqueId('lesson');
+            
+            module.lessons.push({
+                id: newLessonId,
+                title,
+                duration,
+                videoUrl: finalVideoUrl,
+                videoType,
+                tempFileName,
+                description,
+                completed: false
+            });
+            
+            courseData = normalizeCourseData(courseData);
+            generateCourseMenu();
+            setTimeout(() => {
+                const targetElement = document.querySelector(`[data-lesson-id="${newLessonId}"]`);
+                const lessonData = module.lessons.find(l => l.id === newLessonId);
+                if (targetElement && lessonData) {
+                    const moduleElement = targetElement.closest('.course-module');
+                    if (moduleElement) {
+                        const lessonsContainer = moduleElement.querySelector('.course-module__lessons');
+                        if (lessonsContainer) {
+                            lessonsContainer.classList.add('course-module__lessons--expanded');
+                        }
+                    }
+                    loadLesson(newLessonId, lessonData.title, lessonData, targetElement);
+                }
+            }, 120);
+            saveCourseDataFromPlayer();
+            closeAddLessonModal();
+            updateLessonNavigation();
+            
+            const notification = document.createElement('div');
+            notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: var(--dark-bg); padding: 15px 25px; border-radius: 10px; z-index: 10002; font-weight: 700; box-shadow: 0 4px 15px rgba(57, 243, 212, 0.4);';
+            notification.textContent = '✅ Video agregado exitosamente!';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+        }
+        
+        // Editar título del módulo
+        function editModuleTitle(moduleIndex, moduleId) {
+            const module = courseData.modules[moduleIndex];
+            const titleInput = document.getElementById(`moduleTitleInput-${moduleIndex}`);
+            const titleDisplay = document.getElementById(`moduleTitle-${moduleIndex}`);
+            
+            if (titleInput.style.display === 'none') {
+                titleInput.value = module.title;
+                titleInput.style.display = 'block';
+                titleDisplay.style.display = 'none';
+                titleInput.focus();
+                
+                titleInput.onblur = function() {
+                    if (this.value.trim()) {
+                        module.title = this.value.trim();
+                        titleDisplay.textContent = module.title;
+                        this.style.display = 'none';
+                        titleDisplay.style.display = 'block';
+                        saveCourseDataFromPlayer();
+                    } else {
+                        this.style.display = 'none';
+                        titleDisplay.style.display = 'block';
+                    }
+                };
+                
+                titleInput.onkeypress = function(e) {
+                    if (e.key === 'Enter') {
+                        this.blur();
+                    }
+                };
+            }
+        }
+        
+        // Eliminar módulo
+        function deleteModule(moduleId) {
+            if (confirm('¿Estás seguro de eliminar este módulo y todas sus lecciones?')) {
+                courseData.modules = courseData.modules.filter(m => m.id !== moduleId);
+                generateCourseMenu();
+                saveCourseDataFromPlayer();
+                alert('Módulo eliminado');
+            }
+        }
+        
+        // Editar lección desde el player
+        function editLessonInPlayer(moduleId, lessonId, event) {
+            event.stopPropagation();
+            
+            const module = courseData.modules.find(m => m.id === moduleId);
+            if (!module) return;
+            
+            const lesson = module.lessons.find(l => l.id === lessonId);
+            if (!lesson) return;
+            
+            const newTitle = prompt('Nuevo título de la lección:', lesson.title);
+            if (newTitle && newTitle.trim()) {
+                lesson.title = newTitle.trim();
+            }
+            
+            const newDuration = prompt('Nueva duración (MM:SS):', lesson.duration);
+            if (newDuration) {
+                lesson.duration = newDuration;
+            }
+            
+            const newVideoUrl = prompt('Nueva URL del video:', lesson.videoUrl || '');
+            if (newVideoUrl !== null) {
+                lesson.videoUrl = newVideoUrl;
+            }
+
+            const newDescription = prompt('Descripción de la lección:', lesson.description || '');
+            if (newDescription !== null) {
+                lesson.description = newDescription.trim();
+            }
+            
+            generateCourseMenu();
+            saveCourseDataFromPlayer();
+            
+            // Recargar lección actual si es la que se editó
+            if (currentLessonId === lessonId) {
+                loadLesson(lessonId, lesson.title, lesson);
+            }
+        }
+        
+        // Eliminar lección desde el player
+        function deleteLessonInPlayer(moduleId, lessonId, event) {
+            event.stopPropagation();
+            
+            if (!confirm('¿Estás seguro de eliminar esta lección?')) return;
+            
+            const module = courseData.modules.find(m => m.id === moduleId);
+            if (!module) return;
+            
+            module.lessons = module.lessons.filter(l => l.id !== lessonId);
+            generateCourseMenu();
+            saveCourseDataFromPlayer();
+            const courseBucket = ensureDiscussionBuckets(currentCourseId);
+            if (courseBucket[lessonId]) {
+                delete courseBucket[lessonId];
+                saveDiscussionsData();
+            }
+            
+            // Si era la lección actual, cargar la primera disponible
+            if (currentLessonId === lessonId) {
+                if (courseData.modules.length > 0 && courseData.modules[0].lessons.length > 0) {
+                    const firstLesson = courseData.modules[0].lessons[0];
+                    const targetElement = document.querySelector(`[data-lesson-id="${firstLesson.id}"]`);
+                    if (targetElement) {
+                        loadLesson(firstLesson.id, firstLesson.title, firstLesson, targetElement);
+                    }
+                }
+            }
+        }
+        
+        // Editar lección actual
+        function editCurrentLesson() {
+            const { lesson } = findLessonById(currentLessonId);
+            if (!lesson) {
+                alert('Lección no encontrada');
+                return;
+            }
+            
+            const newTitle = prompt('Nuevo título:', lesson.title);
+            if (newTitle && newTitle.trim()) {
+                lesson.title = newTitle.trim();
+                document.getElementById('lessonTitle').textContent = lesson.title;
+                document.getElementById('currentLessonTitle').textContent = lesson.title;
+            }
+            
+            const newDuration = prompt('Nueva duración (MM:SS):', lesson.duration);
+            if (newDuration) {
+                lesson.duration = newDuration;
+                document.getElementById('lessonDuration').textContent = newDuration;
+            }
+
+            const newDescription = prompt('Descripción de la lección:', lesson.description || '');
+            if (newDescription !== null) {
+                lesson.description = newDescription.trim();
+                updateLessonDescriptionContent(lesson);
+                resetLessonDescriptionEditor();
+            }
+            
+            generateCourseMenu();
+            saveCourseDataFromPlayer();
+        }
+        
+        // Eliminar lección actual
+        function deleteCurrentLesson() {
+            if (!confirm('¿Estás seguro de eliminar esta lección?')) return;
+            
+            const { module, lessonIndex } = findLessonById(currentLessonId);
+            if (!module || lessonIndex === -1) {
+                alert('No se encontró la lección actual.');
+                return;
+            }
+
+            module.lessons.splice(lessonIndex, 1);
+                    generateCourseMenu();
+                    saveCourseDataFromPlayer();
+            const courseBucket = ensureDiscussionBuckets(currentCourseId);
+            if (courseBucket[currentLessonId]) {
+                delete courseBucket[currentLessonId];
+                saveDiscussionsData();
+            }
+
+            const allLessons = getAllLessons();
+            if (allLessons.length > 0) {
+                const nextLesson = allLessons[0];
+                const targetElement = document.querySelector(`[data-lesson-id="${nextLesson.id}"]`);
+                        if (targetElement) {
+                    loadLesson(nextLesson.id, nextLesson.title, nextLesson, targetElement);
+                }
+            } else {
+                currentLessonId = null;
+                document.getElementById('lessonTitle').textContent = 'Sin lección seleccionada';
+                document.getElementById('currentLessonTitle').textContent = 'Sin lección seleccionada';
+                document.getElementById('videoPlayerDescription').textContent = 'Agrega una nueva lección para comenzar.';
+                document.querySelector('.video-player__placeholder').style.display = 'block';
+                document.getElementById('lessonVideo').style.display = 'none';
+                updateLessonDescriptionContent(null);
+                resetLessonDescriptionEditor();
+                ensureLessonDescriptionActionsVisibility();
+                updateLessonNavigation();
+                renderLessonDiscussion();
+            }
+        }
+        
+        // Guardar datos del curso desde el player
+        function saveCourseDataFromPlayer() {
+            const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            storedCourses[currentCourseId] = courseData;
+            localStorage.setItem('coursesData', JSON.stringify(storedCourses));
+            
+            // Actualizar información del curso también
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            if (coursesInfo[currentCourseId]) {
+                coursesInfo[currentCourseId].name = courseData.title;
+            }
+            localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
+            
+            // Mostrar notificación
+            const notification = document.createElement('div');
+            notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: var(--dark-bg); padding: 15px 25px; border-radius: 10px; z-index: 10000; font-weight: 700; box-shadow: 0 4px 15px rgba(57, 243, 212, 0.4);';
+            notification.textContent = '✅ Cambios guardados';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+        }
+
+        function renderLessonDiscussion() {
+            const listEl = document.getElementById('lessonDiscussionList');
+            const countEl = document.getElementById('lessonDiscussionCount');
+            const questionInput = document.getElementById('lessonQuestionInput');
+            if (!listEl || !countEl) {
+                return;
+            }
+
+            if (!currentLessonId) {
+                listEl.innerHTML = '<p style="color: var(--text-secondary);">Selecciona una lección para ver las preguntas.</p>';
+                countEl.textContent = '0 preguntas';
+                if (questionInput) questionInput.disabled = true;
+                return;
+            }
+
+            if (questionInput) questionInput.disabled = false;
+
+            const discussions = getLessonDiscussions(currentCourseId, currentLessonId);
+            countEl.textContent = `${discussions.length} ${discussions.length === 1 ? 'pregunta' : 'preguntas'}`;
+
+            if (!discussions.length) {
+                listEl.innerHTML = '<p style="color: var(--text-secondary); background: rgba(255,255,255,0.05); padding: 14px 18px; border-radius: 10px;">Aún no hay preguntas. ¡Sé la primera persona en participar!</p>';
+                return;
+            }
+
+            const isAdmin = checkAdminMode();
+            const html = discussions.map(question => {
+                const questionBadge = (question.responses && question.responses.length > 0)
+                    ? '<span style="background: rgba(57, 243, 212, 0.15); color: var(--primary-color); padding: 3px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">Resuelto</span>'
+                    : '';
+
+                const responsesHtml = (question.responses || []).map(response => {
+                    const adminTag = response.isAdmin
+                        ? '<span style="background: rgba(57, 243, 212, 0.2); color: var(--primary-color); padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 700;">Equipo</span>'
+                        : '';
+                    return `
+                        <div style="background: rgba(255,255,255,0.04); padding: 14px 16px; border-radius: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 6px;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 34px; height: 34px; border-radius: 50%; background: rgba(57, 243, 212, 0.15); color: var(--primary-color); display: flex; align-items: center; justify-content: center; font-weight: 700;">
+                                        ${escapeHtml((response.authorName || 'A')[0] || 'A').toUpperCase()}
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="color: white; font-weight: 600;">${escapeHtml(response.authorName || 'Equipo')}</span>
+                                            ${adminTag}
+                                        </div>
+                                        <span style="color: var(--text-secondary); font-size: 0.75rem;">${formatDateTime(response.createdAt)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="margin: 6px 0 0; color: rgba(255,255,255,0.9); font-size: 0.95rem;">${escapeHtml(response.content)}</p>
+                        </div>
+                    `;
+                }).join('');
+
+                const responsesContainer = responsesHtml
+                    ? `<div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">${responsesHtml}</div>`
+                    : '';
+
+                const respondButton = isAdmin
+                    ? `<button onclick="respondToLessonQuestion('${question.id}')" style="background: rgba(57, 243, 212, 0.15); color: var(--primary-color); border: 1px solid rgba(57, 243, 212, 0.4); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Responder</button>`
+                    : '';
+
+                return `
+                    <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 18px 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
+                            <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.08); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem;">
+                                    ${escapeHtml((question.authorName || 'E')[0] || 'E').toUpperCase()}
+                                </div>
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                        <span style="color: white; font-weight: 600; font-size: 1rem;">${escapeHtml(question.authorName || 'Estudiante')}</span>
+                                        ${questionBadge}
+                                    </div>
+                                    <span style="color: var(--text-secondary); font-size: 0.8rem;">${formatDateTime(question.createdAt)}</span>
+                                </div>
+                            </div>
+                            ${respondButton}
+                        </div>
+                        <p style="margin: 14px 0 0; color: rgba(255,255,255,0.95); font-size: 1rem;">${escapeHtml(question.content)}</p>
+                        ${responsesContainer}
+                    </div>
+                `;
+            }).join('');
+
+            listEl.innerHTML = html;
+        }
+
+        function submitLessonQuestion() {
+            if (!currentLessonId) {
+                alert('Selecciona una lección antes de enviar una pregunta.');
+                return;
+            }
+
+            const textarea = document.getElementById('lessonQuestionInput');
+            if (!textarea) return;
+
+            const questionText = textarea.value.trim();
+            if (!questionText) {
+                alert('Por favor, escribe tu pregunta.');
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem('user') || '{}');
+            const authorName = userData.fullName || userData.name || userData.displayName || (userData.email ? userData.email.split('@')[0] : 'Estudiante');
+            const authorEmail = userData.email || '';
+
+            const question = {
+                id: generateUniqueId('question'),
+                content: questionText,
+                authorName,
+                authorEmail,
+                createdAt: new Date().toISOString(),
+                responses: []
+            };
+
+            const lessonDiscussions = getLessonDiscussions(currentCourseId, currentLessonId);
+            lessonDiscussions.push(question);
+            ensureDiscussionBuckets(currentCourseId)[currentLessonId] = lessonDiscussions;
+            saveDiscussionsData();
+
+            textarea.value = '';
+            renderLessonDiscussion();
+        }
+
+        function respondToLessonQuestion(questionId) {
+            if (!isAdminModeGlobal) {
+                alert('Solo los administradores pueden responder preguntas.');
+                return;
+            }
+
+            const responseText = prompt('Escribe tu respuesta para esta pregunta:');
+            if (!responseText || !responseText.trim()) {
+                return;
+            }
+
+            const lessonDiscussions = getLessonDiscussions(currentCourseId, currentLessonId);
+            const question = lessonDiscussions.find(q => q.id === questionId);
+            if (!question) {
+                alert('No se encontró la pregunta seleccionada.');
+                return;
+            }
+
+            if (!Array.isArray(question.responses)) {
+                question.responses = [];
+            }
+
+            const adminData = JSON.parse(localStorage.getItem('user') || '{}');
+            const adminName = adminData.fullName || adminData.name || adminData.displayName || 'Equipo Graykids';
+
+            question.responses.push({
+                id: generateUniqueId('response'),
+                content: responseText.trim(),
+                authorName: adminName,
+                authorEmail: adminData.email || '',
+                createdAt: new Date().toISOString(),
+                isAdmin: true
+            });
+
+            saveDiscussionsData();
+            renderLessonDiscussion();
+        }
+        
+        // Cargar datos del video al seleccionar lección (modo admin)
+        function loadLesson(lessonId, lessonTitle, lessonData = null, element = null) {
+            currentLessonId = lessonId;
+
+            const { lesson: storedLesson, module, moduleIndex, lessonIndex } = findLessonById(lessonId);
+            const lessonToUse = lessonData || storedLesson || null;
+
+            const titleElement = document.getElementById('lessonTitle');
+            const currentTitleElement = document.getElementById('currentLessonTitle');
+            if (currentTitleElement) currentTitleElement.textContent = lessonTitle;
+            if (titleElement) titleElement.textContent = lessonTitle;
+
+            const badgeEl = document.querySelector('.lesson-info__badge');
+            if (badgeEl) {
+                const totalLessons = getAllLessons().length;
+                if (module && lessonIndex >= 0) {
+                    const sequential = `${moduleIndex + 1}.${lessonIndex + 1}`;
+                    badgeEl.textContent = `Lección ${sequential} de ${totalLessons}`;
+                } else {
+                    badgeEl.textContent = `Lección - de ${totalLessons}`;
+                }
+            }
+
+            const durationElement = document.getElementById('lessonDuration');
+            if (durationElement) {
+                durationElement.textContent = (lessonToUse && lessonToUse.duration) ? lessonToUse.duration : 'Por definir';
+            }
+
+            const titleInput = document.getElementById('lessonTitleInput');
+            if (titleInput) {
+                titleInput.value = lessonTitle;
+            }
+
+            if (isAdminModeGlobal) {
+                const videoType = lessonToUse?.videoType || 'youtube';
+                const typeInputs = document.querySelectorAll('input[name="videoSourceType"]');
+                typeInputs.forEach(input => {
+                    input.checked = input.value === videoType;
+                });
+                handleVideoSourceTypeChange(videoType);
+
+                const youtubeInput = document.getElementById('lessonVideoUrlInput');
+                const directInput = document.getElementById('lessonVideoDirectInput');
+                const fileInput = document.getElementById('lessonVideoFileInput');
+                if (youtubeInput) youtubeInput.value = videoType === 'youtube' ? (lessonToUse?.videoUrl || '') : '';
+                if (directInput) directInput.value = videoType === 'direct' ? (lessonToUse?.videoUrl || '') : '';
+                if (fileInput) fileInput.value = '';
+            }
+
+            document.querySelectorAll('.lesson-item').forEach(item => {
+                item.classList.remove('lesson-item--active');
+            });
+            if (element) {
+                element.classList.add('lesson-item--active');
+            } else {
+                const target = document.querySelector(`[data-lesson-id="${lessonId}"]`);
+                if (target) {
+                    target.classList.add('lesson-item--active');
+                }
+            }
+
+            const placeholder = document.querySelector('.video-player__placeholder');
+            const videoEl = document.getElementById('lessonVideo');
+            const iframeContainer = document.getElementById('lessonIframeContainer');
+            const iframe = document.getElementById('lessonIframe');
+            if (lessonToUse && lessonToUse.videoUrl) {
+                if (placeholder) placeholder.style.display = 'block';
+                if (videoEl) {
+                    videoEl.style.display = 'none';
+                    videoEl.src = '';
+                }
+                if (iframeContainer) iframeContainer.style.display = 'none';
+                const descEl = document.getElementById('videoPlayerDescription');
+                if (descEl) {
+                    if (lessonToUse.videoType === 'file') {
+                        descEl.textContent = 'Video cargado desde tu equipo. No recargues la página para mantenerlo disponible.';
+            } else {
+                        descEl.textContent = 'Video disponible. Clic en play para reproducir.';
+                    }
+                }
+                if (iframe) iframe.src = '';
+            } else {
+                if (placeholder) placeholder.style.display = 'block';
+                if (videoEl) {
+                    videoEl.style.display = 'none';
+                    videoEl.src = '';
+                }
+                if (iframeContainer) iframeContainer.style.display = 'none';
+                const descEl = document.getElementById('videoPlayerDescription');
+                if (descEl) {
+                    descEl.textContent = 'Video pendiente de cargar. Usa el formulario de abajo para agregar la fuente.';
+                }
+                if (iframe) iframe.src = '';
+            }
+
+            updateLessonDescriptionContent(lessonToUse);
+            updateAdminVideoEditorStatus(lessonToUse);
+            resetLessonDescriptionEditor();
+            ensureLessonDescriptionActionsVisibility();
+
+            updateLessonNavigation();
+            renderLessonDiscussion();
+        }
+        
+        // Actualizar navegación entre lecciones
+        function updateLessonNavigation() {
+            const navigation = document.getElementById('lessonNavigation');
+            if (!navigation) return;
+            
+            const allLessons = getAllLessons();
+            
+            if (allLessons.length === 0) {
+                navigation.style.display = 'none';
+                return;
+            }
+            
+            navigation.style.display = 'flex';
+            
+            const currentIndex = allLessons.findIndex(l => l.id === currentLessonId);
+            
+            // Botón anterior
+            const prevBtn = document.getElementById('prevLessonBtn');
+            if (currentIndex > 0) {
+                prevBtn.disabled = false;
+                prevBtn.style.opacity = '1';
+                prevBtn.style.cursor = 'pointer';
+            } else {
+                prevBtn.disabled = true;
+                prevBtn.style.opacity = '0.5';
+                prevBtn.style.cursor = 'not-allowed';
+            }
+            
+            // Botón siguiente
+            const nextBtn = document.getElementById('nextLessonBtn');
+            if (currentIndex !== -1 && currentIndex < allLessons.length - 1) {
+                nextBtn.disabled = false;
+                nextBtn.style.opacity = '1';
+                nextBtn.style.cursor = 'pointer';
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.style.opacity = '0.5';
+                nextBtn.style.cursor = 'not-allowed';
+            }
+            
+            // Contador
+            const counterEl = document.getElementById('lessonCounter');
+            if (counterEl) {
+                const displayIndex = currentIndex >= 0 ? currentIndex + 1 : 0;
+                counterEl.textContent = `${displayIndex} / ${allLessons.length}`;
+            }
+        }
+        
+        // Navegar entre lecciones
+        function navigateLesson(direction) {
+            const allLessons = getAllLessons();
+            if (allLessons.length === 0) return;
+
+            const currentIndex = allLessons.findIndex(l => l.id === currentLessonId);
+            if (currentIndex === -1) return;
+
+            let newIndex = currentIndex;
+            if (direction === 'next' && currentIndex < allLessons.length - 1) {
+                newIndex = currentIndex + 1;
+            } else if (direction === 'prev' && currentIndex > 0) {
+                newIndex = currentIndex - 1;
+            } else {
+                return;
+            }
+            
+            const nextLesson = allLessons[newIndex];
+            const lessonElement = document.querySelector(`[data-lesson-id="${nextLesson.id}"]`);
+            if (lessonElement) {
+                loadLesson(nextLesson.id, nextLesson.title, nextLesson, lessonElement);
+                
+                const moduleElement = lessonElement.closest('.course-module');
+                if (moduleElement) {
+                    const lessonsContainer = moduleElement.querySelector('.course-module__lessons');
+                    if (lessonsContainer) {
+                        lessonsContainer.classList.add('course-module__lessons--expanded');
+                    }
+                    lessonElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
+        // Initialize
+        if (checkAuth()) {
+            courseData = normalizeCourseData(getCourseData());
+            
+            refreshCourseTitles(courseData.title);
+            
+            showAdminControls();
+            registerVideoSourceTypeListeners();
+            registerNewLessonVideoSourceListeners();
+            
+            generateCourseMenu();
+            
+            // Load first lesson if available
+            setTimeout(() => {
+                if (courseData.modules && courseData.modules.length > 0 && courseData.modules[0].lessons.length > 0) {
+                    const firstLesson = courseData.modules[0].lessons[0];
+                    const targetElement = document.querySelector(`[data-lesson-id="${firstLesson.id}"]`);
+                    if (targetElement) {
+                        loadLesson(firstLesson.id, firstLesson.title, firstLesson, targetElement);
+                        // Expandir primer módulo
+                        const moduleElement = targetElement.closest('.course-module');
+                        if (moduleElement) {
+                            const lessonsContainer = moduleElement.querySelector('.course-module__lessons');
+                            if (lessonsContainer) {
+                                lessonsContainer.classList.add('course-module__lessons--expanded');
+                            }
+                        }
+                    }
+                } else if (isAdminModeGlobal) {
+                    const desc = document.getElementById('videoPlayerDescription');
+                    if (desc) {
+                        desc.textContent = 'No hay lecciones aún. Usa los botones del panel derecho para agregar módulos y videos.';
+                    }
+                }
+                
+                // Mostrar navegación si hay lecciones
+                updateLessonNavigation();
+            }, 200);
+        }
+
+        window.startLessonDescriptionEdit = startLessonDescriptionEdit;
+        window.cancelLessonDescriptionEdit = cancelLessonDescriptionEdit;
+        window.saveLessonDescription = saveLessonDescription;
+        window.toggleAdminVideoEditor = toggleAdminVideoEditor;
+    </script>
+</body>
+</html>
+

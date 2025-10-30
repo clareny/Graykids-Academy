@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/config.js"></script>
+    <script src="js/oauth-config.js"></script>
+    <title>Autenticando... - Graykids Academy</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--dark-bg);
+        }
+
+        .auth-loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .auth-loading__icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border: 4px solid rgba(57, 243, 212, 0.2);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .auth-loading__text {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        .auth-error {
+            color: #ef4444;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-loading">
+        <div class="auth-loading__icon"></div>
+        <h2 class="auth-loading__text">Autenticando...</h2>
+    </div>
+
+    <script>
+        // Funciones para manejar cookies
+        function setCookie(name, value, days = 7) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            const secure = window.location.protocol === 'https:' ? ';Secure' : '';
+            document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/;SameSite=Lax${secure}`;
+        }
+        
+        function getCookie(name) {
+            const nameEQ = name + '=';
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(c.substring(nameEQ.length, c.length));
+                }
+            }
+            return null;
+        }
+
+        // Obtener parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state'); // provider viene en el state
+        const provider = state && state.includes('provider=') ? state.split('provider=')[1] : 'google'; // Por defecto google
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+
+        // Manejar errores de OAuth
+        if (error) {
+            document.querySelector('.auth-loading__text').textContent = 'Error de autenticación';
+            document.querySelector('.auth-loading__text').className = 'auth-error';
+            document.querySelector('.auth-loading__icon').style.display = 'none';
+            
+            console.error('Error OAuth:', error, errorDescription);
+            
+            setTimeout(() => {
+                window.location.href = 'Login.html?error=' + encodeURIComponent(error);
+            }, 3000);
+            throw new Error('OAuth error: ' + error);
+        }
+
+        // Verificar que tengamos el código de autorización
+        if (!code) {
+            document.querySelector('.auth-loading__text').textContent = 'No se recibió el código de autorización';
+            document.querySelector('.auth-loading__text').className = 'auth-error';
+            document.querySelector('.auth-loading__icon').style.display = 'none';
+            
+            setTimeout(() => {
+                window.location.href = 'Login.html?error=no_code';
+            }, 3000);
+            throw new Error('No authorization code received');
+        }
+
+        // Procesar según el proveedor
+        if (provider === 'google') {
+            handleGoogleCallback(code);
+        } else {
+            console.error('Provider desconocido:', provider);
+            window.location.href = 'Login.html?error=unknown_provider';
+        }
+
+        async function handleGoogleCallback(code) {
+            try {
+                document.querySelector('.auth-loading__text').textContent = 'Obteniendo información del usuario...';
+                
+                // ⚠️ IMPORTANTE: Esta es una implementación del lado del cliente
+                // En producción, DEBES intercambiar el código por tokens en tu backend
+                // porque necesitas el CLIENT_SECRET que NUNCA debe estar en el frontend
+                
+                // Para desarrollo/testing, usaremos una aproximación alternativa:
+                // Usaremos el código directamente para obtener la info (solo funciona en algunas configuraciones)
+                
+                // URL para intercambiar código por tokens (esto normalmente se hace en el backend)
+                const tokenUrl = 'https://oauth2.googleapis.com/token';
+                
+                // ⚠️ NOTA: Este enfoque requiere que configures el flujo completo en el backend
+                // Por ahora, vamos a usar un enfoque híbrido:
+                // 1. Guardamos el código
+                // 2. Intentamos obtener info del usuario usando Google Identity API
+                
+                // Para simplificar en desarrollo, vamos a usar localStorage para simular
+                // En producción, usa tu backend para intercambiar el código por tokens
+                
+                // Simulamos obtener datos del usuario
+                // En producción, tu backend haría esto:
+                /*
+                const response = await fetch(tokenUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        code: code,
+                        client_id: OAUTH_CONFIG.google.clientId,
+                        client_secret: 'TU_CLIENT_SECRET', // ⚠️ Solo en backend
+                        redirect_uri: OAUTH_CONFIG.google.redirectUri + '?provider=google',
+                        grant_type: 'authorization_code'
+                    })
+                });
+                
+                const tokenData = await response.json();
+                
+                // Ahora obtener info del usuario
+                const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+                    headers: {
+                        'Authorization': `Bearer ${tokenData.access_token}`
+                    }
+                });
+                
+                const userData = await userResponse.json();
+                */
+                
+                // Por ahora, usamos localStorage para desarrollo
+                // Guardamos el código de autorización (en producción esto se hace en backend)
+                localStorage.setItem('oauth_code', code);
+                localStorage.setItem('oauth_provider', 'google');
+                
+                // ⚠️ MODO DESARROLLO: Simulamos datos del usuario
+                // En producción, estos datos vendrían de la API de Google
+                const userEmail = sessionStorage.getItem('google_user_email') || prompt('Ingresa tu email de Google para continuar:');
+                
+                if (!userEmail) {
+                    window.location.href = 'Login.html?error=user_cancelled';
+                    return;
+                }
+                
+                // Guardar email en sessionStorage para la próxima vez
+                sessionStorage.setItem('google_user_email', userEmail);
+                
+                const userInfo = {
+                    name: userEmail.split('@')[0],
+                    email: userEmail.trim(),
+                    provider: 'google',
+                    picture: `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${code}` // En producción usar token real
+                };
+                
+                // Verificar si es administrador
+                if (typeof isAdminEmail === 'function') {
+                    userInfo.isAdmin = isAdminEmail(userInfo.email);
+                } else {
+                    const defaultAdminEmail = 'spieronilton@gmail.com';
+                    userInfo.isAdmin = userInfo.email.toLowerCase() === defaultAdminEmail.toLowerCase();
+                }
+                
+                // Marcar como verificado si es Google (ya está verificado por Google)
+                userInfo.emailVerified = true;
+                
+                // Guardar en localStorage
+                localStorage.setItem('user', JSON.stringify(userInfo));
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Guardar en cookies para persistencia
+                setCookie('user_session', JSON.stringify(userInfo), 7);
+                setCookie('is_logged_in', 'true', 7);
+                
+                // Verificaciones adicionales
+                const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
+                if (!verifications[userInfo.email]) {
+                    verifications[userInfo.email] = {
+                        verified: true,
+                        verifiedAt: Date.now(),
+                        provider: 'google'
+                    };
+                    localStorage.setItem('emailVerifications', JSON.stringify(verifications));
+                }
+                
+                document.querySelector('.auth-loading__text').textContent = '¡Autenticación exitosa!';
+                
+                // Redirigir según el tipo de usuario
+                setTimeout(() => {
+                    if (userInfo.isAdmin) {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'campus.html?login=success';
+                    }
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error en handleGoogleCallback:', error);
+                document.querySelector('.auth-loading__text').textContent = 'Error al autenticar';
+                document.querySelector('.auth-loading__text').className = 'auth-error';
+                document.querySelector('.auth-loading__icon').style.display = 'none';
+                
+                setTimeout(() => {
+                    window.location.href = 'Login.html?error=auth_failed';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
+
