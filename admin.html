@@ -2177,6 +2177,10 @@
         // FUNCIONES DE GESTIÓN DE USUARIOS
         // ========================================
         
+        function normalizeEmail(email) {
+            return typeof email === 'string' ? email.trim().toLowerCase() : '';
+        }
+
         function loadUsersList() {
             const usersContainer = document.getElementById('usersListContainer');
             if (!usersContainer) return;
@@ -2237,7 +2241,8 @@
             const users = JSON.parse(localStorage.getItem('users') || '{}');
             const user = users[email];
             const purchasedCourses = JSON.parse(localStorage.getItem('purchasedCourses') || '{}');
-            const userPurchases = purchasedCourses[email] || [];
+            const normalizedEmail = normalizeEmail(email);
+            const userPurchases = purchasedCourses[email] || purchasedCourses[normalizedEmail] || [];
             
             if (!user) {
                 alert('Usuario no encontrado');
@@ -2286,8 +2291,18 @@
             
             // También eliminar de purchasedCourses si existe
             const purchasedCourses = JSON.parse(localStorage.getItem('purchasedCourses') || '{}');
+            const normalizedEmail = normalizeEmail(email);
+
+            let modified = false;
             if (purchasedCourses[email]) {
                 delete purchasedCourses[email];
+                modified = true;
+            }
+            if (normalizedEmail && purchasedCourses[normalizedEmail]) {
+                delete purchasedCourses[normalizedEmail];
+                modified = true;
+            }
+            if (modified) {
                 localStorage.setItem('purchasedCourses', JSON.stringify(purchasedCourses));
             }
             

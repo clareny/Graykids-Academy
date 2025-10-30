@@ -128,8 +128,86 @@
     </footer>
 
     <script>
+        function normalizeEmail(email) {
+            return typeof email === 'string' ? email.trim().toLowerCase() : '';
+        }
+
+        const COURSE_DEFAULT_MINUTES = {
+            'curso-voces': 720,
+            'curso-maquetizacion': 600,
+            'curso-beats': 660,
+            'curso-mezcla-beats': 540,
+            'curso-sound-design': 600,
+            'curso-vender-beats': 480,
+            'curso-piano': 720
+        };
+
+        function persistCoursePurchase(paymentInfo) {
+            if (!paymentInfo || paymentInfo.type !== 'course' || !paymentInfo.courseId) {
+                return;
+            }
+
+            const paymentEmail = normalizeEmail(paymentInfo.userData?.email);
+            let sessionEmail = '';
+
+            try {
+                const sessionUser = JSON.parse(localStorage.getItem('user') || '{}');
+                sessionEmail = normalizeEmail(sessionUser.email);
+            } catch (error) {
+                console.error('Error reading current session for purchase persistence:', error);
+            }
+
+            const targetEmail = paymentEmail || sessionEmail;
+            if (!targetEmail) {
+                console.warn('No email available to registrar la compra del curso.');
+                return;
+            }
+
+            try {
+                const purchasedCourses = JSON.parse(localStorage.getItem('purchasedCourses') || '{}');
+                const userCourses = Array.isArray(purchasedCourses[targetEmail]) ? purchasedCourses[targetEmail] : [];
+
+                if (!userCourses.includes(paymentInfo.courseId)) {
+                    userCourses.push(paymentInfo.courseId);
+                    purchasedCourses[targetEmail] = userCourses;
+                    localStorage.setItem('purchasedCourses', JSON.stringify(purchasedCourses));
+                }
+            } catch (error) {
+                console.error('Error persisting purchased course:', error);
+            }
+
+            try {
+                const progressStorage = JSON.parse(localStorage.getItem('courseProgressData') || '{}');
+                const userProgress = progressStorage[targetEmail] || {};
+                const defaultMinutes = COURSE_DEFAULT_MINUTES[paymentInfo.courseId] || 0;
+                let mutated = false;
+
+                if (!userProgress[paymentInfo.courseId]) {
+                    userProgress[paymentInfo.courseId] = {
+                        completedMinutes: 0,
+                        totalMinutes: defaultMinutes,
+                        lastUpdated: null
+                    };
+                    mutated = true;
+                } else if (!userProgress[paymentInfo.courseId].totalMinutes && defaultMinutes) {
+                    userProgress[paymentInfo.courseId].totalMinutes = defaultMinutes;
+                    mutated = true;
+                }
+
+                if (mutated) {
+                    progressStorage[targetEmail] = userProgress;
+                    localStorage.setItem('courseProgressData', JSON.stringify(progressStorage));
+                }
+            } catch (error) {
+                console.error('Error actualizando progreso del curso:', error);
+            }
+        }
+
         // Get data from localStorage
-        const paymentData = JSON.parse(localStorage.getItem('paymentData') || '{}');
+        const paymentDataRaw = localStorage.getItem('paymentData');
+        const paymentData = paymentDataRaw ? JSON.parse(paymentDataRaw) : {};
+
+        persistCoursePurchase(paymentData);
         
         // Update UI with user data
         if (paymentData.userData && paymentData.userData.email) {
@@ -177,6 +255,10 @@
 
         // Simulate sending confirmation email
         console.log('Sending confirmation email to:', paymentData.userData?.email);
+
+        if (paymentDataRaw) {
+            localStorage.removeItem('paymentData');
+        }
         
         // In production, you would make an API call here to send the email
         // Example: 

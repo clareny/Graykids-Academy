@@ -3912,6 +3912,110 @@ body::before {
     gap: 30px;
 }
 
+.course-progress-card {
+    background: var(--dark-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transition: var(--transition);
+}
+
+.course-progress-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--primary-color);
+    box-shadow: 0 24px 50px rgba(57, 243, 212, 0.08);
+}
+
+.course-progress-card__header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.course-progress-card__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: rgba(57, 243, 212, 0.1);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+}
+
+.course-progress-card__title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: white;
+}
+
+.course-progress-card__meta {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.course-progress-card__stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.course-progress-card__stat {
+    flex: 1;
+    min-width: 120px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.course-progress-card__stat-label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.course-progress-card__stat-value {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.course-progress-card__bar {
+    height: 10px;
+    background: var(--dark-secondary);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.course-progress-card__fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    transition: width 0.3s ease;
+}
+
+.course-progress-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.course-progress-card__status {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
 .my-course {
     position: relative;
 }

@@ -112,12 +112,12 @@
                     <div class="campus-stat__label">Cursos Activos</div>
                 </div>
                 <div class="campus-stat">
-                    <div class="campus-stat__number">100%</div>
-                    <div class="campus-stat__label">Progreso Total</div>
+                    <div class="campus-stat__number" id="totalProgressPercent">0%</div>
+                    <div class="campus-stat__label">Progreso General</div>
                 </div>
                 <div class="campus-stat">
-                    <div class="campus-stat__number">12h</div>
-                    <div class="campus-stat__label">Tiempo de Estudio</div>
+                    <div class="campus-stat__number" id="totalContentHours">0h</div>
+                    <div class="campus-stat__label">Horas de Contenido</div>
                 </div>
             </div>
         </div>
@@ -250,6 +250,10 @@
             return JSON.parse(user);
         }
 
+        function normalizeEmail(email) {
+            return typeof email === 'string' ? email.trim().toLowerCase() : '';
+        }
+
         // Display user info
         function displayUserInfo() {
             const user = checkAuth();
@@ -260,18 +264,46 @@
 
         // Get purchased courses from localStorage
         function getPurchasedCourses() {
-            const paymentData = localStorage.getItem('paymentData');
-            if (!paymentData) return [];
-            
+            const userString = localStorage.getItem('user');
+            if (!userString) return [];
+
             try {
-                const data = JSON.parse(paymentData);
-                if (data.type === 'course' && data.courseId) {
-                    return [data.courseId];
+                const user = JSON.parse(userString);
+                const userEmail = normalizeEmail(user.email);
+                if (!userEmail) return [];
+
+                const purchasedCoursesMap = JSON.parse(localStorage.getItem('purchasedCourses') || '{}');
+                const purchasedCourses = purchasedCoursesMap[userEmail] || [];
+
+                if (Array.isArray(purchasedCourses) && purchasedCourses.length > 0) {
+                    return purchasedCourses;
+                }
+
+                // Fallback legacy data: compatibilidad con versiones anteriores solo si pertenece al usuario actual
+                const paymentDataRaw = localStorage.getItem('paymentData');
+                if (paymentDataRaw) {
+                    try {
+                        const paymentData = JSON.parse(paymentDataRaw);
+                        if (paymentData.type === 'course' && paymentData.courseId) {
+                            const paymentEmail = normalizeEmail(paymentData.userData?.email || user.email);
+                            if (paymentEmail === userEmail) {
+                                const legacyCourses = purchasedCoursesMap[userEmail] || [];
+                                if (!legacyCourses.includes(paymentData.courseId)) {
+                                    legacyCourses.push(paymentData.courseId);
+                                    purchasedCoursesMap[userEmail] = legacyCourses;
+                                    localStorage.setItem('purchasedCourses', JSON.stringify(purchasedCoursesMap));
+                                }
+                                return legacyCourses;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error parsing legacy payment data:', error);
+                    }
                 }
             } catch (e) {
-                console.error('Error parsing payment data:', e);
+                console.error('Error retrieving purchased courses:', e);
             }
-            
+
             return [];
         }
 
@@ -282,69 +314,252 @@
                 description: 'Nivel Avanzado. Aprende técnicas profesionales para grabar y mezclar voces como los grandes productores.',
                 icon: '🎤',
                 price: 99.99,
-                progress: 0,
-                lessons: 60
+                lessons: 60,
+                totalHours: 12,
+                totalMinutes: 720,
+                level: 'Avanzado'
             },
             'curso-maquetizacion': {
                 name: 'Maquetización Composicional',
                 description: 'Nivel Intermedio. Domina el arte de estructurar y organizar tus composiciones musicales.',
                 icon: '🎹',
                 price: 89.99,
-                progress: 0,
-                lessons: 50
+                lessons: 50,
+                totalHours: 10,
+                totalMinutes: 600,
+                level: 'Intermedio'
             },
             'curso-beats': {
                 name: 'Programación de Beats',
                 description: 'Nivel Intermedio. Aprende a programar beats profesionales desde cero.',
                 icon: '🎛️',
                 price: 79.99,
-                progress: 0,
-                lessons: 55
+                lessons: 55,
+                totalHours: 11,
+                totalMinutes: 660,
+                level: 'Intermedio'
             }
         };
 
-        // Display purchased courses
-        function displayCourses() {
+        const COURSE_PROGRESS_STORAGE_KEY = 'courseProgressData';
+        let initialCoursesGridHTML = null;
+        let initialProgressListHTML = null;
+
+        function extractHoursFromText(hoursText) {
+            if (!hoursText) return null;
+            const match = hoursText.toString().match(/\d+(?:[.,]\d+)?/);
+            if (!match) return null;
+            const value = parseFloat(match[0].replace(',', '.'));
+            return Number.isNaN(value) ? null : value;
+        }
+
+        function formatHoursShort(minutes) {
+            if (!minutes || minutes <= 0) {
+                return '0h';
+            }
+            const hours = minutes / 60;
+            if (hours >= 10) {
+                return `${Math.round(hours)}h`;
+            }
+            if (hours >= 1) {
+                return `${hours.toFixed(1)}h`;
+            }
+            return `${Math.round(minutes)}m`;
+        }
+
+        function getCourseMeta(courseId) {
+            const base = { ...(coursesDatabase[courseId] || {}) };
+
+            if (typeof getCourseInfo === 'function') {
+                try {
+                    const dynamicInfo = getCourseInfo(courseId);
+                    if (dynamicInfo) {
+                        base.name = dynamicInfo.name || base.name;
+                        base.icon = dynamicInfo.icon || base.icon;
+                        if (dynamicInfo.description) base.description = dynamicInfo.description;
+
+                        const parsedHours = extractHoursFromText(dynamicInfo.hours);
+                        if (parsedHours) {
+                            base.totalHours = parsedHours;
+                            base.totalMinutes = Math.round(parsedHours * 60);
+                        }
+
+                        if (dynamicInfo.videos) {
+                            const videosMatch = dynamicInfo.videos.toString().match(/\d+/);
+                            if (videosMatch) {
+                                base.lessons = parseInt(videosMatch[0], 10);
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.warn('No se pudo obtener información dinámica del curso', courseId, error);
+                }
+            }
+
+            if (!base.totalMinutes && base.totalHours) {
+                base.totalMinutes = Math.round(base.totalHours * 60);
+            }
+
+            if (!base.totalHours && base.totalMinutes) {
+                base.totalHours = base.totalMinutes / 60;
+            }
+
+            return base;
+        }
+
+        function getUserCoursesData() {
+            const userString = localStorage.getItem('user');
+            let user = {};
+
+            try {
+                user = userString ? JSON.parse(userString) : {};
+            } catch (error) {
+                console.error('Error al leer el usuario actual', error);
+            }
+
+            const email = normalizeEmail(user?.email);
             const purchasedCourses = getPurchasedCourses();
+
+            let progressStorage = {};
+            try {
+                progressStorage = JSON.parse(localStorage.getItem(COURSE_PROGRESS_STORAGE_KEY) || '{}');
+            } catch (error) {
+                console.error('Error al leer el progreso de cursos', error);
+            }
+
+            const userProgressMap = email ? { ...(progressStorage[email] || {}) } : {};
+            let storageMutated = false;
+
+            const entries = purchasedCourses
+                .map(courseId => {
+                    const meta = getCourseMeta(courseId);
+                    if (!meta || !meta.name) return null;
+
+                    let progressEntry = userProgressMap[courseId];
+                    const totalMinutesFromMeta = meta.totalMinutes || 0;
+
+                    if (!progressEntry) {
+                        progressEntry = {
+                            completedMinutes: 0,
+                            totalMinutes: totalMinutesFromMeta,
+                            lastUpdated: null
+                        };
+                        userProgressMap[courseId] = progressEntry;
+                        storageMutated = true;
+                    } else {
+                        if (totalMinutesFromMeta && (!progressEntry.totalMinutes || progressEntry.totalMinutes < totalMinutesFromMeta)) {
+                            progressEntry.totalMinutes = totalMinutesFromMeta;
+                            storageMutated = true;
+                        }
+
+                        if (progressEntry.totalMinutes && progressEntry.completedMinutes > progressEntry.totalMinutes) {
+                            progressEntry.completedMinutes = progressEntry.totalMinutes;
+                            storageMutated = true;
+                        }
+                    }
+
+                    const totalMinutes = progressEntry.totalMinutes || totalMinutesFromMeta || 0;
+                    const completedMinutes = Math.min(progressEntry.completedMinutes || 0, totalMinutes || progressEntry.completedMinutes || 0);
+                    const percent = totalMinutes > 0 ? Math.round((completedMinutes / totalMinutes) * 100) : 0;
+                    const remainingMinutes = totalMinutes > 0 ? Math.max(totalMinutes - completedMinutes, 0) : 0;
+
+                    return {
+                        courseId,
+                        meta,
+                        progressEntry,
+                        computed: {
+                            totalMinutes,
+                            completedMinutes,
+                            remainingMinutes,
+                            percent
+                        }
+                    };
+                })
+                .filter(Boolean);
+
+            const totalMinutes = entries.reduce((acc, entry) => acc + entry.computed.totalMinutes, 0);
+            const completedMinutes = entries.reduce((acc, entry) => acc + entry.computed.completedMinutes, 0);
+            const overallPercent = totalMinutes > 0 ? Math.round((completedMinutes / totalMinutes) * 100) : 0;
+
+            if (storageMutated && email) {
+                progressStorage[email] = userProgressMap;
+                localStorage.setItem(COURSE_PROGRESS_STORAGE_KEY, JSON.stringify(progressStorage));
+            }
+
+            return {
+                email,
+                purchasedCourses,
+                entries,
+                stats: {
+                    totalCourses: purchasedCourses.length,
+                    totalMinutes,
+                    completedMinutes,
+                    percent: overallPercent
+                }
+            };
+        }
+
+        function renderCourses(context) {
             const grid = document.getElementById('coursesGrid');
-            
-            if (purchasedCourses.length === 0) {
-                // Empty state already in HTML
+            if (!grid) return;
+
+            if (initialCoursesGridHTML === null) {
+                initialCoursesGridHTML = grid.innerHTML;
+            }
+
+            if (!context || context.entries.length === 0) {
+                if (initialCoursesGridHTML !== null) {
+                    grid.innerHTML = initialCoursesGridHTML;
+                }
                 return;
             }
-            
-            // Clear empty state
+
             grid.innerHTML = '';
-            
-            purchasedCourses.forEach(courseId => {
-                const course = coursesDatabase[courseId];
-                if (!course) return;
-                
-                const courseCard = document.createElement('div');
-                courseCard.className = 'course-card my-course';
-                courseCard.innerHTML = `
-                    <div class="course-card__image">
-                        <div class="course-card__placeholder">
-                            <span class="course-card__icon">${course.icon}</span>
+
+            context.entries.forEach(({ courseId, meta, computed }) => {
+                const card = document.createElement('article');
+                card.className = 'course-progress-card';
+
+                const totalLabel = formatHoursShort(computed.totalMinutes);
+                const completedLabel = formatHoursShort(computed.completedMinutes);
+                const remainingLabel = formatHoursShort(computed.remainingMinutes);
+                const statusText = computed.completedMinutes > 0
+                    ? `Has estudiado ${completedLabel} de ${totalLabel}`
+                    : 'Listo para comenzar';
+
+                card.innerHTML = `
+                    <div class="course-progress-card__header">
+                        <div class="course-progress-card__icon">${meta.icon || '🎓'}</div>
+                        <div>
+                            <h4 class="course-progress-card__title">${meta.name || 'Curso'}</h4>
+                            <p class="course-progress-card__meta">${meta.lessons || 0} lecciones • ${totalLabel} totales</p>
                         </div>
-                        <div class="course-card__progress" style="width: ${course.progress}%"></div>
                     </div>
-                    <div class="course-card__content">
-                        <h4 class="course-card__title">${course.name}</h4>
-                        <p class="course-card__description">${course.description}</p>
-                        <div class="course-card__stats">
-                            <span>${course.lessons} Lecciones</span>
-                            <span>${course.progress}% Completado</span>
+                    <div class="course-progress-card__stats">
+                        <div class="course-progress-card__stat">
+                            <span class="course-progress-card__stat-label">Avance</span>
+                            <span class="course-progress-card__stat-value">${computed.percent}%</span>
                         </div>
-                        <a href="#" class="btn btn--primary" onclick="openCourse('${courseId}')">Continuar Curso</a>
+                        <div class="course-progress-card__stat">
+                            <span class="course-progress-card__stat-label">Estudiado</span>
+                            <span class="course-progress-card__stat-value">${completedLabel}</span>
+                        </div>
+                        <div class="course-progress-card__stat">
+                            <span class="course-progress-card__stat-label">Restante</span>
+                            <span class="course-progress-card__stat-value">${remainingLabel}</span>
+                        </div>
+                    </div>
+                    <div class="course-progress-card__bar">
+                        <div class="course-progress-card__fill" style="width: ${computed.percent}%"></div>
+                    </div>
+                    <div class="course-progress-card__footer">
+                        <span class="course-progress-card__status">${statusText}</span>
+                        <button class="btn btn--primary" onclick="openCourse('${courseId}')">Continuar Curso</button>
                     </div>
                 `;
-                
-                grid.appendChild(courseCard);
+
+                grid.appendChild(card);
             });
-            
-            // Update stats
-            document.getElementById('coursesCount').textContent = purchasedCourses.length;
         }
 
         // Open course
@@ -356,34 +571,61 @@
             window.location.href = 'curso-player.html';
         }
 
-        // Display progress
-        function displayProgress() {
-            const purchasedCourses = getPurchasedCourses();
+        function renderProgress(context) {
             const progressList = document.getElementById('progressList');
-            
-            if (purchasedCourses.length === 0) {
+            if (!progressList) return;
+
+            if (initialProgressListHTML === null) {
+                initialProgressListHTML = progressList.innerHTML;
+            }
+
+            if (!context || context.entries.length === 0) {
                 progressList.innerHTML = '<p>No hay progreso aún. Compra un curso para comenzar!</p>';
                 return;
             }
-            
-            purchasedCourses.forEach(courseId => {
-                const course = coursesDatabase[courseId];
-                if (!course) return;
-                
+
+            progressList.innerHTML = '';
+
+            context.entries.forEach(({ meta, computed }) => {
                 const progressItem = document.createElement('div');
                 progressItem.className = 'progress-item';
                 progressItem.innerHTML = `
                     <div class="progress-item__info">
-                        <h4 class="progress-item__title">${course.name}</h4>
-                        <span class="progress-item__lessons">0 / ${course.lessons} lecciones</span>
+                        <h4 class="progress-item__title">${meta.name || 'Curso'}</h4>
+                        <span class="progress-item__lessons">${formatHoursShort(computed.completedMinutes)} de ${formatHoursShort(computed.totalMinutes)} • ${computed.percent}%</span>
                     </div>
                     <div class="progress-item__bar">
-                        <div class="progress-item__fill" style="width: ${course.progress}%"></div>
+                        <div class="progress-item__fill" style="width: ${computed.percent}%"></div>
                     </div>
                 `;
-                
                 progressList.appendChild(progressItem);
             });
+        }
+
+        function updateCampusStats(context) {
+            const stats = context?.stats || { totalCourses: 0, percent: 0, totalMinutes: 0 };
+
+            const coursesCountEl = document.getElementById('coursesCount');
+            if (coursesCountEl) {
+                coursesCountEl.textContent = stats.totalCourses;
+            }
+
+            const totalProgressEl = document.getElementById('totalProgressPercent');
+            if (totalProgressEl) {
+                totalProgressEl.textContent = `${stats.percent}%`;
+            }
+
+            const totalContentEl = document.getElementById('totalContentHours');
+            if (totalContentEl) {
+                totalContentEl.textContent = formatHoursShort(stats.totalMinutes);
+            }
+        }
+
+        function refreshUserCourseViews() {
+            const context = getUserCoursesData();
+            updateCampusStats(context);
+            renderCourses(context);
+            renderProgress(context);
         }
 
         // Cookie functions
@@ -417,8 +659,7 @@
 
         // Initialize campus
         displayUserInfo();
-        displayCourses();
-        displayProgress();
+        refreshUserCourseViews();
 
         // Check for success message
         const urlParams = new URLSearchParams(window.location.search);
