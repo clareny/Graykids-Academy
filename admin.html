@@ -779,6 +779,7 @@
         function initializeDefaultCourses() {
             const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
             const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            const deletedCourses = JSON.parse(localStorage.getItem('deletedCourses') || '[]');
             const defaultCourseIds = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
             const defaultPresentationVideos = {
                 'curso-voces': 'https://www.youtube.com/watch?v=ysz5S6PUM-U',
@@ -787,6 +788,16 @@
             };
             
             defaultCourseIds.forEach(courseId => {
+                if (deletedCourses.includes(courseId)) {
+                    if (storedCourses[courseId]) {
+                        delete storedCourses[courseId];
+                    }
+                    if (coursesInfo[courseId]) {
+                        delete coursesInfo[courseId];
+                    }
+                    return;
+                }
+                
                 // Inicializar estructura de videos si no existe
                 if (!storedCourses[courseId]) {
                     storedCourses[courseId] = {
@@ -993,49 +1004,43 @@
                             editCourseContent(courseId);
                         };
                         editBtnContainer.appendChild(editBtn);
-                        
-                        // Botón de Eliminar (solo para cursos no principales)
-                        const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
-                        if (!defaultCourses.includes(courseId)) {
-                            const deleteBtn = document.createElement('button');
-                            deleteBtn.textContent = '🗑️ Eliminar';
-                            deleteBtn.style.cssText = 'flex: 1; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 2px solid #ff4d4d; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: all 0.2s;';
-                            deleteBtn.onmouseover = function() { 
-                                this.style.background = '#ff4d4d'; 
-                                this.style.color = 'white';
-                                this.style.transform = 'scale(1.05)';
-                            };
-                            deleteBtn.onmouseout = function() { 
-                                this.style.background = 'rgba(255, 77, 77, 0.2)'; 
-                                this.style.color = '#ff4d4d';
-                                this.style.transform = 'scale(1)';
-                            };
-                            deleteBtn.onclick = function(e) {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                
-                                const courseName = courseInfo.name || defaultInfo.name || courseId;
-                                
-                                if (confirm(`⚠️ ¿Estás seguro de eliminar el curso "${courseName}"?\n\nEsta acción eliminará el curso completamente y no se puede deshacer.`)) {
-                                    console.log('🗑️ Eliminando curso:', courseId);
-                                    deleteCourse(courseId);
-                                    
-                                    // Recargar la lista después de eliminar
-                                    setTimeout(() => {
-                                        loadCoursesList();
-                                        showAlert('✅ Curso "' + courseName + '" eliminado exitosamente');
-                                    }, 300);
-                                }
-                            };
-                            editBtnContainer.appendChild(deleteBtn);
-                        } else {
-                            // Mostrar mensaje informativo para cursos principales
-                            console.log('ℹ️ Curso principal no se puede eliminar:', courseId);
-                        }
+
+                        // Botón de Eliminar (disponible para todos los cursos)
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = '🗑️ Eliminar';
+                        deleteBtn.style.cssText = 'flex: 1; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 2px solid #ff4d4d; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: all 0.2s;';
+                        deleteBtn.onmouseover = function() {
+                            this.style.background = '#ff4d4d';
+                            this.style.color = 'white';
+                            this.style.transform = 'scale(1.05)';
+                        };
+                        deleteBtn.onmouseout = function() {
+                            this.style.background = 'rgba(255, 77, 77, 0.2)';
+                            this.style.color = '#ff4d4d';
+                            this.style.transform = 'scale(1)';
+                        };
+                        deleteBtn.onclick = function(e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+
+                            const courseName = courseInfo.name || defaultInfo.name || courseId;
+
+                            if (confirm(`⚠️ ¿Estás seguro de eliminar el curso "${courseName}"?\n\nEsta acción eliminará el curso completamente y no se puede deshacer.`)) {
+                                console.log('🗑️ Eliminando curso:', courseId);
+                                deleteCourse(courseId);
+
+                                // Recargar la lista después de eliminar
+                                setTimeout(() => {
+                                    loadCoursesList();
+                                    showAlert('✅ Curso "' + courseName + '" eliminado exitosamente');
+                                }, 300);
+                            }
+                        };
+                        editBtnContainer.appendChild(deleteBtn);
                     }
-                    
-                    coursesGrid.appendChild(card);
-                });
+                     
+                     coursesGrid.appendChild(card);
+                 });
             
             // Si no hay cursos, mostrar mensaje
             if (coursesGrid.children.length === 0) {
@@ -1668,7 +1673,7 @@
             const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
             const deleteBtnContainer = document.getElementById('modalDeleteBtnContainer');
             if (deleteBtnContainer) {
-                deleteBtnContainer.style.display = defaultCourses.includes(courseId) ? 'none' : 'block';
+                deleteBtnContainer.style.display = 'block';
             }
             
             // Guardar ID del curso siendo editado
@@ -1811,11 +1816,7 @@
             const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
             const deleteBtn = document.getElementById('deleteCourseBtn');
             if (deleteBtn) {
-                if (defaultCourses.includes(currentCourseId)) {
-                    deleteBtn.style.display = 'none';
-                } else {
-                    deleteBtn.style.display = 'block';
-                }
+                deleteBtn.style.display = 'block';
             }
         }
         
@@ -2089,14 +2090,6 @@
         function deleteCourse(courseId) {
             console.log('🗑️ deleteCourse llamada con courseId:', courseId);
             
-            // No permitir eliminar cursos por defecto
-            const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
-            if (defaultCourses.includes(courseId)) {
-                showAlert('⚠️ No puedes eliminar los cursos principales. Solo puedes marcarlos como "Próximamente".');
-                console.warn('⚠️ Intento de eliminar curso principal:', courseId);
-                return false;
-            }
-            
             if (!courseId || courseId.trim() === '') {
                 console.error('❌ Error: courseId inválido');
                 showAlert('❌ Error: No se pudo identificar el curso a eliminar');
@@ -2134,15 +2127,6 @@
                 updateCourseSelector();
             }
             
-            // Si el curso eliminado estaba seleccionado, cambiar a otro
-            const selector = document.getElementById('courseSelector');
-            if (selector && selector.value === courseId) {
-                selector.value = 'curso-voces';
-                if (typeof loadCourseData === 'function') {
-                    loadCourseData();
-                }
-            }
-            
             console.log('✅ Curso eliminado completamente:', courseId);
             return true;
         }
@@ -2152,59 +2136,63 @@
         
         // Actualizar selector de cursos
         function updateCourseSelector() {
-            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
-            const deletedCourses = JSON.parse(localStorage.getItem('deletedCourses') || '[]');
             const selector = document.getElementById('courseSelector');
+            if (!selector) return;
+            const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+            const coursesData = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            const deletedCourses = JSON.parse(localStorage.getItem('deletedCourses') || '[]');
+            const defaultsMap = typeof defaultCoursesInfo === 'object' ? defaultCoursesInfo : {};
             
             // Guardar valor actual
             const currentValue = selector.value;
             
-            // Crear lista de cursos por defecto
-            const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
-            
-            // Remover todas las opciones excepto las default
-            Array.from(selector.options).forEach(option => {
-                if (!defaultCourses.includes(option.value)) {
-                    option.remove();
-                }
+            // Construir listado completo respetando eliminados
+            const allCourseIds = new Set([
+                ...Object.keys(defaultsMap),
+                ...Object.keys(coursesInfo),
+                ...Object.keys(coursesData)
+            ]);
+
+            const validCourseIds = Array.from(allCourseIds).filter(id => id && !deletedCourses.includes(id));
+
+            // Limpiar selector
+            selector.innerHTML = '';
+
+            if (validCourseIds.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'Sin cursos disponibles';
+                selector.appendChild(option);
+                selector.disabled = true;
+                currentCourseId = '';
+                const courseEditView = document.getElementById('courseEditView');
+                const coursesListView = document.getElementById('coursesListView');
+                if (courseEditView) courseEditView.style.display = 'none';
+                if (coursesListView) coursesListView.style.display = 'block';
+                return;
+            }
+
+            selector.disabled = false;
+
+            validCourseIds.forEach(courseId => {
+                const option = document.createElement('option');
+                option.value = courseId;
+                const info = coursesInfo[courseId] || defaultsMap[courseId] || {};
+                option.textContent = info.name || courseNames[courseId] || courseId;
+                selector.appendChild(option);
             });
-            
-            // Agregar nuevos cursos creados (solo los que no están eliminados)
-            Object.keys(coursesInfo).forEach(courseId => {
-                if (!defaultCourses.includes(courseId) && !deletedCourses.includes(courseId)) {
-                    const existingOption = Array.from(selector.options).find(o => o.value === courseId);
-                    if (existingOption) {
-                        // Actualizar nombre si cambió
-                        existingOption.textContent = coursesInfo[courseId].name;
-                    } else {
-                        // Agregar nuevo curso
-                        const option = document.createElement('option');
-                        option.value = courseId;
-                        option.textContent = coursesInfo[courseId].name;
-                        selector.appendChild(option);
-                    }
-                } else if (defaultCourses.includes(courseId)) {
-                    // Actualizar nombres de cursos default si cambiaron
-                    const option = Array.from(selector.options).find(o => o.value === courseId);
-                    if (option && coursesInfo[courseId]) {
-                        option.textContent = coursesInfo[courseId].name;
-                    }
+
+            let nextValue = currentValue && validCourseIds.includes(currentValue)
+                ? currentValue
+                : validCourseIds[0];
+
+            if (nextValue) {
+                selector.value = nextValue;
+                const selectionChanged = currentCourseId !== nextValue;
+                currentCourseId = nextValue;
+                if (selectionChanged && typeof loadCourseData === 'function') {
+                    loadCourseData();
                 }
-            });
-            
-            // Remover opciones de cursos eliminados
-            Array.from(selector.options).forEach(option => {
-                if (deletedCourses.includes(option.value)) {
-                    option.remove();
-                }
-            });
-            
-            // Restaurar selección (si el curso seleccionado fue eliminado, cambiar a default)
-            if (currentValue && !deletedCourses.includes(currentValue)) {
-                selector.value = currentValue;
-            } else if (deletedCourses.includes(currentValue)) {
-                selector.value = 'curso-voces';
-                loadCourseData();
             }
         }
         
