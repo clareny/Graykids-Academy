@@ -749,6 +749,10 @@
             
             console.log('✅ Acceso de administrador confirmado:', user.email);
             // Loading ya fue ocultado arriba
+            if (typeof switchTab === 'function') {
+                // Asegurar que la pestaña principal se active automáticamente
+                setTimeout(() => switchTab('videos'), 0);
+            }
         }
         
         // Ejecutar verificación cuando el DOM esté listo

@@ -60,7 +60,6 @@ function renderCourseItem(courseId, container) {
     // Determinar estado del curso
     const courseStatus = course.status || (courseId === 'curso-voces' ? 'available' : 'coming-soon');
     const isAvailable = courseStatus === 'available' || courseStatus === 'pre-sale';
-    const detailLink = `curso-preview.html?course=${encodeURIComponent(courseId)}`;
     const badgeClass = course.level === 'Avanzado' ? '' : course.level === 'Intermedio' ? 'new' : 'popular';
     
     // Determinar texto y estilo del precio/estado
@@ -75,8 +74,6 @@ function renderCourseItem(courseId, container) {
         priceHtml = `<span class="course-item__price" style="opacity: 0.6;">Próximamente</span>
                      <span class="btn btn--primary" style="opacity: 0.6; cursor: not-allowed; pointer-events: none;">Próximamente</span>`;
     }
-    const detailsButton = `<a href="${detailLink}" class="btn btn--outline">Ver presentación</a>`;
-    
     const courseHTML = `
         <article class="course-item" data-course-id="${courseId}">
             <div class="course-item__image">
@@ -104,7 +101,6 @@ function renderCourseItem(courseId, container) {
                 </div>
                 <div class="course-item__footer">
                     ${priceHtml}
-                    ${detailsButton}
                 </div>
             </div>
         </article>
@@ -119,7 +115,6 @@ function renderCourseCard(courseId, container) {
     if (!course) return;
     
     const isAvailable = course.status === 'available' || course.status === undefined;
-    const detailLink = `curso-preview.html?course=${encodeURIComponent(courseId)}`;
     
     const cardHTML = `
         <article class="course-card" data-course-id="${courseId}">
@@ -131,13 +126,10 @@ function renderCourseCard(courseId, container) {
             <div class="course-card__content">
                 <h4 class="course-card__title">${course.name}</h4>
                 <p class="course-card__description">${course.description}</p>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <a href="${detailLink}" class="btn btn--secondary">Ver presentación</a>
-                    ${isAvailable 
-                        ? `<a href="checkout.html?type=course&id=${courseId}" class="btn btn--outline">Comprar</a>`
-                        : `<span class="btn btn--outline" style="opacity: 0.6; cursor: not-allowed;">Próximamente</span>`
-                    }
-                </div>
+                ${isAvailable 
+                    ? `<a href="#contacto" class="btn btn--secondary">Más info</a>`
+                    : `<span class="btn btn--secondary" style="opacity: 0.6; cursor: not-allowed;">Próximamente</span>`
+                }
             </div>
         </article>
     `;

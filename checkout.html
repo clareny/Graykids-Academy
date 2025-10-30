@@ -46,260 +46,250 @@
         }
     </script>
 
-    <!-- COURSE PREVIEW -->
-    <section class="course-preview checkout-preview" id="checkoutPreview" style="display: none;">
-        <div class="course-preview__container container">
-            <div class="course-preview__media" id="previewCourseMedia">
-                <div class="course-preview__media-empty">
-                    <p>Estamos preparando el video de presentación de este curso.</p>
-                </div>
-            </div>
-            <aside class="course-preview__sidebar">
-                <div id="previewCourseStatus"></div>
-                <h2 class="course-preview__cta-title" id="previewCourseTitle">Curso</h2>
-                <p class="course-preview__badge" id="previewCourseLevel"></p>
-                <p class="course-preview__description" id="previewCourseDescription"></p>
-                <ul class="course-preview__stats" id="previewCourseStats"></ul>
-                <div class="course-preview__ctas" id="previewCourseCtas"></div>
-            </aside>
-        </div>
-
-        <div class="course-preview__modules">
-            <div class="course-preview__modules-container container">
-                <h3 class="course-preview__modules-title">Contenido del curso</h3>
-                <p class="course-preview__modules-subtitle">Revisa los módulos y lecciones disponibles antes de comprar</p>
-                <div class="course-preview__modules-grid" id="previewModules"></div>
-            </div>
-        </div>
-    </section>
-
     <!-- CHECKOUT SECTION -->
-    <section class="checkout">
+    <section class="checkout" id="courseCheckout" style="display: none;">
         <div class="checkout__container container">
-            <div class="checkout__header">
-                <h1 class="checkout__title" id="checkoutTitle">Completar Compra</h1>
-                <p class="checkout__subtitle" id="checkoutSubtitle">Completa tus datos para continuar</p>
-            </div>
-
-            <!-- USER DATA FORM -->
-            <div class="checkout__user-form" id="userDataForm">
-                <h3 class="checkout__user-form-title">Datos de Facturación</h3>
-                <p class="checkout__user-form-subtitle">Completa tus datos para procesar el pago</p>
-                <form id="userInfoForm" class="user-info-form">
-                    <div class="form-group--inline">
-                        <div class="form-group">
-                            <label for="userName">Nombre</label>
-                            <input type="text" id="userName" placeholder="Tu nombre" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="userLastName">Apellidos</label>
-                            <input type="text" id="userLastName" placeholder="Tus apellidos" required>
+            <div class="checkout__layout">
+                <div class="checkout__summary" id="checkoutSummary">
+                    <div class="course-preview__media" id="previewCourseMedia">
+                        <div class="course-preview__media-empty">
+                            <p>Estamos preparando el video de presentación de este curso.</p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="userEmail">Correo Electrónico</label>
-                        <input type="email" id="userEmail" placeholder="tu@email.com" required>
+                    <div class="checkout__summary-content">
+                        <div id="previewCourseStatus"></div>
+                        <h1 class="checkout__summary-title" id="checkoutTitle">Completar Compra</h1>
+                        <p class="course-preview__badge" id="previewCourseLevel"></p>
+                        <p class="checkout__summary-price" id="previewCoursePrice"></p>
+                        <p class="course-preview__description" id="checkoutSubtitle">Completa tus datos para continuar</p>
+                        <ul class="course-preview__stats" id="previewCourseStats"></ul>
+                        <div class="course-preview__benefits" id="previewCourseBenefits"></div>
+                        <div class="checkout__summary-actions" id="checkoutSummaryActions"></div>
                     </div>
-                    <div class="form-group--inline">
-                        <div class="form-group">
-                            <label for="userPhone">Teléfono</label>
-                            <input type="tel" id="userPhone" placeholder="+51 999 999 999" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="userCountry">País</label>
-                            <select id="userCountry" required>
-                                <option value="">Selecciona tu país</option>
-                                <option value="PE">Perú</option>
-                                <option value="MX">México</option>
-                                <option value="CO">Colombia</option>
-                                <option value="AR">Argentina</option>
-                                <option value="ES">España</option>
-                                <option value="US">Estados Unidos</option>
-                                <option value="other">Otro</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn--primary btn--block">Continuar al Pago</button>
-                </form>
-            </div>
-
-            <div class="checkout__grid" id="checkoutGrid" style="display: none;">
-                <!-- INFO DEL PLAN/CURSO -->
-                <div class="checkout__plan" id="planSection">
-                    <h3 class="checkout__plan-title" id="planSectionTitle">Resumen</h3>
-                    
-                    <!-- INFO DEL PRODUCTO -->
-                    <div class="checkout__plan-info" id="planInfo">
-                        <div class="checkout__plan-item">
-                            <span class="checkout__plan-label">Item:</span>
-                            <span class="checkout__plan-value" id="planName">-</span>
-                        </div>
-                        <div class="checkout__plan-item">
-                            <span class="checkout__plan-label">Precio:</span>
-                            <span class="checkout__plan-value" id="planPrice">-</span>
-                        </div>
-                        <div class="checkout__plan-item checkout__plan-item--total">
-                            <span class="checkout__plan-label">Total:</span>
-                            <span class="checkout__plan-value checkout__plan-value--large" id="planTotal">-</span>
-                        </div>
-                    </div>
-
-                    <!-- BENEFICIOS (para cursos) -->
-                    <div class="checkout__benefits" id="benefitsSection" style="display: none;">
-                        <h4 class="checkout__benefits-title">Incluye:</h4>
-                        <ul class="checkout__benefits-list" id="benefitsList"></ul>
+                    <div class="course-preview__modules-wrapper">
+                        <h3 class="course-preview__modules-title">Currículum del curso</h3>
+                        <p class="course-preview__modules-subtitle">Revisa los módulos y lecciones disponibles antes de comprar</p>
+                        <div class="course-preview__modules-grid" id="previewModules"></div>
                     </div>
                 </div>
 
-                <!-- MÉTODOS DE PAGO -->
-                <div class="checkout__methods">
-                    <h3 class="checkout__methods-title">Métodos de pago</h3>
-
-                    <!-- PAYPAL -->
-                    <div class="payment-method">
-                        <input type="radio" id="paypal" name="payment" value="paypal" class="payment-method__radio">
-                        <label for="paypal" class="payment-method__label">
-                            <div class="payment-method__icon">💳</div>
-                            <div class="payment-method__info">
-                                <h4 class="payment-method__title">PayPal</h4>
-                                <p class="payment-method__description">Pago seguro con PayPal</p>
-                            </div>
-                        </label>
-                        <div class="payment-method__content">
-                            <p class="payment-method__instructions">
-                                Serás redirigido a PayPal para completar el pago de forma segura.
-                            </p>
-                            <a href="https://paypal.me/graykidsacademy" target="_blank" class="btn btn--primary btn--block" id="paypalBtn">
-                                Pagar con PayPal
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- TARJETA DE CRÉDITO -->
-                    <div class="payment-method">
-                        <input type="radio" id="card" name="payment" value="card" class="payment-method__radio">
-                        <label for="card" class="payment-method__label">
-                            <div class="payment-method__icon">💳</div>
-                            <div class="payment-method__info">
-                                <h4 class="payment-method__title">Tarjeta de Crédito/Débito</h4>
-                                <p class="payment-method__description">Visa, Mastercard, American Express</p>
-                            </div>
-                        </label>
-                        <div class="payment-method__content">
-                            <form class="card-form" id="cardForm">
+                <div class="checkout__content">
+                    <div class="checkout__card checkout__user-card" id="userDataForm">
+                        <h3 class="checkout__card-title">Datos de Facturación</h3>
+                        <p class="checkout__card-subtitle">Completa tus datos para procesar el pago</p>
+                        <form id="userInfoForm" class="user-info-form">
+                            <div class="form-group--inline">
                                 <div class="form-group">
-                                    <label for="cardNumber">Número de tarjeta</label>
-                                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
-                                </div>
-                                <div class="form-group form-group--inline">
-                                    <div class="form-group">
-                                        <label for="expiryDate">Vence</label>
-                                        <input type="text" id="expiryDate" placeholder="MM/AA" maxlength="5" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="cvv">CVV</label>
-                                        <input type="text" id="cvv" placeholder="123" maxlength="3" required>
-                                    </div>
+                                    <label for="userName">Nombre</label>
+                                    <input type="text" id="userName" placeholder="Tu nombre" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="cardName">Nombre en la tarjeta</label>
-                                    <input type="text" id="cardName" placeholder="Nombre completo" required>
+                                    <label for="userLastName">Apellidos</label>
+                                    <input type="text" id="userLastName" placeholder="Tus apellidos" required>
                                 </div>
-                                <button type="submit" class="btn btn--primary btn--block">
-                                    Pagar Ahora
-                                </button>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="userEmail">Correo Electrónico</label>
+                                <input type="email" id="userEmail" placeholder="tu@email.com" required>
+                            </div>
+                            <div class="form-group--inline">
+                                <div class="form-group">
+                                    <label for="userCountry">País</label>
+                                    <select id="userCountry" required>
+                                        <option value="">Selecciona tu país</option>
+                                        <option value="PE">Perú</option>
+                                        <option value="MX">México</option>
+                                        <option value="CO">Colombia</option>
+                                        <option value="AR">Argentina</option>
+                                        <option value="ES">España</option>
+                                        <option value="US">Estados Unidos</option>
+                                        <option value="UY">Uruguay</option>
+                                        <option value="CL">Chile</option>
+                                        <option value="BR">Brasil</option>
+                                        <option value="other">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userPhone">Teléfono</label>
+                                    <div class="phone-input">
+                                        <span class="phone-input__code" id="phonePrefix">+--</span>
+                                        <input type="tel" id="userPhone" placeholder="999 999 999" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn--primary btn--block">Continuar al Pago</button>
+                        </form>
                     </div>
 
-                    <!-- TRANSFERENCIA/EFECTIVO (PERÚ) -->
-                    <div class="payment-method">
-                        <input type="radio" id="bank" name="payment" value="bank" class="payment-method__radio">
-                        <label for="bank" class="payment-method__label">
-                            <div class="payment-method__icon">🏦</div>
-                            <div class="payment-method__info">
-                                <h4 class="payment-method__title">Transferencia Bancaria</h4>
-                                <p class="payment-method__description">Solo para Perú - Efectivo o Transferencia</p>
+                    <div class="checkout__card checkout__payment-card" id="checkoutGrid" style="display: none;">
+                        <div class="checkout__plan" id="planSection">
+                            <h3 class="checkout__plan-title" id="planSectionTitle">Resumen de tu compra</h3>
+                            <ul class="checkout__plan-details" id="planInfo">
+                                <li class="checkout__plan-item">
+                                    <span>Item</span>
+                                    <strong id="planName">-</strong>
+                                </li>
+                                <li class="checkout__plan-item">
+                                    <span>Precio</span>
+                                    <strong id="planPrice">-</strong>
+                                </li>
+                                <li class="checkout__plan-item checkout__plan-item--total">
+                                    <span>Total</span>
+                                    <strong id="planTotal">-</strong>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="checkout__benefits-card" id="benefitsSection" style="display: none;">
+                            <h4 class="checkout__benefits-title">Incluye</h4>
+                            <ul class="checkout__benefits-list" id="benefitsList"></ul>
+                        </div>
+
+                        <div class="checkout__methods">
+                            <h3 class="checkout__methods-title">Elige tu método de pago</h3>
+
+                            <div class="payment-method">
+                                <input type="radio" id="paypal" name="payment" value="paypal" class="payment-method__radio">
+                                <label for="paypal" class="payment-method__label">
+                                    <div class="payment-method__icon">💳</div>
+                                    <div class="payment-method__info">
+                                        <h4 class="payment-method__title">PayPal</h4>
+                                        <p class="payment-method__description">Pago seguro con PayPal</p>
+                                    </div>
+                                </label>
+                                <div class="payment-method__content">
+                                    <p class="payment-method__instructions">
+                                        Serás redirigido a PayPal para completar el pago de forma segura.
+                                    </p>
+                                    <a href="https://paypal.me/graykidsacademy" target="_blank" class="btn btn--primary btn--block" id="paypalBtn">
+                                        Pagar con PayPal
+                                    </a>
+                                </div>
                             </div>
-                        </label>
-                        <div class="payment-method__content">
-                            <div class="bank-info">
-                                <h4 class="bank-info__title">Información de Cuenta</h4>
-                                <div class="bank-info__item">
-                                    <span class="bank-info__label">Banco:</span>
-                                    <span class="bank-info__value">BCP / Interbank</span>
+
+                            <div class="payment-method">
+                                <input type="radio" id="card" name="payment" value="card" class="payment-method__radio">
+                                <label for="card" class="payment-method__label">
+                                    <div class="payment-method__icon">💳</div>
+                                    <div class="payment-method__info">
+                                        <h4 class="payment-method__title">Tarjeta de Crédito/Débito</h4>
+                                        <p class="payment-method__description">Visa, Mastercard, American Express</p>
+                                    </div>
+                                </label>
+                                <div class="payment-method__content">
+                                    <form class="card-form" id="cardForm">
+                                        <div class="form-group">
+                                            <label for="cardNumber">Número de tarjeta</label>
+                                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                                        </div>
+                                        <div class="form-group form-group--inline">
+                                            <div class="form-group">
+                                                <label for="expiryDate">Vence</label>
+                                                <input type="text" id="expiryDate" placeholder="MM/AA" maxlength="5" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cvv">CVV</label>
+                                                <input type="text" id="cvv" placeholder="123" maxlength="3" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cardName">Nombre en la tarjeta</label>
+                                            <input type="text" id="cardName" placeholder="Nombre completo" required>
+                                        </div>
+                                        <button type="submit" class="btn btn--primary btn--block">
+                                            Pagar Ahora
+                                        </button>
+                                    </form>
                                 </div>
-                                <div class="bank-info__item">
-                                    <span class="bank-info__label">Tipo:</span>
-                                    <span class="bank-info__value">Cuenta de Ahorros / Corriente</span>
+                            </div>
+
+                            <div class="payment-method">
+                                <input type="radio" id="bank" name="payment" value="bank" class="payment-method__radio">
+                                <label for="bank" class="payment-method__label">
+                                    <div class="payment-method__icon">🏦</div>
+                                    <div class="payment-method__info">
+                                        <h4 class="payment-method__title">Transferencia Bancaria</h4>
+                                        <p class="payment-method__description">Solo para Perú - Efectivo o Transferencia</p>
+                                    </div>
+                                </label>
+                                <div class="payment-method__content">
+                                    <div class="bank-info">
+                                        <h4 class="bank-info__title">Información de Cuenta</h4>
+                                        <div class="bank-info__item">
+                                            <span class="bank-info__label">Banco:</span>
+                                            <span class="bank-info__value">BCP / Interbank</span>
+                                        </div>
+                                        <div class="bank-info__item">
+                                            <span class="bank-info__label">Tipo:</span>
+                                            <span class="bank-info__value">Cuenta de Ahorros / Corriente</span>
+                                        </div>
+                                        <div class="bank-info__item">
+                                            <span class="bank-info__label">Número de Cuenta:</span>
+                                            <span class="bank-info__value">000-000-000000</span>
+                                        </div>
+                                        <div class="bank-info__item">
+                                            <span class="bank-info__label">CCI:</span>
+                                            <span class="bank-info__value">00000000000000000</span>
+                                        </div>
+                                        <div class="bank-info__item">
+                                            <span class="bank-info__label">Beneficiario:</span>
+                                            <span class="bank-info__value">Clareny © - Graykids Academy</span>
+                                        </div>
+                                        <p class="bank-info__note">
+                                            📧 Después de realizar el pago, envía el comprobante a soporte@graykidsacademy.com 
+                                            con tu nombre y email para activar tu acceso.
+                                        </p>
+                                        <button type="button" class="btn btn--primary btn--block" onclick="confirmBankPayment()">
+                                            Confirmar Transferencia
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="bank-info__item">
-                                    <span class="bank-info__label">Número de Cuenta:</span>
-                                    <span class="bank-info__value">000-000-000000</span>
+                            </div>
+
+                            <div class="payment-method">
+                                <input type="radio" id="yape" name="payment" value="yape" class="payment-method__radio">
+                                <label for="yape" class="payment-method__label">
+                                    <div class="payment-method__icon">📱</div>
+                                    <div class="payment-method__info">
+                                        <h4 class="payment-method__title">Yape / Plin</h4>
+                                        <p class="payment-method__description">Pago rápido y seguro</p>
+                                    </div>
+                                </label>
+                                <div class="payment-method__content">
+                                    <div class="mobile-payment">
+                                        <div class="mobile-payment__item">
+                                            <h4 class="mobile-payment__title">Yape</h4>
+                                            <p class="mobile-payment__number">999 999 999</p>
+                                            <p class="mobile-payment__name">Clareny</p>
+                                        </div>
+                                        <div class="mobile-payment__item">
+                                            <h4 class="mobile-payment__title">Plin</h4>
+                                            <p class="mobile-payment__number">999 999 999</p>
+                                            <p class="mobile-payment__name">Clareny</p>
+                                        </div>
+                                        <p class="mobile-payment__note">
+                                            📧 Después de realizar el pago, envía el comprobante de Yape/Plin 
+                                            con tu nombre y email a soporte@graykidsacademy.com
+                                        </p>
+                                        <button type="button" class="btn btn--primary btn--block" onclick="confirmMobilePayment()">
+                                            Confirmar Pago Móvil
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="bank-info__item">
-                                    <span class="bank-info__label">CCI:</span>
-                                    <span class="bank-info__value">00000000000000000</span>
-                                </div>
-                                <div class="bank-info__item">
-                                    <span class="bank-info__label">Beneficiario:</span>
-                                    <span class="bank-info__value">Clareny © - Graykids Academy</span>
-                                </div>
-                                <p class="bank-info__note">
-                                    📧 Después de realizar el pago, envía el comprobante a soporte@graykidsacademy.com 
-                                    con tu nombre y email para activar tu acceso.
-                                </p>
-                                <button type="button" class="btn btn--primary btn--block" onclick="confirmBankPayment()">
-                                    Confirmar Transferencia
-                                </button>
+                            </div>
+                        </div>
+
+                        <div class="checkout__security" id="securitySection" style="display: none;">
+                            <div class="security-badge">
+                                <span class="security-badge__icon">🔒</span>
+                                <span class="security-badge__text">Pago 100% seguro y encriptado</span>
+                            </div>
+                            <div class="security-badge">
+                                <span class="security-badge__icon">✓</span>
+                                <span class="security-badge__text">Garantía de satisfacción o reembolso</span>
                             </div>
                         </div>
                     </div>
-
-                    <!-- YAPE / PLIN -->
-                    <div class="payment-method">
-                        <input type="radio" id="yape" name="payment" value="yape" class="payment-method__radio">
-                        <label for="yape" class="payment-method__label">
-                            <div class="payment-method__icon">📱</div>
-                            <div class="payment-method__info">
-                                <h4 class="payment-method__title">Yape / Plin</h4>
-                                <p class="payment-method__description">Pago rápido y seguro</p>
-                            </div>
-                        </label>
-                        <div class="payment-method__content">
-                            <div class="mobile-payment">
-                                <div class="mobile-payment__item">
-                                    <h4 class="mobile-payment__title">Yape</h4>
-                                    <p class="mobile-payment__number">999 999 999</p>
-                                    <p class="mobile-payment__name">Clareny</p>
-                                </div>
-                                <div class="mobile-payment__item">
-                                    <h4 class="mobile-payment__title">Plin</h4>
-                                    <p class="mobile-payment__number">999 999 999</p>
-                                    <p class="mobile-payment__name">Clareny</p>
-                                </div>
-                                <p class="mobile-payment__note">
-                                    📧 Después de realizar el pago, envía el comprobante de Yape/Plin 
-                                    con tu nombre y email a soporte@graykidsacademy.com
-                                </p>
-                                <button type="button" class="btn btn--primary btn--block" onclick="confirmMobilePayment()">
-                                    Confirmar Pago Móvil
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SEGURIDAD -->
-            <div class="checkout__security" id="securitySection">
-                <div class="security-badge">
-                    <span class="security-badge__icon">🔒</span>
-                    <span class="security-badge__text">Pago 100% seguro y encriptado</span>
-                </div>
-                <div class="security-badge">
-                    <span class="security-badge__icon">✓</span>
-                    <span class="security-badge__text">Garantía de satisfacción o reembolso</span>
                 </div>
             </div>
         </div>
@@ -321,13 +311,96 @@
     </footer>
 
     <script>
-        const checkoutPreviewSection = document.getElementById('checkoutPreview');
+        const courseCheckoutSection = document.getElementById('courseCheckout');
+        const checkoutSummary = document.getElementById('checkoutSummary');
+        const phonePrefixEl = document.getElementById('phonePrefix');
+        const userCountrySelect = document.getElementById('userCountry');
+        const userPhoneInput = document.getElementById('userPhone');
+
+        const countryPhoneCodes = {
+            PE: '+51',
+            MX: '+52',
+            CO: '+57',
+            AR: '+54',
+            ES: '+34',
+            US: '+1',
+            UY: '+598',
+            CL: '+56',
+            BR: '+55'
+        };
+
+        function updatePhonePrefix() {
+            if (!phonePrefixEl) return;
+            const selected = userCountrySelect ? userCountrySelect.value : '';
+            const code = countryPhoneCodes[selected] || '+--';
+            phonePrefixEl.textContent = code;
+            if (userPhoneInput && code !== '+--' && !userPhoneInput.value.startsWith(code.replace('+', ''))) {
+                userPhoneInput.placeholder = '999 999 999';
+            }
+        }
+
+        if (userCountrySelect) {
+            userCountrySelect.addEventListener('change', updatePhonePrefix);
+        }
+
+        const storedUserDataRaw = localStorage.getItem('userData');
+        if (storedUserDataRaw) {
+            try {
+                const storedUser = JSON.parse(storedUserDataRaw);
+                if (storedUser.name) document.getElementById('userName').value = storedUser.name;
+                if (storedUser.lastName) document.getElementById('userLastName').value = storedUser.lastName;
+                if (storedUser.email) document.getElementById('userEmail').value = storedUser.email;
+                if (storedUser.country && userCountrySelect) {
+                    userCountrySelect.value = storedUser.country;
+                }
+                if (storedUser.phoneNumber && userPhoneInput) {
+                    userPhoneInput.value = storedUser.phoneNumber;
+                } else if (storedUser.phone && userPhoneInput) {
+                    userPhoneInput.value = storedUser.phone.replace(storedUser.phoneCode || '', '').trim();
+                }
+                if (storedUser.phoneCode && phonePrefixEl) {
+                    phonePrefixEl.textContent = storedUser.phoneCode;
+                }
+            } catch (error) {
+                console.warn('No se pudo recuperar la información guardada del usuario:', error);
+            }
+        }
+
+        updatePhonePrefix();
 
         function extractYouTubeId(url) {
             if (!url) return null;
-            const regExp = /(?:youtube\.com\/(?:.*v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/;
-            const match = url.match(regExp);
-            return match ? match[1] : null;
+            const clean = url.trim();
+            try {
+                const parsed = new URL(clean);
+                const host = parsed.hostname.replace(/^www\./, '').toLowerCase();
+                const pathSegments = parsed.pathname.split('/').filter(Boolean);
+
+                if (host === 'youtu.be') {
+                    return pathSegments[0] ? pathSegments[0].split('?')[0] : null;
+                }
+
+                if (host.endsWith('youtube.com')) {
+                    if (parsed.searchParams.has('v')) {
+                        return parsed.searchParams.get('v');
+                    }
+
+                    if (pathSegments.length) {
+                        const [first, second] = pathSegments;
+                        if (['embed', 'shorts', 'live', 'watch', 'v'].includes(first) && second) {
+                            return second;
+                        }
+                        if (first && first.length >= 6 && !second) {
+                            return first;
+                        }
+                    }
+                }
+            } catch (error) {
+                // fallback to regex if URL parsing fails
+            }
+
+            const fallbackMatch = clean.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+            return fallbackMatch ? fallbackMatch[1] : null;
         }
 
         function buildVideoEmbed(url) {
@@ -371,17 +444,23 @@
         }
 
         function renderCoursePreview(courseId, info, fallbackCourse) {
-            if (!checkoutPreviewSection) return;
+            if (!courseCheckoutSection) return;
 
             const previewData = Object.assign({ id: courseId }, fallbackCourse || {}, info || {});
             if (!previewData.name && !previewData.presentationVideoUrl) {
-                checkoutPreviewSection.style.display = 'none';
+                courseCheckoutSection.style.display = 'none';
                 return;
             }
 
-            checkoutPreviewSection.style.display = 'block';
+            courseCheckoutSection.style.display = 'block';
+            if (checkoutSummary) {
+                checkoutSummary.style.display = '';
+            }
 
-            const titleEl = document.getElementById('previewCourseTitle');
+            const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
+            const modules = Array.isArray(storedCourses[courseId]?.modules) ? storedCourses[courseId].modules : [];
+
+            const titleEl = document.getElementById('checkoutTitle');
             if (titleEl) {
                 titleEl.textContent = `${previewData.icon || '🎓'} ${previewData.name || 'Curso'}`;
             }
@@ -397,18 +476,26 @@
                 }
             }
 
-            const descEl = document.getElementById('previewCourseDescription');
+            const priceEl = document.getElementById('previewCoursePrice');
+            if (priceEl) {
+                const priceLabel = formatPriceLabel(previewData.price);
+                priceEl.textContent = priceLabel && priceLabel !== 'Por anunciar'
+                    ? `Precio ${priceLabel}`
+                    : 'Precio por anunciar';
+            }
+
+            const descEl = document.getElementById('checkoutSubtitle');
             if (descEl) {
                 descEl.textContent = previewData.description || 'Este curso aún no tiene una descripción detallada.';
             }
 
             const statusEl = document.getElementById('previewCourseStatus');
+            const normalizedStatus = (previewData.status || '').toLowerCase();
             if (statusEl) {
-                const status = (previewData.status || '').toLowerCase();
                 let label = 'Próximamente';
-                if (status === 'available') label = 'Disponible';
-                else if (status === 'pre-sale') label = 'Pre-venta';
-                statusEl.innerHTML = `<span class="course-preview__status-badge course-preview__status-badge--${status || 'soon'}">${label}</span>`;
+                if (normalizedStatus === 'available') label = 'Disponible';
+                else if (normalizedStatus === 'pre-sale') label = 'Pre-venta';
+                statusEl.innerHTML = `<span class="course-preview__status-badge course-preview__status-badge--${normalizedStatus || 'soon'}">${label}</span>`;
             }
 
             const mediaEl = document.getElementById('previewCourseMedia');
@@ -427,23 +514,31 @@
 
             const statsList = document.getElementById('previewCourseStats');
             if (statsList) {
-                const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
-                const modules = Array.isArray(storedCourses[courseId]?.modules) ? storedCourses[courseId].modules : [];
                 const totalLessons = modules.reduce((total, mod) => total + (Array.isArray(mod.lessons) ? mod.lessons.length : 0), 0);
-                const priceLabel = formatPriceLabel(previewData.price);
-
                 statsList.innerHTML = `
                     <li><span>📦 Módulos:</span><strong>${modules.length}</strong></li>
                     <li><span>🎬 Lecciones:</span><strong>${totalLessons}</strong></li>
                     <li><span>⏱️ Duración estimada:</span><strong>${previewData.hours || 'Próximamente'}</strong></li>
-                    <li><span>💰 Precio:</span><strong>${priceLabel}</strong></li>
                 `;
+            }
+
+            const benefitsWrapper = document.getElementById('previewCourseBenefits');
+            if (benefitsWrapper) {
+                const benefits = Array.isArray(previewData.benefits) ? previewData.benefits : [];
+                if (benefits.length) {
+                    benefitsWrapper.innerHTML = `
+                        <h4>Lo que obtienes</h4>
+                        <ul>
+                            ${benefits.map(benefit => `<li>✅ ${benefit}</li>`).join('')}
+                        </ul>
+                    `;
+                } else {
+                    benefitsWrapper.innerHTML = '';
+                }
             }
 
             const modulesGrid = document.getElementById('previewModules');
             if (modulesGrid) {
-                const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
-                const modules = Array.isArray(storedCourses[courseId]?.modules) ? storedCourses[courseId].modules : [];
                 modulesGrid.innerHTML = '';
 
                 if (modules.length === 0) {
@@ -457,49 +552,58 @@
                         const lessons = Array.isArray(module.lessons) ? module.lessons : [];
                         const lessonsHtml = lessons.length > 0
                             ? lessons.map((lesson, lessonIndex) => `
-                                <li>
-                                    <span class="lesson-index">${lessonIndex + 1}.</span>
-                                    <div class="lesson-info">
+                                <li class="module-accordion__lesson">
+                                    <span class="module-accordion__lesson-index">${lessonIndex + 1}.</span>
+                                    <div class="module-accordion__lesson-meta">
                                         <strong>${lesson.title || 'Lección sin título'}</strong>
                                         <span>${lesson.duration || 'Duración N/D'}</span>
                                     </div>
                                 </li>
                             `).join('')
-                            : '<li class="lesson-empty">Próximamente agregaremos las lecciones de este módulo.</li>';
+                            : '<div class="module-accordion__empty">Próximamente agregaremos las lecciones de este módulo.</div>';
 
-                        const card = document.createElement('article');
-                        card.className = 'course-preview__module-card';
-                        card.innerHTML = `
-                            <header>
-                                <span class="module-index">Módulo ${index + 1}</span>
-                                <h3>${module.title || 'Módulo sin título'}</h3>
-                            </header>
-                            <ul class="course-preview__lesson-list">
-                                ${lessonsHtml}
-                            </ul>
+                        const accordion = document.createElement('details');
+                        accordion.className = 'module-accordion';
+                        if (index === 0) {
+                            accordion.open = true;
+                        }
+
+                        accordion.innerHTML = `
+                            <summary>
+                                <div class="module-accordion__meta">
+                                    <span class="module-accordion__index">Módulo ${index + 1}</span>
+                                    <h4 class="module-accordion__title">${module.title || 'Módulo sin título'}</h4>
+                                </div>
+                                <span class="module-accordion__toggle" aria-hidden="true">+</span>
+                            </summary>
+                            <div class="module-accordion__content">
+                                ${lessons.length > 0
+                                    ? `<ul class="module-accordion__lessons">${lessonsHtml}</ul>`
+                                    : lessonsHtml}
+                            </div>
                         `;
-                        modulesGrid.appendChild(card);
+
+                        modulesGrid.appendChild(accordion);
                     });
                 }
             }
 
-            const ctas = document.getElementById('previewCourseCtas');
-            if (ctas) {
-                ctas.innerHTML = '';
+            const actions = document.getElementById('checkoutSummaryActions');
+            if (actions) {
+                actions.innerHTML = '';
                 const proceedBtn = document.createElement('a');
                 proceedBtn.href = '#userInfoForm';
                 proceedBtn.className = 'btn btn--primary btn--block';
                 proceedBtn.textContent = 'Continuar con la compra';
-                ctas.appendChild(proceedBtn);
+                actions.appendChild(proceedBtn);
 
-                const status = (previewData.status || '').toLowerCase();
-                if (status && status !== 'available') {
+                if (normalizedStatus && normalizedStatus !== 'available') {
                     const notice = document.createElement('div');
                     notice.className = 'course-preview__notice';
-                    notice.textContent = status === 'pre-sale'
+                    notice.textContent = normalizedStatus === 'pre-sale'
                         ? 'Este curso está en pre-venta. Obtendrás acceso anticipado al contenido reservado.'
                         : 'Este curso se encuentra en preparación. Tu compra garantizará acceso tan pronto se publique.';
-                    ctas.appendChild(notice);
+                    actions.appendChild(notice);
                 }
             }
         }
@@ -600,39 +704,55 @@
 
             const combinedCourse = Object.assign({ id: courseId }, courseFromCatalog || {}, storedCourseInfo || {});
 
-            if (combinedCourse.name) {
-                document.getElementById('checkoutTitle').textContent = 'Comprar Curso';
-                document.getElementById('checkoutSubtitle').textContent = combinedCourse.name;
-                document.getElementById('planName').textContent = combinedCourse.name;
+            const planNameEl = document.getElementById('planName');
+            if (planNameEl && combinedCourse.name) {
+                planNameEl.textContent = combinedCourse.name;
             }
 
             const priceLabel = formatPriceLabel(combinedCourse.price);
             document.getElementById('planPrice').textContent = priceLabel;
             document.getElementById('planTotal').textContent = priceLabel;
 
-            if (courseFromCatalog && Array.isArray(courseFromCatalog.benefits)) {
-                const benefitsList = document.getElementById('benefitsList');
+            const benefitsList = document.getElementById('benefitsList');
+            const benefitsSection = document.getElementById('benefitsSection');
+            if (benefitsList && benefitsSection) {
                 benefitsList.innerHTML = '';
-                courseFromCatalog.benefits.forEach(benefit => {
-                    const li = document.createElement('li');
-                    li.textContent = benefit;
-                    benefitsList.appendChild(li);
-                });
-                document.getElementById('benefitsSection').style.display = 'block';
+                const courseBenefits = Array.isArray(combinedCourse.benefits) ? combinedCourse.benefits : [];
+                if (courseBenefits.length) {
+                    courseBenefits.forEach(benefit => {
+                        const li = document.createElement('li');
+                        li.textContent = benefit;
+                        benefitsList.appendChild(li);
+                    });
+                    benefitsSection.style.display = 'block';
+                } else {
+                    benefitsSection.style.display = 'none';
+                }
             }
         } else if (plan && price && name) {
-            // Membership
+            if (courseCheckoutSection) {
+                courseCheckoutSection.style.display = 'block';
+            }
+            if (checkoutSummary) {
+                checkoutSummary.style.display = 'none';
+            }
             document.getElementById('checkoutTitle').textContent = 'Completar Suscripción';
             document.getElementById('checkoutSubtitle').textContent = 'Completa tus datos para continuar';
             document.getElementById('planSectionTitle').textContent = 'Resumen del Plan';
             document.getElementById('planName').textContent = name;
-            document.getElementById('planPrice').textContent = '$' + price;
-            document.getElementById('planTotal').textContent = '$' + price;
-            if (checkoutPreviewSection) {
-                checkoutPreviewSection.style.display = 'none';
+            document.getElementById('planPrice').textContent = `$${price}`;
+            document.getElementById('planTotal').textContent = `$${price}`;
+            const benefitsSection = document.getElementById('benefitsSection');
+            if (benefitsSection) {
+                benefitsSection.style.display = 'none';
             }
-        } else if (checkoutPreviewSection) {
-            checkoutPreviewSection.style.display = 'none';
+        } else {
+            if (courseCheckoutSection) {
+                courseCheckoutSection.style.display = 'block';
+            }
+            if (checkoutSummary) {
+                checkoutSummary.style.display = 'none';
+            }
         }
 
         // Initially hide payment grid
@@ -644,11 +764,19 @@
             e.preventDefault();
             
             // Collect user data
+            const phoneCode = phonePrefixEl ? phonePrefixEl.textContent.trim() : '';
+            const phoneNumberRaw = userPhoneInput ? userPhoneInput.value.trim() : '';
+            const combinedPhone = phoneCode && phoneCode !== '+--'
+                ? `${phoneCode} ${phoneNumberRaw}`.trim()
+                : phoneNumberRaw;
+
             userData = {
                 name: document.getElementById('userName').value,
                 lastName: document.getElementById('userLastName').value,
                 email: document.getElementById('userEmail').value,
-                phone: document.getElementById('userPhone').value,
+                phone: combinedPhone,
+                phoneCode: phoneCode && phoneCode !== '+--' ? phoneCode : '',
+                phoneNumber: phoneNumberRaw,
                 country: document.getElementById('userCountry').value
             };
 

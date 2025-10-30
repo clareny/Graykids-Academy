@@ -203,9 +203,38 @@
         }
 
         function extractYouTubeId(url) {
-            const regExp = /(?:youtube\.com\/(?:.*v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/;
-            const match = url.match(regExp);
-            return match ? match[1] : null;
+            if (!url) return null;
+            const clean = url.trim();
+            try {
+                const parsed = new URL(clean);
+                const host = parsed.hostname.replace(/^www\./, '').toLowerCase();
+                const pathSegments = parsed.pathname.split('/').filter(Boolean);
+
+                if (host === 'youtu.be') {
+                    return pathSegments[0] ? pathSegments[0].split('?')[0] : null;
+                }
+
+                if (host.endsWith('youtube.com')) {
+                    if (parsed.searchParams.has('v')) {
+                        return parsed.searchParams.get('v');
+                    }
+
+                    if (pathSegments.length) {
+                        const [first, second] = pathSegments;
+                        if (['embed', 'shorts', 'live', 'watch', 'v'].includes(first) && second) {
+                            return second;
+                        }
+                        if (first && first.length >= 6 && !second) {
+                            return first;
+                        }
+                    }
+                }
+            } catch (error) {
+                // ignore and fallback to regex
+            }
+
+            const fallbackMatch = clean.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+            return fallbackMatch ? fallbackMatch[1] : null;
         }
 
         function renderSidebar(course, courseData) {
@@ -285,33 +314,41 @@
             }
 
             modules.forEach((module, index) => {
-                const moduleCard = document.createElement('article');
-                moduleCard.className = 'course-preview__module-card';
-
                 const lessons = Array.isArray(module.lessons) ? module.lessons : [];
                 const lessonsHtml = lessons.length > 0
                     ? lessons.map((lesson, lessonIndex) => `
-                        <li>
-                            <span class="lesson-index">${lessonIndex + 1}.</span>
-                            <div class="lesson-info">
+                        <li class="module-accordion__lesson">
+                            <span class="module-accordion__lesson-index">${lessonIndex + 1}.</span>
+                            <div class="module-accordion__lesson-meta">
                                 <strong>${lesson.title || 'Lección sin título'}</strong>
                                 <span>${lesson.duration || 'Duración N/D'}</span>
                             </div>
                         </li>
                     `).join('')
-                    : '<li class="lesson-empty">Aún no hay lecciones publicadas en este módulo.</li>';
+                    : '<div class="module-accordion__empty">Aún no hay lecciones publicadas en este módulo.</div>';
 
-                moduleCard.innerHTML = `
-                    <header>
-                        <span class="module-index">Módulo ${index + 1}</span>
-                        <h3>${module.title || 'Módulo sin título'}</h3>
-                    </header>
-                    <ul class="course-preview__lesson-list">
-                        ${lessonsHtml}
-                    </ul>
+                const accordion = document.createElement('details');
+                accordion.className = 'module-accordion';
+                if (index === 0) {
+                    accordion.open = true;
+                }
+
+                accordion.innerHTML = `
+                    <summary>
+                        <div class="module-accordion__meta">
+                            <span class="module-accordion__index">Módulo ${index + 1}</span>
+                            <h4 class="module-accordion__title">${module.title || 'Módulo sin título'}</h4>
+                        </div>
+                        <span class="module-accordion__toggle" aria-hidden="true">+</span>
+                    </summary>
+                    <div class="module-accordion__content">
+                        ${lessons.length > 0
+                            ? `<ul class="module-accordion__lessons">${lessonsHtml}</ul>`
+                            : lessonsHtml}
+                    </div>
                 `;
 
-                modulesGrid.appendChild(moduleCard);
+                modulesGrid.appendChild(accordion);
             });
         }
 
