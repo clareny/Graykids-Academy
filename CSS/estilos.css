@@ -106,6 +106,10 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
 }
 
 .header__logo {
@@ -126,20 +130,24 @@ body {
 
 
 .header__logo-text {
-    font-size: 1.7rem;
+    font-size: 1.65rem;
     font-weight: 800;
-    font-family: 'Cross Boxed', Arial, sans-serif;
+    font-family: 'Poppins', 'Montserrat', sans-serif;
     color: white;
     white-space: nowrap;
-    line-height: 1.2;
+    line-height: 1.1;
+    letter-spacing: 0.08em;
     margin: 0;
     padding: 0;
-    transform: scaleX(1.15);
 }
 
 .header__nav {
     display: flex;
-    gap: 2rem;
+    gap: 2.4rem;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    align-items: center;
+    margin-left: 32px;
 }
 
 .header__link {
