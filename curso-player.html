@@ -881,6 +881,7 @@
             isAdminModeGlobal = checkAdminMode();
             
             courseData.modules.forEach((module, moduleIndex) => {
+                const lessonCountLabel = module.lessons.length === 1 ? 'lección' : 'lecciones';
                 const moduleElement = document.createElement('div');
                 moduleElement.className = 'course-module';
                 
@@ -889,22 +890,30 @@
                 
                 if (isAdminModeGlobal) {
                     moduleHeader.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                            <div style="flex: 1;">
+                        <div class="course-module__header-inner">
+                            <div class="course-module__title-group">
                                 <h4 class="course-module__title" id="moduleTitle-${moduleIndex}">${module.title}</h4>
-                                <input type="text" id="moduleTitleInput-${moduleIndex}" style="display: none; width: 100%; padding: 8px; background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); border-radius: 6px; font-size: 1rem; margin-top: 5px;">
+                                <input type="text" id="moduleTitleInput-${moduleIndex}" class="course-module__title-input" style="display: none;">
+                                <span class="course-module__count">${module.lessons.length} ${lessonCountLabel}</span>
                             </div>
-                            <div style="display: flex; gap: 8px; margin-left: 10px;">
-                                <button onclick="editModuleTitle(${moduleIndex}, '${module.id}')" style="background: var(--primary-color); color: var(--dark-bg); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">✏️</button>
-                                <button onclick="deleteModule('${module.id}')" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">🗑️</button>
+                            <div class="course-module__actions">
+                                <button class="course-module__action-btn course-module__action-btn--edit" onclick="editModuleTitle(${moduleIndex}, '${module.id}')" type="button" title="Editar módulo">
+                                    <span class="course-module__action-icon">✏️</span>
+                                </button>
+                                <button class="course-module__action-btn course-module__action-btn--delete" onclick="deleteModule('${module.id}')" type="button" title="Eliminar módulo">
+                                    <span class="course-module__action-icon">🗑️</span>
+                                </button>
                             </div>
                         </div>
-                        <span class="course-module__count">${module.lessons.length} lecciones</span>
                     `;
                 } else {
                 moduleHeader.innerHTML = `
-                    <h4 class="course-module__title">${module.title}</h4>
-                    <span class="course-module__count">${module.lessons.length} lecciones</span>
+                    <div class="course-module__header-inner">
+                        <div class="course-module__title-group">
+                            <h4 class="course-module__title">${module.title}</h4>
+                            <span class="course-module__count">${module.lessons.length} ${lessonCountLabel}</span>
+                        </div>
+                    </div>
                 `;
                 }
                 
@@ -933,7 +942,7 @@
                     
                     if (isAdminModeGlobal) {
                         lessonElement.innerHTML = `
-                            <div class="lesson-item__left" style="flex: 1;">
+                            <div class="lesson-item__left lesson-item__left--admin">
                                 <span class="lesson-item__number">${lessonNumberDisplay}</span>
                                 <div class="lesson-item__info">
                                     <h5 class="lesson-item__title">${lesson.title}</h5>
@@ -941,9 +950,13 @@
                                     ${!hasVideo ? '<span class="lesson-item__warning" style="font-size: 0.8rem; color: #ff9800;">Sin video</span>' : ''}
                                 </div>
                             </div>
-                            <div class="lesson-item__right" style="display: flex; gap: 8px; align-items: center;">
-                                <button onclick="editLessonInPlayer('${module.id}', '${lesson.id}', event)" style="background: var(--primary-color); color: var(--dark-bg); border: none; padding: 4px 10px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.75rem;">✏️</button>
-                                <button onclick="deleteLessonInPlayer('${module.id}', '${lesson.id}', event)" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 4px 10px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.75rem;">🗑️</button>
+                            <div class="lesson-item__actions">
+                                <button type="button" class="lesson-item__action-btn lesson-item__action-btn--edit" onclick="editLessonInPlayer('${module.id}', '${lesson.id}', event)" title="Editar lección">
+                                    <span class="lesson-item__action-icon">✏️</span>
+                                </button>
+                                <button type="button" class="lesson-item__action-btn lesson-item__action-btn--delete" onclick="deleteLessonInPlayer('${module.id}', '${lesson.id}', event)" title="Eliminar lección">
+                                    <span class="lesson-item__action-icon">🗑️</span>
+                                </button>
                                 ${lesson.completed ? '<span class="lesson-item__check">✓</span>' : ''}
                             </div>
                         `;

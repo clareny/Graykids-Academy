@@ -179,7 +179,7 @@
             if (lower.includes('youtube.com/watch') || lower.includes('youtu.be/')) {
                 const videoId = extractYouTubeId(cleanUrl);
                 if (videoId) {
-                    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0`;
                     return `<div class="course-preview__media-frame"><iframe src="${embedUrl}" title="Video de presentación" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
                 }
             }
@@ -188,18 +188,20 @@
             if (lower.includes('vimeo.com/')) {
                 const vimeoId = cleanUrl.split('/').pop();
                 if (vimeoId) {
-                    const embedUrl = `https://player.vimeo.com/video/${vimeoId}`;
+                    const embedUrl = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&muted=1&playsinline=1`;
                     return `<div class="course-preview__media-frame"><iframe src="${embedUrl}" title="Video de presentación" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>`;
                 }
             }
 
             // Archivos directos (mp4, webm, ogg, m3u8)
             if (/(\.mp4|\.webm|\.ogg|\.m3u8)$/i.test(lower)) {
-                return `<div class="course-preview__media-frame"><video controls preload="metadata"><source src="${cleanUrl}"></video></div>`;
+                return `<div class="course-preview__media-frame"><video controls autoplay muted playsinline preload="metadata"><source src="${cleanUrl}"></video></div>`;
             }
 
             // Fallback iframe
-            return `<div class="course-preview__media-frame"><iframe src="${cleanUrl}" title="Video de presentación" frameborder="0" allowfullscreen></iframe></div>`;
+            const separator = cleanUrl.includes('?') ? '&' : '?';
+            const autoplayUrl = `${cleanUrl}${separator}autoplay=1&muted=1`;
+            return `<div class="course-preview__media-frame"><iframe src="${autoplayUrl}" title="Video de presentación" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>`;
         }
 
         function extractYouTubeId(url) {

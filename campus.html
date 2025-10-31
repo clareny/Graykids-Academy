@@ -722,24 +722,23 @@
         // Agregar event listeners a los enlaces
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remover active de todos
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                
-                // Agregar active al clickeado
-                this.classList.add('active');
-                
-                // Si tiene data-page, cargar en iframe
-                if (this.dataset.page) {
-                    loadPageInCampus(this.dataset.page);
-                } else if (this.dataset.section === 'campus') {
+                const targetSection = this.dataset.section;
+                const targetPage = this.dataset.page;
+
+                if (targetSection === 'campus') {
+                    e.preventDefault();
+
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+
                     closeExternalPage();
-                    // Scroll a la sección
                     const section = document.querySelector('#mis-cursos');
                     if (section) {
                         section.scrollIntoView({ behavior: 'smooth' });
                     }
+                } else if (targetPage) {
+                    // Permitir la navegación natural para páginas externas al campus
+                    this.classList.remove('active');
                 }
             });
         });

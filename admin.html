@@ -1669,8 +1669,7 @@
             document.getElementById('modalCourseStatus').value = courseInfo.status || defaultInfo.status || 'coming-soon';
             document.getElementById('modalCourseIcon').value = courseInfo.icon || defaultInfo.icon || '🎓';
             
-            // Ocultar botón eliminar para cursos principales
-            const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+            // Asegurar que el botón de eliminar esté disponible
             const deleteBtnContainer = document.getElementById('modalDeleteBtnContainer');
             if (deleteBtnContainer) {
                 deleteBtnContainer.style.display = 'block';
@@ -1812,8 +1811,7 @@
                 }
             }
             
-            // Mostrar u ocultar botón de eliminar según si es curso default
-            const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+            // Mantener visible el botón de eliminar
             const deleteBtn = document.getElementById('deleteCourseBtn');
             if (deleteBtn) {
                 deleteBtn.style.display = 'block';
@@ -1866,15 +1864,10 @@
             // Actualizar selector de cursos si el nombre cambió
             updateCourseSelector();
             
-            // Mostrar o ocultar botón de eliminar según si es curso default
-            const defaultCourses = ['curso-voces', 'curso-maquetizacion', 'curso-beats'];
+            // Mantener visible el botón de eliminar
             const deleteBtn = document.getElementById('deleteCourseBtn');
             if (deleteBtn) {
-                if (defaultCourses.includes(currentCourseId)) {
-                    deleteBtn.style.display = 'none';
-                } else {
-                    deleteBtn.style.display = 'block';
-                }
+                deleteBtn.style.display = 'block';
             }
             
             showAlert('✅ Información del curso guardada! Los cambios se reflejarán automáticamente en la página de cursos y en todas las demás páginas.');

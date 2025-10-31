@@ -356,7 +356,7 @@
         </div>
 
         <div class="social-login">
-            <button type="button" class="social-btn social-btn--google" onclick="signInWithGoogle()">
+            <button type="button" class="social-btn social-btn--google" onclick="signInWithGoogle(event)">
                 <svg class="social-btn__icon" width="20" height="20" viewBox="0 0 20 20">
                     <path fill="#4285F4" d="M19.6 10.23c0-.82-.07-1.54-.2-2.27H10v4.31h5.4c-.23 1.48-.9 2.73-1.91 3.58v2.38h3.09c1.81-1.67 2.85-4.12 2.85-7.01z"/>
                     <path fill="#34A853" d="M10 20c2.7 0 4.96-.9 6.61-2.44l-3.09-2.38c-.9.6-2.05.96-3.52.96-2.7 0-5-1.82-5.82-4.28H1.13v2.46C2.78 17.54 6.12 20 10 20z"/>
@@ -365,7 +365,7 @@
                 </svg>
                 Google
             </button>
-            <button type="button" class="social-btn social-btn--facebook" onclick="signInWithFacebook()">
+            <button type="button" class="social-btn social-btn--facebook" onclick="signInWithFacebook(event)">
                 <svg class="social-btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
@@ -435,7 +435,7 @@
                         </div>
 
                         <div class="social-login">
-                            <button type="button" class="social-btn social-btn--google" onclick="signInWithGoogle()">
+                            <button type="button" class="social-btn social-btn--google" onclick="signInWithGoogle(event)">
                                 <svg class="social-btn__icon" width="20" height="20" viewBox="0 0 20 20">
                                     <path fill="#4285F4" d="M19.6 10.23c0-.82-.07-1.54-.2-2.27H10v4.31h5.4c-.23 1.48-.9 2.73-1.91 3.58v2.38h3.09c1.81-1.67 2.85-4.12 2.85-7.01z"/>
                                     <path fill="#34A853" d="M10 20c2.7 0 4.96-.9 6.61-2.44l-3.09-2.38c-.9.6-2.05.96-3.52.96-2.7 0-5-1.82-5.82-4.28H1.13v2.46C2.78 17.54 6.12 20 10 20z"/>
@@ -444,7 +444,7 @@
                                 </svg>
                                 Google
                             </button>
-                            <button type="button" class="social-btn social-btn--facebook" onclick="signInWithFacebook()">
+                            <button type="button" class="social-btn social-btn--facebook" onclick="signInWithFacebook(event)">
                                 <svg class="social-btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
                                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                                 </svg>
@@ -951,7 +951,7 @@
         }
         
         // Google Sign In - Redirige a Google OAuth
-        function signInWithGoogle() {
+        function signInWithGoogle(evt) {
             try {
                 // Verificar que la configuración esté disponible
                 if (typeof getGoogleAuthUrl !== 'function') {
@@ -1000,65 +1000,99 @@
         }
 
         // Facebook Sign In
-        function signInWithFacebook() {
-            // Para pruebas, usar el mismo sistema de email
-            const loadingBtn = event.target.closest('.social-btn');
+        function signInWithFacebook(evt) {
+            let loadingBtn = null;
+            if (evt) {
+                if (evt.currentTarget) {
+                    loadingBtn = evt.currentTarget;
+                } else if (evt.target && typeof evt.target.closest === 'function') {
+                    loadingBtn = evt.target.closest('.social-btn');
+                }
+            }
+
+            if (!loadingBtn) {
+                loadingBtn = document.querySelector('.social-btn--facebook');
+            }
+
+            if (loadingBtn && !loadingBtn.dataset.originalHtml) {
+                loadingBtn.dataset.originalHtml = loadingBtn.innerHTML;
+            }
+
+            const restoreFacebookButton = () => {
+                if (!loadingBtn) return;
+                loadingBtn.disabled = false;
+                if (loadingBtn.dataset.originalHtml) {
+                    loadingBtn.innerHTML = loadingBtn.dataset.originalHtml;
+                } else {
+                    loadingBtn.innerHTML = '<svg class="social-btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg> Facebook';
+                }
+            };
+
             if (loadingBtn) {
                 loadingBtn.disabled = true;
                 loadingBtn.innerHTML = '<span class="loading-spinner"></span> Autenticando...';
             }
-            
+
             setTimeout(() => {
-                let userEmail = prompt('Ingresa tu email para iniciar sesión:\n\n(Por defecto: spieronilton@gmail.com para admin)\n(Cualquier otro email será usuario normal)');
-                
-                if (!userEmail) {
-                    if (loadingBtn) {
-                        loadingBtn.disabled = false;
-                        loadingBtn.innerHTML = '<svg class="social-icon"><use href="#facebook-icon"></use></svg> Continuar con Facebook';
+                try {
+                    let userEmail = prompt('Ingresa tu email para iniciar sesión:\n\n(Por defecto: spieronilton@gmail.com para admin)\n(Cualquier otro email será usuario normal)');
+
+                    if (!userEmail) {
+                        restoreFacebookButton();
+                        return;
                     }
-                    return;
-                }
-                
-                if (!userEmail.trim()) {
-                    userEmail = 'spieronilton@gmail.com';
-                }
-                
-                const userInfo = {
-                    name: userEmail.split('@')[0],
-                    email: userEmail.trim(),
-                    provider: 'facebook',
-                    picture: 'https://via.placeholder.com/150',
-                    isAdmin: false
-                };
-                
-                userInfo.isAdmin = isAdminEmail(userInfo.email);
-                
-                localStorage.setItem('user', JSON.stringify(userInfo));
-                localStorage.setItem('isLoggedIn', 'true');
-                
-                // Verificar si el email ya está verificado
-                const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
-                const isVerified = verifications[userInfo.email]?.verified || false;
-                userInfo.emailVerified = isVerified;
-                
-                // Si no está verificado y no es admin, mostrar modal de verificación
-                if (!isVerified && !userInfo.isAdmin) {
-                    showVerificationModal(userInfo.email);
-                } else {
-                    if (userInfo.isAdmin) {
-                        showSuccessMessage('✅ Bienvenido Administrador!');
-                        setTimeout(() => {
-                            window.location.href = 'admin.html';
-                        }, 1000);
+
+                    if (!userEmail.trim()) {
+                        userEmail = 'spieronilton@gmail.com';
+                    }
+
+                    const normalizedEmail = userEmail.trim();
+                    const userInfo = {
+                        name: normalizedEmail.split('@')[0],
+                        email: normalizedEmail,
+                        provider: 'facebook',
+                        picture: 'https://via.placeholder.com/150',
+                        isAdmin: false
+                    };
+
+                    if (typeof isAdminEmail === 'function') {
+                        userInfo.isAdmin = isAdminEmail(userInfo.email);
                     } else {
-                        showSuccessMessage('✅ Inicio de sesión exitoso!');
-                        setTimeout(() => {
-                            window.location.href = 'campus.html?login=success';
-                        }, 1000);
+                        userInfo.isAdmin = normalizedEmail === 'spieronilton@gmail.com';
                     }
+
+                    localStorage.setItem('user', JSON.stringify(userInfo));
+                    localStorage.setItem('isLoggedIn', 'true');
+
+                    // Verificar si el email ya está verificado
+                    const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
+                    const isVerified = verifications[userInfo.email]?.verified || false;
+                    userInfo.emailVerified = isVerified;
+
+                    // Si no está verificado y no es admin, mostrar modal de verificación
+                    if (!isVerified && !userInfo.isAdmin) {
+                        showVerificationModal(userInfo.email);
+                        restoreFacebookButton();
+                    } else {
+                        if (userInfo.isAdmin) {
+                            showSuccessMessage('✅ Bienvenido Administrador!');
+                            setTimeout(() => {
+                                window.location.href = 'admin.html';
+                            }, 1000);
+                        } else {
+                            showSuccessMessage('✅ Inicio de sesión exitoso!');
+                            setTimeout(() => {
+                                window.location.href = 'campus.html?login=success';
+                            }, 1000);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error en signInWithFacebook:', error);
+                    showErrorMessage('❌ Ocurrió un error al iniciar sesión con Facebook.<br><strong>Por favor, inténtelo nuevamente.</strong>', true);
+                    restoreFacebookButton();
                 }
             }, 800);
-            
+
         }
 
         // Handle login form submission
