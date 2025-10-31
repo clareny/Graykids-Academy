@@ -104,12 +104,12 @@ body {
 
 .header__container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 48px;
+    gap: clamp(1.5rem, 3vw, 4rem);
 }
 
 .header__logo {
@@ -120,12 +120,20 @@ body {
     transition: var(--transition);
 }
 
-.header__logo:hover {
-    transform: scale(1.05);
+.header__logo a {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .header__logo-img {
-    display: none; /* Ocultar logo en el header */
+    width: 42px;
+    height: 42px;
+    display: block;
+}
+
+.header__logo:hover {
+    transform: scale(1.05);
 }
 
 
@@ -143,11 +151,16 @@ body {
 
 .header__nav {
     display: flex;
-    gap: 2.4rem;
+    gap: clamp(1.5rem, 2vw, 3rem);
     flex: 1 1 auto;
     justify-content: flex-end;
     align-items: center;
-    margin-left: 32px;
+    margin-left: clamp(1.5rem, 3vw, 4rem);
+}
+
+.header__auth {
+    margin-left: clamp(1.5rem, 3vw, 4rem);
+    flex-shrink: 0;
 }
 
 .header__link {
