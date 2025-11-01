@@ -254,9 +254,9 @@
     <header class="header">
         <div class="header__container container">
             <div class="header__logo">
-                <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                <a href="index.html">
                     <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
-                    <span class="header__logo-text">Graykids Academy</span>
+                    <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
             <nav class="header__nav">
@@ -270,6 +270,11 @@
     
     <!-- LOGIN SECTION -->
     <section class="login-hero">
+        <div class="login-hero__background" aria-hidden="true">
+            <span class="login-hero__orb login-hero__orb--primary"></span>
+            <span class="login-hero__orb login-hero__orb--secondary"></span>
+            <span class="login-hero__grid"></span>
+        </div>
         <div class="login-hero__container container">
             <!-- Left Side - Image/Animation -->
             <div class="login-hero__left">
@@ -304,6 +309,7 @@
             <!-- Right Side - Login Form -->
             <div class="login-hero__right">
                 <div class="login-card">
+                    
                     <!-- Login Form -->
                     <div class="login-tabs">
                         <button class="login-tab login-tab--active" onclick="showLogin()">
@@ -337,13 +343,15 @@
                             </div>
                         </div>
 
-                        <div class="form-group form-group--inline">
-                            <label class="checkbox">
+                        <div class="login-form__options">
+                            <label class="remember-switch" for="rememberMe">
                                 <input type="checkbox" id="rememberMe">
-                                <span class="checkbox__checkmark"></span>
-                                <span class="checkbox__label">Recordarme</span>
+                                <span class="remember-switch__box">
+                                    <span class="remember-switch__tick"></span>
+                                </span>
+                                <span class="remember-switch__text">Recordarme</span>
                             </label>
-                            <a href="#" class="forgot-link" onclick="showForgotPassword()">¿Olvidaste tu contraseña?</a>
+                            <a href="#" class="login-form__forgot" onclick="showForgotPassword()">¿Olvidaste tu contraseña?</a>
                         </div>
 
                         <button type="submit" class="btn btn--primary btn--block btn--large">
@@ -483,15 +491,15 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="footer">
+    <footer id="contacto" class="footer">
         <div class="footer__container container">
             <div class="footer__logo">
                 <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
             </div>
             <div class="footer__links">
-                <a href="contacto.html" class="footer__link">Contact</a>
+                <a href="#contacto" class="footer__link">Contact</a>
                 <a href="#" class="footer__link">Términos y Condiciones</a>
-                <a href="index.html#faq" class="footer__link">FAQ</a>
+                <a href="#faq" class="footer__link">FAQ</a>
             </div>
             <p class="footer__copyright">© 2025 Graykids Academy</p>
         </div>

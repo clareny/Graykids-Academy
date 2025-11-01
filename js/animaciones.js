@@ -59,44 +59,97 @@ window.addEventListener('scroll', () => {
 });
 
 // 4. EFECTO DE PARTÍCULAS FLOTANTES
-function createParticles() {
-    const hero = document.querySelector('.hero');
-    if (!hero) return;
-    
-    for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        const size = Math.random() * 6 + 3; // Tamaño entre 3 y 9px
-        particle.style.cssText = `
-            position: absolute;
-            width: ${size}px;
-            height: ${size}px;
-            background: rgba(57, 243, 212, 0.8);
-            border-radius: 50%;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            box-shadow: 0 0 10px rgba(57, 243, 212, 0.8), 0 0 20px rgba(57, 243, 212, 0.4);
-            animation: float ${3 + Math.random() * 4}s infinite ease-in-out;
-            animation-delay: ${Math.random() * 2}s;
-            z-index: 10;
-        `;
-        hero.appendChild(particle);
-    }
+function createParticles(targetSelectors = ['.hero', '.header']) {
+const containers = targetSelectors
+        .map(selector => document.querySelector(selector))
+        .filter(Boolean);
+    if (!containers.length) return;
+
+    containers.forEach(container => {
+        if (container.dataset.particlesInitialized === 'true') return;
+
+        const computedPosition = window.getComputedStyle(container).position;
+        if (computedPosition === 'static') {
+            container.style.position = 'relative';
+        }
+
+        const layer = document.createElement('div');
+        layer.className = 'particle-layer';
+        const isHeader = container.classList.contains('header');
+
+        if (isHeader) {
+            layer.style.position = 'fixed';
+            layer.style.top = '0';
+            layer.style.left = '0';
+            layer.style.right = '0';
+            layer.style.height = '140px';
+            layer.style.pointerEvents = 'none';
+            layer.style.zIndex = '1001';
+            document.body.appendChild(layer);
+        } else {
+            container.insertBefore(layer, container.firstChild);
+        }
+
+        const particleCount = isHeader ? 18 : 30;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('span');
+            particle.className = 'particle';
+            const size = (isHeader ? Math.random() * 3 + 2 : Math.random() * 6 + 3).toFixed(2);
+            const floatY = isHeader ? 60 : 120;
+            const floatX = isHeader ? 24 : 50;
+            const hueShift = isHeader ? 0.65 : 0.8;
+
+            particle.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                border-radius: 50%;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                background: rgba(57, 243, 212, ${hueShift});
+                box-shadow: 0 0 8px rgba(57, 243, 212, ${hueShift}), 0 0 16px rgba(57, 243, 212, 0.35);
+                animation: float ${(isHeader ? 2.8 : 3.5 + Math.random() * 3).toFixed(2)}s infinite ease-in-out;
+                animation-delay: ${(Math.random() * 2).toFixed(2)}s;
+                pointer-events: none;
+            `;
+            particle.style.setProperty('--floatY', `${floatY}px`);
+            particle.style.setProperty('--floatX', `${floatX}px`);
+
+            layer.appendChild(particle);
+        }
+
+        container.dataset.particlesInitialized = 'true';
+    });
 }
 
 // Animación CSS para las partículas
 const style = document.createElement('style');
 style.textContent = `
+    .particle-layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        mix-blend-mode: screen;
+        z-index: 0;
+    }
+
+    .particle-layer .particle {
+        pointer-events: none;
+        mix-blend-mode: screen;
+    }
+
     @keyframes float {
-        0%, 100% {
-            transform: translateY(0) translateX(0);
+        0% {
+            transform: translate(0, 0);
             opacity: 0;
         }
-        50% {
+        35% {
             opacity: 1;
         }
         100% {
-            transform: translateY(-100px) translateX(50px);
+            transform: translate(var(--floatX, 50px), calc(-1 * var(--floatY, 100px)));
             opacity: 0;
         }
     }
@@ -275,4 +328,47 @@ document.head.appendChild(rippleStyle);
 document.addEventListener('DOMContentLoaded', () => {
     createParticles();
     console.log('✨ Animaciones activadas - Graykids Academy');
+});
+/* Animación de "entrar" al acercar el cursor */
+// Este código es SCSS/CSS, no JavaScript. 
+// Para conectar esta animación "entrar" con el CSS, 
+// Agrega estas reglas en tu archivo CSS (por ejemplo en CSS/estilos.css):
+
+/*
+.btn {
+    transition: transform 0.2s cubic-bezier(0.45,0.05,0.55,0.95), box-shadow 0.2s cubic-bezier(0.45,0.05,0.55,0.95);
+    cursor: pointer;
+}
+.btn:hover,
+.btn:focus-visible {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 8px 26px rgba(57,243,212,0.25), 0 2px 16px rgba(0,0,0,0.08);
+    z-index: 1;
+}
+*/
+
+// Si quieres hacerlo con JS (NO recomendado para este caso simple), pero así sería:
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.style.transition = "transform 0.2s cubic-bezier(0.45,0.05,0.55,0.95), box-shadow 0.2s cubic-bezier(0.45,0.05,0.55,0.95)";
+    btn.style.cursor = "pointer";
+    btn.addEventListener('mouseenter', () => {
+        btn.style.transform = "translateY(-4px) scale(1.04)";
+        btn.style.boxShadow = "0 8px 26px rgba(57,243,212,0.25), 0 2px 16px rgba(0,0,0,0.08)";
+        btn.style.zIndex = "1";
+    });
+    btn.addEventListener('mouseleave', () => {
+        btn.style.transform = "";
+        btn.style.boxShadow = "";
+        btn.style.zIndex = "";
+    });
+    btn.addEventListener('focus', () => {
+        btn.style.transform = "translateY(-4px) scale(1.04)";
+        btn.style.boxShadow = "0 8px 26px rgba(57,243,212,0.25), 0 2px 16px rgba(0,0,0,0.08)";
+        btn.style.zIndex = "1";
+    });
+    btn.addEventListener('blur', () => {
+        btn.style.transform = "";
+        btn.style.boxShadow = "";
+        btn.style.zIndex = "";
+    });
 });

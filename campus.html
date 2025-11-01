@@ -77,9 +77,9 @@
     <header class="header header--campus">
         <div class="header__container container">
             <div class="header__logo">
-                <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                <a href="index.html">
                     <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
-                    <span class="header__logo-text">Graykids Academy</span>
+                    <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
             <nav class="header__nav">
@@ -238,16 +238,25 @@
     <script>
         // Check if user is logged in
         function checkAuth() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            const user = localStorage.getItem('user');
-            
-            if (!isLoggedIn || !user) {
-                alert('Debes iniciar sesión para acceder al campus');
-                window.location.href = 'Login.html';
-                return;
+            const userString = localStorage.getItem('user');
+
+            if (!userString) {
+                return {
+                    name: 'Invitado',
+                    email: ''
+                };
             }
-            
-            return JSON.parse(user);
+
+            try {
+                const user = JSON.parse(userString);
+                return user || { name: 'Invitado', email: '' };
+            } catch (error) {
+                console.warn('No se pudo leer el usuario almacenado, se usará invitado.', error);
+                return {
+                    name: 'Invitado',
+                    email: ''
+                };
+            }
         }
 
         function normalizeEmail(email) {
