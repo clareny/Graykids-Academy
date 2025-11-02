@@ -83,6 +83,10 @@ body {
     overflow-x: hidden;
 }
 
+body.no-scroll {
+    overflow: hidden;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -155,6 +159,76 @@ body {
     padding: 0;
     text-transform: uppercase;
     text-decoration: none;
+}
+
+.header__menu {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.5rem, 2.4vw, 3rem);
+    margin-left: auto;
+}
+
+.header__toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-left: auto;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    background: rgba(10, 10, 16, 0.45);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.header__toggle:hover {
+    transform: translateY(-1px);
+    background: rgba(10, 10, 16, 0.65);
+    border-color: rgba(255, 255, 255, 0.24);
+}
+
+.header__toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: rgba(238, 241, 255, 0.92);
+    border-radius: 999px;
+    transition: transform 0.4s ease, opacity 0.3s ease, width 0.3s ease;
+}
+
+.header__toggle span + span {
+    margin-top: 6px;
+}
+
+.header__toggle span:nth-child(2) {
+    width: 18px;
+}
+
+.header__toggle--open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.header__toggle--open span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-6px);
+}
+
+.header__toggle--open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.header__overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 6, 15, 0.55);
+    backdrop-filter: blur(3px);
+    z-index: 1150;
+}
+
+.header__overlay[hidden] {
+    display: none;
 }
 
 .header__nav {
@@ -750,31 +824,71 @@ details[open] .faq__question::after {
 
     .header__container {
         padding: 12px 20px;
-        flex-wrap: wrap;
-        gap: 16px;
+        gap: 14px;
     }
 
     .header__logo {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .header__nav {
-        display: none;
-    }
-
-    .header__auth {
-        display: flex;
-        width: 100%;
-        margin: 0;
-        gap: 12px;
+        flex: 1 1 auto;
         justify-content: flex-start;
     }
 
-    .header__auth .btn {
-        flex: 1;
+    .header__toggle {
+        display: inline-flex;
+    }
+
+    .header__menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(320px, 85vw);
+        padding: 110px 28px 40px;
+        background: rgba(10, 11, 24, 0.96);
+        backdrop-filter: blur(22px);
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 28px;
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -20px 0 40px rgba(6, 8, 20, 0.45);
+        z-index: 1200;
+    }
+
+    .header__menu.header__menu--open {
+        transform: translateX(0);
+    }
+
+    .header__nav {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+        margin-left: 0;
+    }
+
+    .header__link {
+        width: 100%;
+        font-size: 0.95rem;
+        letter-spacing: 0.08em;
+        padding: 10px 0;
+    }
+
+    .header__link::after {
+        height: 2px;
+    }
+
+    .header__auth {
+        width: 100%;
         margin: 0;
-        text-align: center;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .header__auth .btn {
+        width: 100%;
     }
 
     .hero {
@@ -843,8 +957,16 @@ details[open] .faq__question::after {
         gap: 12px;
     }
 
+    .header__menu {
+        width: min(100%, 320px);
+        padding: 100px 22px 32px;
+    }
+
+    .header__link {
+        font-size: 0.9rem;
+    }
+
     .header__auth {
-        flex-direction: column;
         gap: 10px;
     }
 
