@@ -97,12 +97,10 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: transparent;
-    backdrop-filter: blur(20px) saturate(155%);
-    border-bottom: 1px solid rgba(31, 173, 209, 0.18);
+    background: none;
     z-index: 1000;
     padding: 0;
-    overflow: visible;
+    overflow: visible; */
 }
 
 .header__container {
@@ -734,32 +732,84 @@ details[open] .faq__question::after {
    📱 RESPONSIVE - Media Queries General
    ======================================== */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .header {
+        background: rgba(10, 10, 10, 0.92);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .header__container {
+        padding: 12px 20px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .header__logo {
+        width: 100%;
+        justify-content: space-between;
+    }
+
     .header__nav {
         display: none;
     }
 
+    .header__auth {
+        display: flex;
+        width: 100%;
+        margin: 0;
+        gap: 12px;
+        justify-content: flex-start;
+    }
+
+    .header__auth .btn {
+        flex: 1;
+        margin: 0;
+        text-align: center;
+    }
+
+    .hero {
+        padding: 120px 0 60px;
+        text-align: center;
+    }
+
+    .hero__content {
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .hero__intro {
+        font-size: 1rem;
+        letter-spacing: 1.6px;
+    }
+
     .hero__title {
-        font-size: 2.5rem;
+        font-size: clamp(2.3rem, 7vw, 2.8rem);
     }
 
     .hero__subtitle {
-        font-size: 1.5rem;
+        font-size: clamp(1.2rem, 5vw, 1.6rem);
+    }
+
+    .hero__description {
+        font-size: 1rem;
     }
 
     .featured-course__title {
-        font-size: 2rem;
+        font-size: clamp(1.8rem, 6vw, 2.3rem);
     }
 
     .featured-course__content {
         grid-template-columns: 1fr;
+        gap: 32px;
     }
 
-    .courses__grid {
-        grid-template-columns: 1fr;
-    }
-
+    .courses__grid,
     .testimonials__grid {
         grid-template-columns: 1fr;
+        gap: 24px;
     }
 
     .cta__title {
@@ -773,6 +823,69 @@ details[open] .faq__question::after {
     .footer__links {
         flex-direction: column;
         gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 14px;
+    }
+
+    .header__container {
+        padding: 12px 16px;
+        gap: 12px;
+    }
+
+    .header__auth {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero {
+        padding: 110px 0 50px;
+    }
+
+    .hero__intro {
+        font-size: 0.95rem;
+        letter-spacing: 1.2px;
+    }
+
+    .hero__title {
+        font-size: 2.1rem;
+    }
+
+    .hero__subtitle {
+        font-size: 1.25rem;
+    }
+
+    .hero__description {
+        font-size: 0.95rem;
+    }
+
+    .featured-course__badge {
+        font-size: 0.8rem;
+    }
+
+    .featured-course__content {
+        gap: 24px;
+    }
+
+    .course-card__content,
+    .library-card__content {
+        padding: 24px;
+    }
+
+    .faq__question {
+        padding: 20px;
+        font-size: 1rem;
+    }
+
+    .faq__answer {
+        padding: 0 20px 20px 20px;
+    }
+
+    .footer {
+        padding: 50px 0 24px;
     }
 }
 
