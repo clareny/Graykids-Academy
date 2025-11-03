@@ -7,6 +7,7 @@
     <link rel="icon" href="Images/Graykids Academy Logo.png">
     <link rel="stylesheet" href="CSS/Normalize.css">
     <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/header.js" defer></script>
     <script src="js/animaciones.js" defer></script>
     <script src="js/config.js"></script>
     <title>Curso - Graykids Academy</title>
@@ -21,15 +22,22 @@
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
-            <nav class="header__nav">
-                <a href="campus.html" class="header__link">← Volver al Campus</a>
-                <a href="admin.html" id="adminLink" class="header__link" style="display: none;">🎛️ Panel Admin</a>
-                <span id="adminCourseIndicator" style="display: none; color: var(--primary-color); font-weight: 700; padding: 8px 15px; background: rgba(57, 243, 212, 0.1); border-radius: 8px; border: 1px solid var(--primary-color); margin-left: 10px; font-size: 0.9rem;">
-                    ✏️ Editando: <span id="headerCourseName">Curso</span>
-                </span>
-            </nav>
-            
+            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menú de navegación">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="header__menu" id="mainNavigation">
+                <nav class="header__nav">
+                    <a href="campus.html" class="header__link">← Volver al Campus</a>
+                    <a href="admin.html" id="adminLink" class="header__link" style="display: none;">🎛️ Panel Admin</a>
+                    <span id="adminCourseIndicator" style="display: none; color: var(--primary-color); font-weight: 700; padding: 8px 15px; background: rgba(57, 243, 212, 0.1); border-radius: 8px; border: 1px solid var(--primary-color); margin-left: 10px; font-size: 0.9rem;">
+                        ✏️ Editando: <span id="headerCourseName">Curso</span>
+                    </span>
+                </nav>
+            </div>
         </div>
+        <div class="header__overlay" hidden></div>
     </header>
     
 

@@ -7,6 +7,7 @@
     <link rel="icon" href="Images/Graykids Academy Logo.png">
     <link rel="stylesheet" href="CSS/Normalize.css">
     <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/header.js" defer></script>
     <script src="js/animaciones.js" defer></script>
     <title>Graykids Plus - Membresía Premium</title>
 </head>
@@ -20,17 +21,25 @@
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
-            <nav class="header__nav">
-                <a href="index.html#cursos" class="header__link">Cursos VIP</a>
-                <a href="GraykidsPlus.html#membresia" class="header__link">Graykids Plus</a>
-                <a href="Discord.html" class="header__link">Discord</a>
-                <a href="librerias.html" class="header__link">Librerías</a>
-                <a href="index.html#faq" class="header__link">FAQ</a>
-            </nav>
-            <span class="header__auth">
-                <a href="contacto.html" class="btn btn--outline">Entrar</a>
-            </span>
+            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menú de navegación">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="header__menu" id="mainNavigation">
+                <nav class="header__nav">
+                    <a href="index.html#cursos" class="header__link">Cursos VIP</a>
+                    <a href="GraykidsPlus.html#membresia" class="header__link">Graykids Plus</a>
+                    <a href="Discord.html" class="header__link">Discord</a>
+                    <a href="librerias.html" class="header__link">Librerías</a>
+                    <a href="index.html#faq" class="header__link">FAQ</a>
+                </nav>
+                <span id="headerAuthButton" class="header__auth">
+                    <a href="contacto.html" class="btn btn--outline">Entrar</a>
+                </span>
+            </div>
         </div>
+        <div class="header__overlay" hidden></div>
     </header>
 
     <script>

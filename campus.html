@@ -7,6 +7,7 @@
     <link rel="icon" href="Images/Graykids Academy Logo.png">
     <link rel="stylesheet" href="CSS/Normalize.css">
     <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/header.js" defer></script>
     <script src="js/animaciones.js" defer></script>
     <title>Mi Campus - Graykids Academy</title>
     <style>
@@ -82,18 +83,26 @@
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
-            <nav class="header__nav">
-                <a href="#mis-cursos" class="header__link nav-link active" data-section="campus">Mis Cursos</a>
-                <a href="cursos.html" class="header__link nav-link" data-page="cursos.html">Cursos VIP</a>
-                <a href="GraykidsPlus.html" class="header__link nav-link" data-page="GraykidsPlus.html">Graykids Plus</a>
-                <a href="Discord.html" class="header__link nav-link" data-page="Discord.html">Discord</a>
-                <a href="librerias.html" class="header__link nav-link" data-page="librerias.html">Librerías</a>
-                <a href="contacto.html" class="header__link nav-link" data-page="contacto.html">Contacto</a>
-            </nav>
-            <div class="header__user">
-                <button class="btn btn--outline" onclick="logout()">Cerrar Sesión</button>
+            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menú de navegación">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="header__menu" id="mainNavigation">
+                <nav class="header__nav">
+                    <a href="#mis-cursos" class="header__link nav-link active" data-section="campus">Mis Cursos</a>
+                    <a href="cursos.html" class="header__link nav-link" data-page="cursos.html">Cursos VIP</a>
+                    <a href="GraykidsPlus.html" class="header__link nav-link" data-page="GraykidsPlus.html">Graykids Plus</a>
+                    <a href="Discord.html" class="header__link nav-link" data-page="Discord.html">Discord</a>
+                    <a href="librerias.html" class="header__link nav-link" data-page="librerias.html">Librerías</a>
+                    <a href="contacto.html" class="header__link nav-link" data-page="contacto.html">Contacto</a>
+                </nav>
+                <div class="header__user">
+                    <button class="btn btn--outline" onclick="logout()">Cerrar Sesión</button>
+                </div>
             </div>
         </div>
+        <div class="header__overlay" hidden></div>
     </header>
 
     <!-- CONTENEDOR DINÁMICO -->

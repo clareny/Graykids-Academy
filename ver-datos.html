@@ -6,6 +6,7 @@
     <link rel="icon" href="Images/Graykids Academy Logo.png">
     <link rel="stylesheet" href="CSS/Normalize.css">
     <link rel="stylesheet" href="CSS/estilos.css">
+    <script src="js/header.js" defer></script>
     <title>Ver Datos - Graykids Academy</title>
     <style>
         .data-container {
@@ -68,11 +69,19 @@
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
-            <nav class="header__nav">
-                <a href="admin.html" class="header__link">Admin</a>
-                <a href="campus.html" class="header__link">Campus</a>
-            </nav>
+            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menú de navegación">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="header__menu" id="mainNavigation">
+                <nav class="header__nav">
+                    <a href="admin.html" class="header__link">Admin</a>
+                    <a href="campus.html" class="header__link">Campus</a>
+                </nav>
+            </div>
         </div>
+        <div class="header__overlay" hidden></div>
     </header>
 
     <div class="data-container">
