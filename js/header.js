@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headerMenu.classList.remove('header__menu--open');
         headerToggle.classList.remove('header__toggle--open');
         headerToggle.setAttribute('aria-expanded', 'false');
+        headerToggle.setAttribute('aria-label', 'Abrir menú de navegación');
         headerOverlay.hidden = true;
         body.classList.remove('no-scroll');
     };
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headerMenu.classList.toggle('header__menu--open', willOpen);
         headerToggle.classList.toggle('header__toggle--open', willOpen);
         headerToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        headerToggle.setAttribute('aria-label', willOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
         headerOverlay.hidden = !willOpen;
         body.classList.toggle('no-scroll', willOpen);
     });
