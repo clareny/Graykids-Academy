@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const user = localStorage.getItem('user');
-    const headerAuthButton = document.getElementById('headerAuthButton');
+    // El botón "Entrar" siempre redirige a Login.html
+    // const isLoggedIn = localStorage.getItem('isLoggedIn');
+    // const user = localStorage.getItem('user');
+    // const headerAuthButton = document.getElementById('headerAuthButton');
 
-    if (headerAuthButton && isLoggedIn && user) {
-        headerAuthButton.innerHTML = '<a href="campus.html" class="btn btn--primary">Mi Campus</a>';
-    }
+    // if (headerAuthButton && isLoggedIn && user) {
+    //     headerAuthButton.innerHTML = '<a href="campus.html" class="btn btn--primary">Mi Campus</a>';
+    // }
 
     const headerToggle = document.querySelector('.header__toggle');
     const headerMenu = document.querySelector('.header__menu');
@@ -36,6 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     headerOverlay.addEventListener('click', closeMenu);
+
+    const headerMenuClose = document.querySelector('.header__menu-close');
+    if (headerMenuClose) {
+        headerMenuClose.addEventListener('click', closeMenu);
+    }
 
     headerMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', closeMenu);
