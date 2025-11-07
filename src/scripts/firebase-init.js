@@ -6,18 +6,19 @@
 // 3. Este módulo expone `app` y `db` para que otros scripts puedan usar Firestore.
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 // Reemplaza los valores siguientes por los de tu consola de Firebase.
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY_HERE",
-    authDomain: "YOUR_AUTH_DOMAIN_HERE",
-    projectId: "YOUR_PROJECT_ID_HERE",
-    storageBucket: "YOUR_STORAGE_BUCKET_HERE",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID_HERE",
-    appId: "YOUR_APP_ID_HERE"
-    // Si usas Realtime Database agrega: databaseURL: "https://<tu-project-id>.firebaseio.com"
-};
+    apiKey: "AIzaSyC8CkXMvUDQmaaR8zyfniYMe4waCKF14-A",
+    authDomain: "graykids-academy.firebaseapp.com",
+    projectId: "graykids-academy",
+    storageBucket: "graykids-academy.firebasestorage.app",
+    messagingSenderId: "545857776481",
+    appId: "1:545857776481:web:959cfcfd698604e095b320",
+    measurementId: "G-E7437GSZRJ"
+  };
 
 const hasValidConfig = Boolean(
     firebaseConfig &&
@@ -27,13 +28,15 @@ const hasValidConfig = Boolean(
 
 let app = null;
 let db = null;
+let auth = null;
 
 if (!hasValidConfig) {
     console.warn("Firebase no está configurado. Edita js/firebase-init.js con tu firebaseConfig.");
 } else {
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
+    auth = getAuth(app);
 }
 
-export { app, db, hasValidConfig as firebaseConfigured };
+export { app, auth, db, firebaseConfig, hasValidConfig as firebaseConfigured };
 

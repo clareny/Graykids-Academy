@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <link rel="icon" href="Images/Graykids Academy Logo.png">
-    <link rel="stylesheet" href="CSS/Normalize.css">
-    <link rel="stylesheet" href="CSS/estilos.css">
-    <script src="js/config.js"></script>
-    <script src="js/oauth-config.js"></script>
-    <script src="js/header.js" defer></script>
-    <script src="js/animaciones.js" defer></script>
+    <link rel="icon" href="../assets/images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="../styles/Normalize.css">
+    <link rel="stylesheet" href="../styles/estilos.css">
+    <script src="../scripts/config.js"></script>
+    <script src="../scripts/oauth-config.js"></script>
+    <script src="../scripts/header.js" defer></script>
+    <script src="../scripts/animaciones.js" defer></script>
     <title>Acceso - Graykids Academy</title>
     <style>
         /* Loading Screen */
@@ -145,7 +145,7 @@
 <body class="login-page">
     <!-- Loading Screen -->
     <div id="loadingScreen" class="loading-screen">
-        <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy" class="loading-logo">
+        <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy" class="loading-logo">
         <div class="loading-spinner-ring"></div>
         <p class="loading-text">CARGANDO</p>
     </div>
@@ -188,7 +188,7 @@
         <div class="header__container container">
             <div class="header__logo">
                 <a href="index.html">
-                    <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                    <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
@@ -302,8 +302,8 @@
                             <div class="password-input">
                                 <input type="password" id="loginPassword" class="form-input" placeholder="Tu contraseña" required>
                                 <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')" aria-label="Mostrar/Ocultar contraseña">
-                                    <img src="Images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="loginPassword-eye-visible">
-                                    <img src="Images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="loginPassword-eye-hidden" style="display: none;">
+                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="loginPassword-eye-visible">
+                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="loginPassword-eye-hidden" style="display: none;">
                                 </button>
                             </div>
                         </div>
@@ -373,8 +373,8 @@
                             <div class="password-input">
                                 <input type="password" id="registerPassword" class="form-input" placeholder="Mínimo 8 caracteres" required minlength="8">
                                 <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')" aria-label="Mostrar/Ocultar contraseña">
-                                    <img src="Images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPassword-eye-visible">
-                                    <img src="Images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPassword-eye-hidden" style="display: none;">
+                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPassword-eye-visible">
+                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPassword-eye-hidden" style="display: none;">
                                 </button>
                             </div>
                         </div>
@@ -384,8 +384,8 @@
                             <div class="password-input">
                                 <input type="password" id="registerPasswordConfirm" class="form-input" placeholder="Confirma tu contraseña" required>
                                 <button type="button" class="password-toggle" onclick="togglePassword('registerPasswordConfirm')" aria-label="Mostrar/Ocultar contraseña">
-                                    <img src="Images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPasswordConfirm-eye-visible">
-                                    <img src="Images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPasswordConfirm-eye-hidden" style="display: none;">
+                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPasswordConfirm-eye-visible">
+                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPasswordConfirm-eye-hidden" style="display: none;">
                                 </button>
                             </div>
                         </div>
@@ -459,7 +459,7 @@
     <footer id="contacto" class="footer">
         <div class="footer__container container">
             <div class="footer__logo">
-                <img src="Images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+                <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
             </div>
             <div class="footer__links">
                 <a href="#contacto" class="footer__link">Contact</a>
@@ -470,140 +470,73 @@
         </div>
     </footer>
 
-    <script>
+    <script type="module">
+        import { auth, db, firebaseConfigured } from './js/firebase-init.js';
+        import {
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            sendPasswordResetEmail,
+            sendEmailVerification,
+            updateProfile,
+            signInWithPopup,
+            GoogleAuthProvider,
+            FacebookAuthProvider,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        import { doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
         // ========================================
         // SESSION RESTORATION FROM COOKIES
         // ========================================
         function restoreSessionFromCookies() {
-            try {
-                const cookieUserSession = getCookie('user_session');
-                const cookieIsLoggedIn = getCookie('is_logged_in');
-                
-                // Si hay sesión en cookies pero no en localStorage, restaurar
-                if (cookieUserSession && cookieIsLoggedIn === 'true') {
-                    try {
-                        const userInfo = JSON.parse(cookieUserSession);
-                        
-                        // Verificar que sea válido
-                        if (userInfo && userInfo.email) {
-                            // Restaurar en localStorage también
-                            localStorage.setItem('user', cookieUserSession);
-                            localStorage.setItem('isLoggedIn', 'true');
-                            
-                            console.log('Sesión restaurada desde cookies:', userInfo.email);
-                            
-                            // Si hay un parámetro de error en la URL, no redirigir automáticamente
-                            const urlParams = new URLSearchParams(window.location.search);
-                            const error = urlParams.get('error');
-                            
-                            if (error) {
-                                // Mostrar mensaje de error si viene de OAuth
-                                let errorMessage = 'Error de autenticación';
-                                switch(error) {
-                                    case 'access_denied':
-                                        errorMessage = 'La autenticación fue cancelada';
-                                        break;
-                                    case 'no_code':
-                                        errorMessage = 'No se recibió el código de autorización';
-                                        break;
-                                    case 'auth_failed':
-                                        errorMessage = 'Error al autenticar con Google';
-                                        break;
-                                }
-                                showErrorMessage('❌ ' + errorMessage + '.<br><strong>Inténtelo nuevamente.</strong>', true);
-                                return false; // No redirigir si hay error
-                            }
-                            
-                            // Retornar true para indicar que se debe redirigir (pero no redirigir aquí)
-                            // La redirección se hará después de ocultar el loading
-                            setTimeout(() => {
-                                if (userInfo.isAdmin) {
-                                    window.location.href = 'admin.html';
-                                } else {
-                                    window.location.href = 'campus.html?login=success';
-                                }
-                            }, 400); // Esperar a que el loading se oculte primero
-                            
-                            return true; // Indicar que se debe ocultar loading y redirigir
-                        }
-                    } catch (e) {
-                        console.error('Error al parsear cookie de sesión:', e);
-                        // Limpiar cookies inválidas
-                        deleteCookie('user_session');
-                        deleteCookie('is_logged_in');
-                    }
-                }
-            } catch (error) {
-                console.error('Error al restaurar sesión:', error);
-            }
-            return false; // No hay sesión para restaurar
+            // La sesión ahora se administra con Firebase Auth.
+            // Esta función queda como compatibilidad hacia atrás.
+            return false;
         }
         
         // ========================================
         // LOADING SCREEN
         // ========================================
         window.addEventListener('load', function() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            
-            if (!loadingScreen) {
-                console.warn('Loading screen no encontrado');
+            if (!firebaseConfigured || !auth) {
+                hideLoadingScreen();
                 return;
             }
-            
-            // Restaurar sesión desde cookies
-            const shouldRedirect = restoreSessionFromCookies();
-            
-            // Si hay redirección, ocultar loading y luego redirigir
-            if (shouldRedirect) {
-                setTimeout(() => {
-                    if (loadingScreen) {
-                        loadingScreen.classList.add('hidden');
-                        setTimeout(() => {
-                            if (loadingScreen) {
-                                loadingScreen.style.display = 'none';
-                            }
-                        }, 150);
-                    }
-                }, 200);
-            } else {
-                // Si no hay redirección, ocultar loading normalmente
-                setTimeout(() => {
-                    if (loadingScreen) {
-                        loadingScreen.classList.add('hidden');
-                        setTimeout(() => {
-                            if (loadingScreen) {
-                                loadingScreen.style.display = 'none';
-                            }
-                        }, 200);
-                    }
-                }, 300);
-            }
+
+            const unsubscribe = onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    await handlePostLogin(user, { announce: false, fromObserver: true });
+                                } else {
+                    hideLoadingScreen();
+                }
+                unsubscribe();
+            });
+
+            // Fallback para evitar que la pantalla quede bloqueada en caso de retrasos
+            setTimeout(() => {
+                hideLoadingScreen();
+            }, 2000);
         });
         
         // ========================================
         // EMAIL VERIFICATION SYSTEM
         // ========================================
         
-        // Generar código de verificación simulado
-        function generateVerificationCode(email) {
-            const code = Math.random().toString(36).substring(2, 10).toUpperCase();
-            const verificationData = {
-                email: email,
-                code: code,
-                timestamp: Date.now(),
-                verified: false
-            };
-            
-            // Guardar en localStorage
-            const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
-            verifications[email] = verificationData;
-            localStorage.setItem('emailVerifications', JSON.stringify(verifications));
-            
-            // En producción, aquí se enviaría el email real
-            console.log(`📧 Email de verificación simulado enviado a ${email}`);
-            console.log(`🔐 Código de verificación (desarrollo): ${code}`);
-            
-            return code;
+        async function sendFirebaseVerificationEmail(user) {
+            if (!firebaseConfigured || !auth || !user) {
+                console.warn('No se pudo enviar email de verificación: Firebase no está configurado o no hay usuario.');
+                return false;
+            }
+
+            try {
+                await sendEmailVerification(user);
+                console.log(`📧 Email de verificación enviado a ${user.email}`);
+                return true;
+            } catch (error) {
+                console.error('Error al enviar email de verificación:', error);
+                showErrorMessage('❌ No pudimos enviar el email de verificación.<br><strong>Intenta nuevamente en unos minutos.</strong>', true);
+                return false;
+            }
         }
         
         // Mostrar modal de verificación
@@ -611,24 +544,35 @@
             document.getElementById('verificationEmail').textContent = email;
             document.getElementById('verificationModal').classList.add('active');
             
-            // Generar código de verificación
-            generateVerificationCode(email);
+            const currentUser = auth?.currentUser;
+            if (currentUser && !currentUser.emailVerified) {
+                sendFirebaseVerificationEmail(currentUser);
+            }
             
-            // Configurar botón de verificar ahora
-            document.getElementById('verifyNowBtn').onclick = function() {
-                verifyEmail(email);
+            document.getElementById('verifyNowBtn').onclick = async function() {
+                await checkEmailVerification();
             };
             
-            // Configurar botón de reenviar
-            document.getElementById('resendEmailBtn').onclick = function() {
-                generateVerificationCode(email);
-                showSuccessMessage('📧 Email de verificación reenviado! Revisa tu bandeja de entrada.');
-                
-                // Animar botón
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 200);
+            document.getElementById('resendEmailBtn').onclick = async function() {
+                const user = auth?.currentUser;
+                if (!user) {
+                    showErrorMessage('❌ No hay sesión activa.<br><strong>Inicia sesión nuevamente.</strong>', true);
+                return;
+            }
+            
+                const button = this;
+                button.disabled = true;
+                button.style.transform = 'scale(0.95)';
+
+                const sent = await sendFirebaseVerificationEmail(user);
+                if (sent) {
+                    showSuccessMessage('📧 Email de verificación reenviado. Revisa tu bandeja de entrada.');
+                }
+
+                            setTimeout(() => {
+                    button.disabled = false;
+                    button.style.transform = 'scale(1)';
+                }, 600);
             };
         }
         
@@ -637,31 +581,209 @@
             document.getElementById('verificationModal').classList.remove('active');
         }
         
-        // Verificar email
-        function verifyEmail(email) {
-            const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
-            if (verifications[email]) {
-                verifications[email].verified = true;
-                verifications[email].verifiedAt = Date.now();
-                localStorage.setItem('emailVerifications', JSON.stringify(verifications));
-                
-                // Actualizar estado del usuario
-                const user = JSON.parse(localStorage.getItem('user') || '{}');
-                user.emailVerified = true;
-                localStorage.setItem('user', JSON.stringify(user));
-                
+        async function checkEmailVerification() {
+            const user = auth?.currentUser;
+
+            if (!user) {
+                showErrorMessage('❌ No hay sesión activa.<br><strong>Inicia sesión nuevamente.</strong>', true);
                 closeVerificationModal();
-                showSuccessMessage('✅ Email verificado exitosamente!');
-                
-                // Redirigir según tipo de usuario
-                setTimeout(() => {
-                    if (user.isAdmin) {
-                        window.location.href = 'admin.html';
-                    } else {
-                        window.location.href = 'campus.html?verified=true';
-                    }
-                }, 1500);
+                return;
             }
+
+            try {
+                await user.reload();
+                if (user.emailVerified) {
+                    closeVerificationModal();
+                    showSuccessMessage('✅ Email verificado exitosamente!');
+                    await handlePostLogin(user, { skipVerificationCheck: true, announce: false });
+            } else {
+                    showErrorMessage('❌ Tu email aún no está verificado.<br><strong>Revisa tu bandeja o reenvía el correo.</strong>', true);
+                }
+            } catch (error) {
+                console.error('Error al comprobar verificación de email:', error);
+                showErrorMessage('❌ No pudimos comprobar la verificación.<br><strong>Intenta nuevamente.</strong>', true);
+            }
+        }
+
+        async function ensureUserDocument(user, overrides = {}) {
+            if (!user) return { isAdmin: false, role: 'student' };
+
+            const fallbackAdmin = typeof isAdminEmail === 'function' ? isAdminEmail(user.email) : false;
+            const desiredAdminState = overrides.isAdmin ?? fallbackAdmin ?? false;
+
+            if (!db) {
+                return {
+                    name: user.displayName || user.email.split('@')[0],
+                    isAdmin: desiredAdminState,
+                    role: desiredAdminState ? 'admin' : 'student'
+                };
+            }
+
+            try {
+                const userRef = doc(db, 'users', user.uid);
+                const snapshot = await getDoc(userRef);
+                const existingData = snapshot.exists() ? snapshot.data() : {};
+
+                const isAdmin = typeof existingData.isAdmin === 'boolean'
+                    ? existingData.isAdmin
+                    : desiredAdminState;
+
+                const providerId = (user.providerData && user.providerData[0]?.providerId) || existingData.provider || 'password';
+
+                const payload = {
+                    name: user.displayName || existingData.name || user.email.split('@')[0],
+                    email: user.email,
+                    provider: providerId,
+                    isAdmin,
+                    role: isAdmin ? 'admin' : (existingData.role || 'student'),
+                    emailVerified: user.emailVerified,
+                    updatedAt: serverTimestamp()
+                };
+
+                if (!snapshot.exists()) {
+                    payload.createdAt = serverTimestamp();
+                }
+
+                await setDoc(userRef, payload, { merge: true });
+
+                const finalSnapshot = await getDoc(userRef);
+                return finalSnapshot.exists() ? finalSnapshot.data() : payload;
+            } catch (error) {
+                console.error('Error asegurando documento de usuario:', error);
+                return {
+                    name: user.displayName || user.email.split('@')[0],
+                    isAdmin: desiredAdminState,
+                    role: desiredAdminState ? 'admin' : 'student'
+                };
+            }
+        }
+
+        function buildUserInfo(user, userDocData = {}) {
+            if (!user) return null;
+
+            const providerId = user.providerData && user.providerData[0]?.providerId
+                ? user.providerData[0].providerId
+                : 'password';
+
+            return {
+                uid: user.uid,
+                name: userDocData.name || user.displayName || user.email.split('@')[0],
+                email: user.email,
+                provider: userDocData.provider || providerId,
+                isAdmin: Boolean(userDocData.isAdmin),
+                emailVerified: user.emailVerified,
+                photoURL: user.photoURL || '',
+                role: userDocData.role || (userDocData.isAdmin ? 'admin' : 'student')
+            };
+        }
+
+        function persistUserSession(userInfo) {
+            if (!userInfo) return;
+            localStorage.setItem('user', JSON.stringify(userInfo));
+            localStorage.setItem('isLoggedIn', 'true');
+            setCookie('user_session', JSON.stringify(userInfo), 30);
+            setCookie('is_logged_in', 'true', 30);
+        }
+
+        function clearStoredSession() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('isLoggedIn');
+            deleteCookie('user_session');
+            deleteCookie('is_logged_in');
+        }
+
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loadingScreen');
+                    if (loadingScreen) {
+                        loadingScreen.classList.add('hidden');
+                        setTimeout(() => {
+                                loadingScreen.style.display = 'none';
+                        }, 200);
+                    }
+        }
+
+        function redirectBasedOnRole(userInfo, options = {}) {
+            const targetUrl = userInfo.isAdmin ? 'admin.html' : 'campus.html?login=success';
+            const delay = options.delay ?? (options.announce ? 900 : 400);
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, delay);
+        }
+
+        async function handlePostLogin(user, options = {}) {
+            if (!user) return;
+
+            const { announce = true, skipVerificationCheck = false, fromObserver = false } = options;
+
+            try {
+                const userDoc = await ensureUserDocument(user, options);
+                const userInfo = buildUserInfo(user, userDoc);
+                persistUserSession(userInfo);
+
+                hideLoadingScreen();
+
+                if (!skipVerificationCheck && !user.emailVerified && !userInfo.isAdmin) {
+                    showVerificationModal(user.email);
+                    return;
+                }
+
+                if (announce) {
+                    showSuccessMessage(userInfo.isAdmin ? '✅ Bienvenido Administrador!' : '✅ Inicio de sesión exitoso!');
+                }
+
+                redirectBasedOnRole(userInfo, { announce, delay: fromObserver ? 300 : undefined });
+            } catch (error) {
+                console.error('Error procesando inicio de sesión:', error);
+                showErrorMessage('❌ No pudimos completar el inicio de sesión.<br><strong>Inténtalo nuevamente.</strong>', true);
+            }
+        }
+
+        function getFriendlyAuthError(error, context = 'login') {
+            const code = error?.code || 'auth/unknown';
+
+            const messages = {
+                'auth/invalid-email': '❌ El correo electrónico no es válido.',
+                'auth/user-disabled': '❌ Esta cuenta está deshabilitada. Contacta al soporte.',
+                'auth/user-not-found': '❌ No encontramos una cuenta con ese correo.',
+                'auth/wrong-password': '❌ Email o contraseña incorrectos.',
+                'auth/email-already-in-use': '❌ Este correo ya está registrado.',
+                'auth/weak-password': '❌ La contraseña es demasiado corta. Usa al menos 6 caracteres.',
+                'auth/too-many-requests': '❌ Has realizado demasiados intentos. Intenta nuevamente más tarde.',
+                'auth/popup-closed-by-user': '❌ Cerraste la ventana de autenticación antes de completar el proceso.',
+                'auth/cancelled-popup-request': '❌ Se canceló la operación de autenticación. Intenta nuevamente.',
+                'auth/account-exists-with-different-credential': '❌ Ya existe una cuenta con este correo usando otro proveedor. Inicia sesión con ese proveedor.',
+                'auth/operation-not-allowed': '❌ Este método de inicio de sesión no está habilitado aún.',
+                'auth/missing-email': '❌ Debes ingresar un correo electrónico.',
+                'auth/internal-error': '❌ Ocurrió un error inesperado.'
+            };
+
+            let message = messages[code] || '❌ No pudimos completar la operación.';
+
+            if (context === 'reset') {
+                if (code === 'auth/user-not-found') {
+                    message = '❌ No encontramos una cuenta con ese correo.<br><strong>Verifica el email ingresado.</strong>';
+                }
+            }
+
+            return message.includes('<strong>') ? message : `${message}<br><strong>Inténtalo nuevamente.</strong>`;
+        }
+
+        function setButtonLoadingState(button, loadingText) {
+            if (!button) {
+                return () => {};
+            }
+
+            if (!button.dataset.originalHtml) {
+                button.dataset.originalHtml = button.innerHTML;
+            }
+
+            button.disabled = true;
+            button.innerHTML = `<span class="loading-spinner"></span> ${loadingText}`;
+
+            return () => {
+                button.disabled = false;
+                button.innerHTML = button.dataset.originalHtml || loadingText;
+            };
         }
         
         // Mostrar mensaje de éxito
@@ -923,247 +1045,111 @@
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
         }
         
-        // Google Sign In - Redirige a Google OAuth
-        function signInWithGoogle(evt) {
+        // Google Sign In (Firebase Auth)
+        async function signInWithGoogle(evt) {
+            if (evt && typeof evt.preventDefault === 'function') {
+                evt.preventDefault();
+            }
+
+            if (!firebaseConfigured || !auth) {
+                showErrorMessage('❌ Google Sign-In no está disponible.<br><strong>Contacta al administrador.</strong>', true);
+                    return;
+                }
+                
+            let button = null;
+            if (evt && evt.currentTarget) {
+                button = evt.currentTarget;
+            } else {
+                button = document.querySelector('.social-btn--google');
+            }
+
+            const restore = setButtonLoadingState(button, 'Conectando...');
+
             try {
-                // Verificar que la configuración esté disponible
-                if (typeof getGoogleAuthUrl !== 'function') {
-                    console.error('OAuth config no cargada');
-                    showErrorMessage('❌ Error de configuración. Por favor, recarga la página e inténtelo nuevamente.', true);
-                    return;
-                }
-                
-                // Verificar que el Client ID esté configurado correctamente
-                if (typeof isGoogleOAuthConfigured === 'function' && !isGoogleOAuthConfigured()) {
-                    const config = typeof OAUTH_CONFIG !== 'undefined' ? OAUTH_CONFIG.google : null;
-                    const currentClientId = config ? config.clientId : 'no configurado';
-                    
-                    showErrorMessage(
-                        '❌ Google OAuth no está configurado correctamente.<br><br>' +
-                        'El Client ID debe tener el formato completo:<br>' +
-                        '<strong>XXXXXXXXX-XXXXXXXXXXXXXXXX.apps.googleusercontent.com</strong><br><br>' +
-                        'Actualmente tienes: <strong>' + currentClientId + '</strong><br><br>' +
-                        'Por favor ve a <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color: #39F3D4;">Google Cloud Console</a> y crea un OAuth 2.0 Client ID.',
-                        true
-                    );
-                    console.error('Google CLIENT_ID no configurado correctamente. Actual:', currentClientId);
-                    return;
-                }
-                
-                const googleAuthUrl = getGoogleAuthUrl();
-                
-                // Verificar que la URL se generó correctamente
-                if (!googleAuthUrl) {
-                    showErrorMessage('❌ Error al generar la URL de autenticación de Google.<br><strong>Verifica que tu Client ID esté configurado correctamente.</strong>', true);
-                    return;
-                }
-                
-                // Guardar el origen antes de redirigir (para después del callback)
-                sessionStorage.setItem('oauth_redirect_from', 'Login.html');
-                
-                console.log('Redirigiendo a Google OAuth...');
-                
-                // Redirigir a Google OAuth
-                window.location.href = googleAuthUrl;
-                
+                const provider = new GoogleAuthProvider();
+                provider.setCustomParameters({ prompt: 'select_account' });
+                const credential = await signInWithPopup(auth, provider);
+                await handlePostLogin(credential.user, { announce: true });
             } catch (error) {
                 console.error('Error en signInWithGoogle:', error);
-                showErrorMessage('❌ Ocurrió un error al iniciar sesión con Google.<br><strong>Por favor, inténtelo nuevamente.</strong>', true);
+                const message = getFriendlyAuthError(error, 'login');
+                showErrorMessage(message, true);
+            } finally {
+                restore();
             }
         }
 
-        // Facebook Sign In
-        function signInWithFacebook(evt) {
-            let loadingBtn = null;
-            if (evt) {
-                if (evt.currentTarget) {
-                    loadingBtn = evt.currentTarget;
-                } else if (evt.target && typeof evt.target.closest === 'function') {
-                    loadingBtn = evt.target.closest('.social-btn');
-                }
+        async function signInWithFacebook(evt) {
+            if (evt && typeof evt.preventDefault === 'function') {
+                evt.preventDefault();
             }
 
-            if (!loadingBtn) {
-                loadingBtn = document.querySelector('.social-btn--facebook');
+            if (!firebaseConfigured || !auth) {
+                showErrorMessage('❌ Facebook Sign-In no está disponible.<br><strong>Contacta al administrador.</strong>', true);
+                return;
             }
 
-            if (loadingBtn && !loadingBtn.dataset.originalHtml) {
-                loadingBtn.dataset.originalHtml = loadingBtn.innerHTML;
-            }
-
-            const restoreFacebookButton = () => {
-                if (!loadingBtn) return;
-                loadingBtn.disabled = false;
-                if (loadingBtn.dataset.originalHtml) {
-                    loadingBtn.innerHTML = loadingBtn.dataset.originalHtml;
+            let button = null;
+            if (evt && evt.currentTarget) {
+                button = evt.currentTarget;
                 } else {
-                    loadingBtn.innerHTML = '<svg class="social-btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg> Facebook';
-                }
-            };
-
-            if (loadingBtn) {
-                loadingBtn.disabled = true;
-                loadingBtn.innerHTML = '<span class="loading-spinner"></span> Autenticando...';
+                button = document.querySelector('.social-btn--facebook');
             }
 
-            setTimeout(() => {
-                try {
-                    let userEmail = prompt('Ingresa tu email para iniciar sesión:\n\n(Por defecto: spieronilton@gmail.com para admin)\n(Cualquier otro email será usuario normal)');
+            const restore = setButtonLoadingState(button, 'Conectando...');
 
-                    if (!userEmail) {
-                        restoreFacebookButton();
-                        return;
-                    }
-
-                    if (!userEmail.trim()) {
-                        userEmail = 'spieronilton@gmail.com';
-                    }
-
-                    const normalizedEmail = userEmail.trim();
-                    const userInfo = {
-                        name: normalizedEmail.split('@')[0],
-                        email: normalizedEmail,
-                        provider: 'facebook',
-                        picture: 'https://via.placeholder.com/150',
-                        isAdmin: false
-                    };
-
-                    if (typeof isAdminEmail === 'function') {
-                        userInfo.isAdmin = isAdminEmail(userInfo.email);
+            try {
+                const provider = new FacebookAuthProvider();
+                const credential = await signInWithPopup(auth, provider);
+                await handlePostLogin(credential.user, { announce: true });
+            } catch (error) {
+                console.error('Error en signInWithFacebook:', error);
+                if (error?.code === 'auth/operation-not-allowed') {
+                    showErrorMessage('❌ Facebook Sign-In está deshabilitado para este proyecto.<br><strong>Habilita Facebook en la consola de Firebase.</strong>', true);
                     } else {
-                        userInfo.isAdmin = normalizedEmail === 'spieronilton@gmail.com';
-                    }
-
-                    localStorage.setItem('user', JSON.stringify(userInfo));
-                    localStorage.setItem('isLoggedIn', 'true');
-
-                    // Verificar si el email ya está verificado
-                    const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
-                    const isVerified = verifications[userInfo.email]?.verified || false;
-                    userInfo.emailVerified = isVerified;
-
-                    // Si no está verificado y no es admin, mostrar modal de verificación
-                    if (!isVerified && !userInfo.isAdmin) {
-                        showVerificationModal(userInfo.email);
-                        restoreFacebookButton();
-                    } else {
-                        if (userInfo.isAdmin) {
-                            showSuccessMessage('✅ Bienvenido Administrador!');
-                            setTimeout(() => {
-                                window.location.href = 'admin.html';
-                            }, 1000);
-                        } else {
-                            showSuccessMessage('✅ Inicio de sesión exitoso!');
-                            setTimeout(() => {
-                                window.location.href = 'campus.html?login=success';
-                            }, 1000);
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error en signInWithFacebook:', error);
-                    showErrorMessage('❌ Ocurrió un error al iniciar sesión con Facebook.<br><strong>Por favor, inténtelo nuevamente.</strong>', true);
-                    restoreFacebookButton();
+                    const message = getFriendlyAuthError(error, 'login');
+                    showErrorMessage(message, true);
                 }
-            }, 800);
-
+            } finally {
+                restore();
+            }
         }
 
         // Handle login form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('loginEmail').value;
+            if (!firebaseConfigured || !auth) {
+                showErrorMessage('❌ Firebase no está configurado.<br><strong>Contacta al administrador.</strong>', true);
+                return;
+            }
+            
+            const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
-            
-            // Validar campos
+
             if (!email || !password) {
-                showErrorMessage('❌ Por favor completa todos los campos.<br><strong>Inténtelo nuevamente.</strong>', true);
+                showErrorMessage('❌ Por favor completa todos los campos.<br><strong>Inténtalo nuevamente.</strong>', true);
                 return;
             }
             
-            // Normalizar email (trim y lowercase)
-            const normalizedEmail = email.trim().toLowerCase();
-            
-            // Save user info con email normalizado
-            const userInfo = {
-                name: normalizedEmail.split('@')[0],
-                email: normalizedEmail,
-                provider: 'email',
-                picture: '',
-                isAdmin: false // Se verificará después
-            };
-            
-            // Verificar si es administrador (usando función de config.js)
-            // Usar el email normalizado para verificar admin
-            if (typeof isAdminEmail === 'function') {
-                userInfo.isAdmin = isAdminEmail(normalizedEmail);
-            } else {
-                // Fallback: verificar email por defecto
-                const defaultAdminEmail = 'spieronilton@gmail.com';
-                userInfo.isAdmin = normalizedEmail === defaultAdminEmail.toLowerCase();
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="loading-spinner"></span> Iniciando...';
             }
-            
-            // Asegurar que el usuario admin esté inicializado
-            if (typeof initializeAdminUser === 'function') {
-                initializeAdminUser();
-            }
-            
-            // Verificar credenciales (simulado - en producción esto sería una llamada al servidor)
-            const users = JSON.parse(localStorage.getItem('users') || '{}');
-            
-            // Buscar usuario con email normalizado
-            let storedUser = users[normalizedEmail];
-            
-            // Si no se encuentra, intentar buscar sin normalizar (para compatibilidad)
-            if (!storedUser) {
-                storedUser = users[email] || users[email.toLowerCase()] || users[email.trim()];
-            }
-            
-            // Verificar si existe el usuario
-            if (!storedUser) {
-                console.error('Usuario no encontrado. Email ingresado:', email, 'Email normalizado:', normalizedEmail);
-                console.log('Usuarios en localStorage:', Object.keys(users));
-                showErrorMessage('❌ Email o contraseña incorrectos.<br><strong>Inténtelo nuevamente.</strong>', true);
-                return;
-            }
-            
-            // Verificar contraseña
-            if (storedUser.password !== password) {
-                console.error('Contraseña incorrecta. Password ingresada:', password, 'Password guardada:', storedUser.password);
-                showErrorMessage('❌ Email o contraseña incorrectos.<br><strong>Inténtelo nuevamente.</strong>', true);
-                return;
-            }
-            
-            // Actualizar email en userInfo con el email normalizado
-            userInfo.email = normalizedEmail;
-            
-            // Verificar si el email está verificado
-            const verifications = JSON.parse(localStorage.getItem('emailVerifications') || '{}');
-            const isVerified = verifications[normalizedEmail]?.verified || verifications[email]?.verified || false;
-            userInfo.emailVerified = isVerified;
-            
-            // Si es admin, marcar como verificado automáticamente
-            if (userInfo.isAdmin) {
-                userInfo.emailVerified = true;
-            }
-            
-            localStorage.setItem('user', JSON.stringify(userInfo));
-            localStorage.setItem('isLoggedIn', 'true');
-            
-            // Si no está verificado, mostrar modal
-            if (!isVerified && !userInfo.isAdmin) {
-                showVerificationModal(email);
-            } else {
-                if (userInfo.isAdmin) {
-                    showSuccessMessage('✅ Bienvenido Administrador!');
-                    setTimeout(() => {
-                        window.location.href = 'admin.html';
-                    }, 1000);
-                } else {
-                    showSuccessMessage('✅ Inicio de sesión exitoso!');
-                    setTimeout(() => {
-                        window.location.href = 'campus.html?login=success';
-                    }, 1000);
+
+            try {
+                clearStoredSession();
+                const credential = await signInWithEmailAndPassword(auth, email, password);
+                await handlePostLogin(credential.user, { announce: true });
+            } catch (error) {
+                console.error('Firebase login error:', error);
+                const message = getFriendlyAuthError(error);
+                showErrorMessage(message, true);
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Iniciar sesión';
                 }
             }
         });
@@ -1178,125 +1164,88 @@
                 return;
             }
             
-            registerForm.addEventListener('submit', function(e) {
+            registerForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                try {
+                if (!firebaseConfigured || !auth) {
+                    showErrorMessage('❌ Firebase no está configurado.<br><strong>Contacta al administrador.</strong>', true);
+                    return;
+                }
+
                     const nameInput = document.getElementById('registerName');
                     const emailInput = document.getElementById('registerEmail');
                     const passwordInput = document.getElementById('registerPassword');
                     const passwordConfirmInput = document.getElementById('registerPasswordConfirm');
                     
                     if (!nameInput || !emailInput || !passwordInput || !passwordConfirmInput) {
-                        showErrorMessage('❌ Error: No se encontraron todos los campos del formulario.<br><strong>Por favor, recarga la página e inténtelo nuevamente.</strong>', true);
-                        console.error('Error: Campos del formulario no encontrados');
+                    showErrorMessage('❌ Error: No se encontraron todos los campos del formulario.<br><strong>Recarga la página e inténtalo nuevamente.</strong>', true);
                         return;
                     }
                     
                     const name = nameInput.value.trim();
-                    const email = emailInput.value.trim();
+                const email = emailInput.value.trim().toLowerCase();
                     const password = passwordInput.value;
                     const passwordConfirm = passwordConfirmInput.value;
                     
-                    // Validaciones
-                    // Validar campos vacíos
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
                     if (!name || !email || !password || !passwordConfirm) {
-                        showErrorMessage('❌ Por favor completa todos los campos.<br><strong>Inténtelo nuevamente.</strong>', true);
+                    showErrorMessage('❌ Por favor completa todos los campos.<br><strong>Inténtalo nuevamente.</strong>', true);
                         return;
                     }
                     
-                    // Validar formato de email
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     if (!emailRegex.test(email)) {
-                        showErrorMessage('❌ Por favor ingresa un email válido.<br><strong>Inténtelo nuevamente.</strong>', true);
+                    showErrorMessage('❌ Ingresa un email válido.<br><strong>Inténtalo nuevamente.</strong>', true);
                         return;
                     }
                     
-                    // Validar longitud mínima de contraseña
-                    if (password.length < 8) {
-                        showErrorMessage('❌ La contraseña debe tener al menos 8 caracteres.<br><strong>Inténtelo nuevamente.</strong>', true);
+                if (password.length < 6) {
+                    showErrorMessage('❌ La contraseña debe tener al menos 6 caracteres.<br><strong>Inténtalo nuevamente.</strong>', true);
                         return;
                     }
                     
-                    // Validar que las contraseñas coincidan
                     if (password !== passwordConfirm) {
-                        showErrorMessage('❌ Las contraseñas no coinciden.<br><strong>Inténtelo nuevamente.</strong>', true);
+                    showErrorMessage('❌ Las contraseñas no coinciden.<br><strong>Verifica e inténtalo nuevamente.</strong>', true);
                         return;
                     }
                     
-                    console.log('Formulario de registro enviado:', { name, email });
-                    
-                    // Save user info
-                    const userInfo = {
-                        name: name,
-                        email: email,
-                        provider: 'email',
-                        picture: '',
-                        isAdmin: false,
-                        emailVerified: false
-                    };
-                    
-                    // Verificar si es administrador (usando función de config.js)
-                    // Esperar a que config.js se cargue si no está disponible
-                    if (typeof isAdminEmail === 'function') {
-                        userInfo.isAdmin = isAdminEmail(email);
-                    } else {
-                        // Fallback: verificar email por defecto
-                        const defaultAdminEmail = 'spieronilton@gmail.com';
-                        userInfo.isAdmin = email.toLowerCase() === defaultAdminEmail.toLowerCase();
-                        console.warn('isAdminEmail no está disponible, usando fallback');
-                    }
-                    
-                    // Guardar usuario
-                    const users = JSON.parse(localStorage.getItem('users') || '{}');
-                    users[email] = {
-                        name: name,
-                        email: email,
-                        password: password // ⚠️ En producción NUNCA guardes contraseñas sin encriptar
-                    };
-                    localStorage.setItem('users', JSON.stringify(users));
-                    
-                    localStorage.setItem('user', JSON.stringify(userInfo));
-                    localStorage.setItem('isLoggedIn', 'true');
-                    
-                    console.log('Usuario guardado:', userInfo);
-                    
-                    // Deshabilitar el formulario mientras se procesa
                     const submitBtn = registerForm.querySelector('button[type="submit"]');
                     if (submitBtn) {
                         submitBtn.disabled = true;
-                        submitBtn.textContent = 'Registrando...';
+                    submitBtn.innerHTML = '<span class="loading-spinner"></span> Registrando...';
+                }
+
+                try {
+                    clearStoredSession();
+
+                    const credential = await createUserWithEmailAndPassword(auth, email, password);
+
+                    if (name) {
+                        await updateProfile(credential.user, { displayName: name });
                     }
-                    
-                    // Mostrar mensaje de confirmación de registro
-                    if (userInfo.isAdmin) {
-                        userInfo.emailVerified = true;
-                        localStorage.setItem('user', JSON.stringify(userInfo));
-                        showSuccessMessage('✅ Registrado exitosamente. Bienvenido Administrador!');
-                        setTimeout(() => {
-                            window.location.href = 'admin.html';
-                        }, 2000);
-                    } else {
-                        // Mensaje de confirmación con información del email de verificación
-                        const message = '✅ <strong>Registrado exitosamente</strong><br><br>📧 Enviaremos un email de verificación a:<br><strong>' + email + '</strong>';
-                        showSuccessMessage(message, true);
-                        
-                        // Redirigir a la página de inicio de sesión después de 4 segundos
-                        setTimeout(() => {
-                            // Asegurarse de limpiar el estado de login para forzar que inicie sesión de nuevo
-                            localStorage.removeItem('isLoggedIn');
-                            localStorage.removeItem('user');
-                            window.location.href = 'Login.html';
-                        }, 4000);
-                    }
+
+                    const shouldBeAdmin = typeof isAdminEmail === 'function' ? isAdminEmail(email) : false;
+                    await ensureUserDocument(credential.user, { isAdmin: shouldBeAdmin, name });
+
+                    await handlePostLogin(credential.user, {
+                        announce: false,
+                        skipVerificationCheck: true
+                    });
+
+                    await sendFirebaseVerificationEmail(credential.user);
+                    showVerificationModal(email);
+                    showSuccessMessage('🎉 Cuenta creada exitosamente!<br><strong>Revisa tu email para verificarla.</strong>', true);
+
+                    passwordInput.value = '';
+                    passwordConfirmInput.value = '';
                 } catch (error) {
-                    console.error('Error en el registro:', error);
-                    showErrorMessage('❌ Ocurrió un error al registrar.<br><strong>Por favor, inténtelo nuevamente.</strong>', true);
-                    // Re-habilitar el botón en caso de error
-                    const submitBtn = registerForm.querySelector('button[type="submit"]');
+                    console.error('Error en el registro con Firebase:', error);
+                    const message = getFriendlyAuthError(error, 'register');
+                    showErrorMessage(message, true);
+                } finally {
                     if (submitBtn) {
                         submitBtn.disabled = false;
-                        submitBtn.textContent = 'Crear Cuenta';
+                        submitBtn.innerHTML = 'Registrarse';
                     }
                 }
             });
@@ -1310,25 +1259,52 @@
         }
 
         // Handle forgot password form
-        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+        document.getElementById('forgotPasswordForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('resetEmail').value;
+            if (!firebaseConfigured || !auth) {
+                showErrorMessage('❌ Firebase no está configurado.<br><strong>Contacta al administrador.</strong>', true);
+                return;
+            }
+
+            const email = document.getElementById('resetEmail').value.trim();
             
             if (!email) {
-                showSuccessMessage('❌ Por favor ingresa tu email');
+                showErrorMessage('❌ Por favor ingresa tu email.<br><strong>Inténtalo nuevamente.</strong>', true);
                 return;
             }
             
-            // Simular envío de email de recuperación
-            showSuccessMessage('📧 Hemos enviado un enlace de recuperación a tu email');
-            
-            // En producción: hacer llamada al API para enviar email real
-            console.log(`📧 Email de recuperación simulado enviado a ${email}`);
-            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="loading-spinner"></span> Enviando...';
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showSuccessMessage('📧 Enviamos un enlace para restablecer tu contraseña.<br><strong>Revisa tu bandeja.</strong>', true);
             setTimeout(() => {
                 showLogin();
-            }, 2000);
+                }, 2500);
+            } catch (error) {
+                console.error('Error enviando reset de contraseña:', error);
+                const message = getFriendlyAuthError(error, 'reset');
+                showErrorMessage(message, true);
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Enviar enlace de recuperación';
+                }
+            }
+        });
+
+        Object.assign(window, {
+            signInWithGoogle,
+            signInWithFacebook,
+            showLogin,
+            showRegister,
+            showForgotPassword,
+            closeVerificationModal
         });
     </script>
 </body>

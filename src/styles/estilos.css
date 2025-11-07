@@ -3,7 +3,7 @@
 /* Fuente Cross Boxed */
 @font-face {
     font-family: 'Cross Boxed';
-    src: url('../fonts/Cross Boxed.ttf') format('truetype');
+    src: url('../assets/fonts/Cross Boxed.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
