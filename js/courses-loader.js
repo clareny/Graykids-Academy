@@ -1,15 +1,97 @@
 // ========================================
 // CARGADOR DINÁMICO DE CURSOS
 // ========================================
-// Este script carga los cursos dinámicamente desde localStorage
-// para que los cambios del admin se reflejen automáticamente
+// - Ahora intenta cargar los cursos desde Firebase Firestore (si está configurado)
+// - Mantiene compatibilidad con localStorage y valores por defecto
 
-// Obtener información de cursos guardados
+import { db, firebaseConfigured } from './firebase-init.js';
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+// ----------------------------------------
+// Cache y helpers de almacenamiento local
+// ----------------------------------------
+
+const COURSES_STORAGE_KEY = 'coursesInfo';
+const DELETED_COURSES_STORAGE_KEY = 'deletedCourses';
+
 function getCoursesInfo() {
-    return JSON.parse(localStorage.getItem('coursesInfo') || '{}');
+    try {
+        return JSON.parse(localStorage.getItem(COURSES_STORAGE_KEY) || '{}');
+    } catch (error) {
+        console.warn('No se pudo leer coursesInfo desde localStorage:', error);
+        return {};
+    }
 }
 
+function setCoursesInfo(data) {
+    try {
+        localStorage.setItem(COURSES_STORAGE_KEY, JSON.stringify(data));
+    } catch (error) {
+        console.warn('No se pudo guardar coursesInfo en localStorage:', error);
+    }
+}
+
+function getDeletedCourses() {
+    try {
+        return JSON.parse(localStorage.getItem(DELETED_COURSES_STORAGE_KEY) || '[]');
+    } catch (error) {
+        console.warn('No se pudo leer deletedCourses desde localStorage:', error);
+        return [];
+    }
+}
+
+// ----------------------------------------
+// Configuración de Firestore (opcional)
+// ----------------------------------------
+
+let remoteCoursesCache = null;
+let remoteFetchPromise = null;
+
+async function fetchCoursesFromFirestore() {
+    if (!firebaseConfigured || !db) {
+        return null;
+    }
+
+    if (remoteCoursesCache) {
+        return remoteCoursesCache;
+    }
+
+    if (!remoteFetchPromise) {
+        remoteFetchPromise = (async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'courses'));
+                const remoteData = {};
+                snapshot.forEach(docSnap => {
+                    remoteData[docSnap.id] = {
+                        ...docSnap.data()
+                    };
+                });
+
+                if (Object.keys(remoteData).length > 0) {
+                    const localData = getCoursesInfo();
+                    const mergedData = { ...localData, ...remoteData };
+                    setCoursesInfo(mergedData);
+                    remoteCoursesCache = mergedData;
+                    return remoteCoursesCache;
+                }
+
+                remoteCoursesCache = null;
+                return null;
+            } catch (error) {
+                console.error('No se pudieron obtener los cursos desde Firestore:', error);
+                remoteCoursesCache = null;
+                return null;
+            }
+        })();
+    }
+
+    return remoteFetchPromise;
+}
+
+// ----------------------------------------
 // Información por defecto si no hay datos guardados
+// ----------------------------------------
+
 const defaultCoursesInfo = {
     'curso-voces': {
         name: 'Mezcla y Grabación de Voces',
@@ -138,56 +220,79 @@ function renderCourseCard(courseId, container) {
 }
 
 // Cargar todos los cursos disponibles
-function loadAllCourses(containerId, renderFunction = renderCourseItem, options = {}) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    
-    container.innerHTML = ''; // Limpiar contenido
-    
-    const { onlyAvailable = false } = options || {};
-
+function getSortedCourseIds({ onlyAvailable = false } = {}) {
     const coursesInfo = getCoursesInfo();
-    const deletedCourses = JSON.parse(localStorage.getItem('deletedCourses') || '[]');
-    
-    // Combinar cursos por defecto con cursos nuevos guardados
+    const deletedCourses = getDeletedCourses();
+
     const allCourseIds = new Set([
         ...Object.keys(defaultCoursesInfo),
         ...Object.keys(coursesInfo)
     ]);
-    
-    // Filtrar cursos eliminados
+
     const activeCourseIds = Array.from(allCourseIds).filter(id => !deletedCourses.includes(id));
-    
-    // Ordenar: primero los default, luego los nuevos
+
     const defaultIds = Object.keys(defaultCoursesInfo);
     const newIds = activeCourseIds.filter(id => !defaultIds.includes(id));
-    const sortedIds = [...defaultIds.filter(id => !deletedCourses.includes(id)), ...newIds];
+    const sortedIds = [
+        ...defaultIds.filter(id => !deletedCourses.includes(id)),
+        ...newIds
+    ];
 
-    const filteredIds = onlyAvailable
-        ? sortedIds.filter(courseId => {
-            const course = getCourseInfo(courseId);
-            const status = (course && course.status) || (courseId === 'curso-voces' ? 'available' : 'coming-soon');
-            return status === 'available' || status === 'pre-sale';
-        })
-        : sortedIds;
-    
-    filteredIds.forEach(courseId => {
+    if (!onlyAvailable) {
+        return sortedIds;
+    }
+
+    return sortedIds.filter(courseId => {
         const course = getCourseInfo(courseId);
-        // Solo renderizar si el curso tiene información válida
+        const status = (course && course.status) || (courseId === 'curso-voces' ? 'available' : 'coming-soon');
+        return status === 'available' || status === 'pre-sale';
+    });
+}
+
+function renderCourses(container, renderFunction, options) {
+    const { onlyAvailable = false } = options || {};
+    const courseIds = getSortedCourseIds({ onlyAvailable });
+
+    container.innerHTML = '';
+
+    courseIds.forEach(courseId => {
+        const course = getCourseInfo(courseId);
         if (course && course.name) {
             renderFunction(courseId, container);
         }
     });
-    
-    const showNoCoursesMessage = filteredIds.length === 0;
 
-    // Si no hay cursos, mostrar mensaje
-    if (showNoCoursesMessage) {
+    if (courseIds.length === 0) {
         const message = onlyAvailable
             ? 'No hay cursos disponibles en este momento. Muy pronto anunciaremos nuevas fechas.'
             : 'No hay cursos disponibles. El administrador agregará cursos próximamente.';
 
         container.innerHTML = `<p style="color: var(--text-secondary); text-align: center; padding: 40px; font-size: 1.1rem;">${message}</p>`;
     }
+}
+
+function loadAllCourses(containerId, renderFunction = renderCourseItem, options = {}) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    renderCourses(container, renderFunction, options);
+
+    fetchCoursesFromFirestore()
+        .then(remoteData => {
+            if (remoteData) {
+                // Re-render con los datos actualizados
+                renderCourses(container, renderFunction, options);
+            }
+        })
+        .catch(error => {
+            // Ya se anunció el error en fetchCoursesFromFirestore
+        });
+}
+
+if (typeof window !== 'undefined') {
+    window.loadAllCourses = loadAllCourses;
+    window.renderCourseItem = renderCourseItem;
+    window.renderCourseCard = renderCourseCard;
+    window.getCourseInfo = getCourseInfo;
 }
 
