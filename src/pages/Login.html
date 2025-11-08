@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <link rel="icon" href="../assets/images/Graykids Academy Logo.png">
-    <link rel="stylesheet" href="../styles/Normalize.css">
-    <link rel="stylesheet" href="../styles/estilos.css">
-    <script src="../scripts/config.js"></script>
-    <script src="../scripts/oauth-config.js"></script>
-    <script src="../scripts/header.js" defer></script>
-    <script src="../scripts/animaciones.js" defer></script>
+    <link rel="icon" href="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="/Graykids-Academy/src/styles/Normalize.css">
+    <link rel="stylesheet" href="/Graykids-Academy/src/styles/estilos.css">
+    <script src="/Graykids-Academy/src/scripts/config.js"></script>
+    <script src="/Graykids-Academy/src/scripts/oauth-config.js"></script>
+    <script src="/Graykids-Academy/src/scripts/header.js" defer></script>
+    <script src="/Graykids-Academy/src/scripts/animaciones.js" defer></script>
     <title>Acceso - Graykids Academy</title>
     <style>
         /* Loading Screen */
@@ -145,7 +145,7 @@
 <body class="login-page">
     <!-- Loading Screen -->
     <div id="loadingScreen" class="loading-screen">
-        <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy" class="loading-logo">
+        <img src="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png" alt="Graykids Academy" class="loading-logo">
         <div class="loading-spinner-ring"></div>
         <p class="loading-text">CARGANDO</p>
     </div>
@@ -188,7 +188,7 @@
         <div class="header__container container">
             <div class="header__logo">
                 <a href="index.html">
-                    <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                    <img src="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
@@ -302,8 +302,8 @@
                             <div class="password-input">
                                 <input type="password" id="loginPassword" class="form-input" placeholder="Tu contraseña" required>
                                 <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')" aria-label="Mostrar/Ocultar contraseña">
-                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="loginPassword-eye-visible">
-                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="loginPassword-eye-hidden" style="display: none;">
+                                    <img src="/Graykids-Academy/src/assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="loginPassword-eye-visible">
+                                    <img src="/Graykids-Academy/src/assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="loginPassword-eye-hidden" style="display: none;">
                                 </button>
                             </div>
                         </div>
@@ -373,8 +373,8 @@
                             <div class="password-input">
                                 <input type="password" id="registerPassword" class="form-input" placeholder="Mínimo 8 caracteres" required minlength="8">
                                 <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')" aria-label="Mostrar/Ocultar contraseña">
-                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPassword-eye-visible">
-                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPassword-eye-hidden" style="display: none;">
+                                    <img src="/Graykids-Academy/src/assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPassword-eye-visible">
+                                    <img src="/Graykids-Academy/src/assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPassword-eye-hidden" style="display: none;">
                                 </button>
                             </div>
                         </div>
@@ -384,8 +384,8 @@
                             <div class="password-input">
                                 <input type="password" id="registerPasswordConfirm" class="form-input" placeholder="Confirma tu contraseña" required>
                                 <button type="button" class="password-toggle" onclick="togglePassword('registerPasswordConfirm')" aria-label="Mostrar/Ocultar contraseña">
-                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPasswordConfirm-eye-visible">
-                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPasswordConfirm-eye-hidden" style="display: none;">
+                                    <img src="/Graykids-Academy/src/assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPasswordConfirm-eye-visible">
+                                    <img src="/Graykids-Academy/src/assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPasswordConfirm-eye-hidden" style="display: none;">
                                 </button>
                             </div>
                         </div>
@@ -459,7 +459,7 @@
     <footer id="contacto" class="footer">
         <div class="footer__container container">
             <div class="footer__logo">
-                <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+                <img src="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
             </div>
             <div class="footer__links">
                 <a href="#contacto" class="footer__link">Contact</a>
@@ -471,7 +471,7 @@
     </footer>
 
     <script type="module">
-        import { auth, db, firebaseConfigured } from '../scripts/firebase-init.js';
+        import { auth, db, firebaseConfigured } from '/Graykids-Academy/src/scripts/firebase-init.js';
         import {
             createUserWithEmailAndPassword,
             signInWithEmailAndPassword,
