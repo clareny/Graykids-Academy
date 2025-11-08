@@ -2,7 +2,7 @@ import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.0/fi
 import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 import { auth, db, firebaseConfigured } from './firebase-init.js';
 
-function persistSession(user, extra = {}) {
+export function persistSession(user, extra = {}) {
     if (!user) {
         localStorage.removeItem('user');
         localStorage.removeItem('isLoggedIn');
