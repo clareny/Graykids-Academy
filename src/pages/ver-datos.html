@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <link rel="icon" href="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png">
-    <link rel="stylesheet" href="/Graykids-Academy/src/styles/Normalize.css">
-    <link rel="stylesheet" href="/Graykids-Academy/src/styles/estilos.css">
-    <script src="/Graykids-Academy/src/scripts/header.js" defer></script>
+    <link rel="icon" href="../assets/images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="../styles/Normalize.css">
+    <link rel="stylesheet" href="../styles/estilos.css">
+    <script src="../scripts/header.js" defer></script>
     <title>Ver Datos - Graykids Academy</title>
     <style>
         .data-container {
@@ -64,12 +64,12 @@
     <header class="header">
         <div class="header__container container">
             <div class="header__logo">
-                <a href="index.html">
-                    <img src="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                <a href="../index.html">
+                    <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
-            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menú de navegación">
+            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menÃº de navegaciÃ³n">
                 <svg class="header__toggle-icon header__toggle-icon--menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z"></path>
                 </svg>
@@ -78,21 +78,21 @@
                 </svg>
             </button>
             <div class="header__menu" id="mainNavigation">
-                <button class="header__menu-close" type="button" aria-label="Cerrar menú">
+                <button class="header__menu-close" type="button" aria-label="Cerrar menÃº">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
                     </svg>
                 </button>
                 <nav class="header__nav">
                     <a href="admin.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
                         <span class="header__link-label">Admin</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                     <a href="campus.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
                         <span class="header__link-label">Campus</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                 </nav>
             </div>
@@ -101,10 +101,10 @@
     </header>
 
     <div class="data-container">
-        <h1 style="color: var(--primary-color); margin-bottom: 30px;">📊 Visualizador de Datos (localStorage)</h1>
+        <h1 style="color: var(--primary-color); margin-bottom: 30px;">ðŸ“Š Visualizador de Datos (localStorage)</h1>
         
         <div class="data-section">
-            <h2>🔐 Datos de Usuario</h2>
+            <h2>ðŸ” Datos de Usuario</h2>
             <div class="data-item" id="userData">
                 <div class="data-key">user:</div>
                 <div class="data-value">Cargando...</div>
@@ -118,7 +118,7 @@
         </div>
 
         <div class="data-section">
-            <h2>💰 Datos de Pagos</h2>
+            <h2>ðŸ’° Datos de Pagos</h2>
             <div class="data-item" id="paymentData">
                 <div class="data-key">paymentData:</div>
                 <div class="data-value">Cargando...</div>
@@ -127,7 +127,7 @@
         </div>
 
         <div class="data-section">
-            <h2>📚 Datos de Cursos</h2>
+            <h2>ðŸ“š Datos de Cursos</h2>
             <div class="data-item" id="coursesData">
                 <div class="data-key">coursesData:</div>
                 <div class="data-value">Cargando...</div>
@@ -141,9 +141,9 @@
         </div>
 
         <div class="data-section">
-            <h2>🔄 Acciones</h2>
-            <button class="btn btn--primary" onclick="refreshData()">🔄 Actualizar Datos</button>
-            <button class="btn btn--secondary" onclick="clearAllData()" style="background: #ff4444; margin-left: 10px;">🗑️ Limpiar Todo (Cuidado!)</button>
+            <h2>ðŸ”„ Acciones</h2>
+            <button class="btn btn--primary" onclick="refreshData()">ðŸ”„ Actualizar Datos</button>
+            <button class="btn btn--secondary" onclick="clearAllData()" style="background: #ff4444; margin-left: 10px;">ðŸ—‘ï¸ Limpiar Todo (Cuidado!)</button>
         </div>
     </div>
 
@@ -177,24 +177,24 @@
         }
         
         function clearData(key) {
-            if (confirm(`¿Estás seguro de eliminar "${key}"?`)) {
+            if (confirm(`Â¿EstÃ¡s seguro de eliminar "${key}"?`)) {
                 localStorage.removeItem(key);
-                alert('✅ Dato eliminado');
+                alert('âœ… Dato eliminado');
                 loadData();
             }
         }
         
         function clearAllData() {
-            if (confirm('⚠️ ¿Estás MUY seguro? Esto eliminará TODOS los datos (usuarios, pagos, cursos). Esta acción no se puede deshacer.')) {
+            if (confirm('âš ï¸ Â¿EstÃ¡s MUY seguro? Esto eliminarÃ¡ TODOS los datos (usuarios, pagos, cursos). Esta acciÃ³n no se puede deshacer.')) {
                 localStorage.clear();
-                alert('✅ Todos los datos han sido eliminados');
+                alert('âœ… Todos los datos han sido eliminados');
                 loadData();
             }
         }
         
         function refreshData() {
             loadData();
-            alert('✅ Datos actualizados');
+            alert('âœ… Datos actualizados');
         }
         
         // Load on page load
@@ -202,4 +202,13 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
 

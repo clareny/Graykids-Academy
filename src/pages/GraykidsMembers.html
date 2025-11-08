@@ -1,27 +1,27 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <link rel="icon" href="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png">
-    <link rel="stylesheet" href="/Graykids-Academy/src/styles/Normalize.css">
-    <link rel="stylesheet" href="/Graykids-Academy/src/styles/estilos.css">
-    <script src="/Graykids-Academy/src/scripts/header.js" defer></script>
-    <script src="/Graykids-Academy/src/scripts/animaciones.js" defer></script>
-    <title>Graykids Members - Membresía Premium</title>
+    <link rel="icon" href="../assets/images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="../styles/Normalize.css">
+    <link rel="stylesheet" href="../styles/estilos.css">
+    <script src="../scripts/header.js" defer></script>
+    <script src="../scripts/animaciones.js" defer></script>
+    <title>Graykids Members - MembresÃ­a Premium</title>
 </head>
 <body>
     <!-- HEADER -->
     <header class="header">
         <div class="header__container container">
             <div class="header__logo">
-                <a href="index.html">
-                    <img src="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                <a href="../index.html">
+                    <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
-            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menú de navegación">
+            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menÃº de navegaciÃ³n">
                 <svg class="header__toggle-icon header__toggle-icon--menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z"></path>
                 </svg>
@@ -30,36 +30,36 @@
                 </svg>
             </button>
             <div class="header__menu" id="mainNavigation">
-                <button class="header__menu-close" type="button" aria-label="Cerrar menú">
+                <button class="header__menu-close" type="button" aria-label="Cerrar menÃº">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
                     </svg>
                 </button>
                 <nav class="header__nav">
                     <a href="index.html#cursos" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
                         <span class="header__link-label">Cursos VIP</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                     <a href="GraykidsMembers.html#membresia" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
                         <span class="header__link-label">Graykids Members</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                     <a href="Discord.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
                         <span class="header__link-label">Discord</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                     <a href="librerias.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
-                        <span class="header__link-label">Librerías</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
+                        <span class="header__link-label">LibrerÃ­as</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                     <a href="index.html#faq" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
                         <span class="header__link-label">FAQ</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                 </nav>
                 <span id="headerAuthButton" class="header__auth">
@@ -71,7 +71,7 @@
     </header>
 
     <script>
-        // Detectar si está en iframe y ocultar header
+        // Detectar si estÃ¡ en iframe y ocultar header
         if (window.self !== window.top || new URLSearchParams(window.location.search).get('iframe') === 'true') {
             document.querySelector('.header').style.display = 'none';
         }
@@ -82,12 +82,12 @@
         <div class="hero__container container">
             <h1 class="hero__title">Graykids Members</h1>
             <div class="hero__content">
-                <p class="hero__intro">Membresía Premium</p>
+                <p class="hero__intro">MembresÃ­a Premium</p>
                 <h2 class="hero__subtitle">Tu plataforma de aprendizaje continua</h2>
                 <p class="hero__description">
-                    Como Netflix, pero para producción musical. Acceso ilimitado a cientos de episodios, 
-                    tutoriales exclusivos, cursos avanzados, recursos descargables y mucho más. 
-                    Todo lo que necesitas para convertirte en un productor profesional está aquí.
+                    Como Netflix, pero para producciÃ³n musical. Acceso ilimitado a cientos de episodios, 
+                    tutoriales exclusivos, cursos avanzados, recursos descargables y mucho mÃ¡s. 
+                    Todo lo que necesitas para convertirte en un productor profesional estÃ¡ aquÃ­.
                 </p>
                 <br><br>
                 <a href="#membresia" class="btn btn--primary">Ver Planes</a>
@@ -99,7 +99,7 @@
     <section id="membresia" class="membership-plans">
         <div class="membership-plans__container container">
             <div class="membership-plans__header">
-                <p class="membership-plans__badge">✨ Exclusivo</p>
+                <p class="membership-plans__badge">âœ¨ Exclusivo</p>
                 <h3 class="membership-plans__title">Elige tu Plan</h3>
                 <p class="membership-plans__subtitle">Acceso completo a todo el contenido</p>
             </div>
@@ -117,27 +117,27 @@
                     </div>
                     <ul class="plan-card__features">
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Acceso a todos los episodios
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Contenido exclusivo mensual
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Recursos y samples descargables
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Descuentos en cursos premium
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Acceso a comunidad Discord
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Plantillas y presets exclusivos
                         </li>
                     </ul>
@@ -146,43 +146,43 @@
 
                 <!-- PLAN ANUAL - POPULAR -->
                 <div class="plan-card plan-card--featured">
-                    <div class="plan-card__badge">🔥 Más Popular</div>
+                    <div class="plan-card__badge">ðŸ”¥ MÃ¡s Popular</div>
                     <div class="plan-card__header">
                         <h4 class="plan-card__title">Plan Anual</h4>
                         <div class="plan-card__price">
                             <span class="plan-card__currency">$</span>
                             <span class="plan-card__amount">249</span>
-                            <span class="plan-card__period">/año</span>
+                            <span class="plan-card__period">/aÃ±o</span>
                         </div>
                         <p class="plan-card__savings">Ahorras $99 (33% descuento)</p>
                     </div>
                     <ul class="plan-card__features">
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Todo del plan mensual
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Acceso VIP a clases en vivo
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Sesiones 1-on-1 con Clareny
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Pack inicial de 50 samples exclusivos
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
-                            Feedback personalizado en tu música
+                            <span class="plan-card__check">âœ“</span>
+                            Feedback personalizado en tu mÃºsica
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Actualizaciones de por vida
                         </li>
                         <li class="plan-card__feature plan-card__feature--highlight">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Soporte prioritario 24/7
                         </li>
                     </ul>
@@ -196,32 +196,32 @@
                         <div class="plan-card__price">
                             <span class="plan-card__currency">$</span>
                             <span class="plan-card__amount">499</span>
-                            <span class="plan-card__period">/única vez</span>
+                            <span class="plan-card__period">/Ãºnica vez</span>
                         </div>
                     </div>
                     <ul class="plan-card__features">
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Todo del plan anual
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Acceso de por vida
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Todos los cursos futuros gratis
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Eventos exclusivos presenciales
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Certificado de productor profesional
                         </li>
                         <li class="plan-card__feature">
-                            <span class="plan-card__check">✓</span>
+                            <span class="plan-card__check">âœ“</span>
                             Red de contactos de la industria
                         </li>
                     </ul>
@@ -235,19 +235,19 @@
     <section class="membership-content">
         <div class="membership-content__container container">
             <h3 class="membership-content__title">Todo el contenido que necesitas</h3>
-            <p class="membership-content__subtitle">Organizado por categorías para tu mejor aprendizaje</p>
+            <p class="membership-content__subtitle">Organizado por categorÃ­as para tu mejor aprendizaje</p>
 
             <div class="content-categories">
                 <div class="content-category">
-                    <div class="content-category__icon">🎛️</div>
+                    <div class="content-category__icon">ðŸŽ›ï¸</div>
                     <h4 class="content-category__title">Mezcla Profesional</h4>
                     <p class="content-category__description">
-                        Domina técnicas avanzadas de mezcla, balance, ecualización y procesamiento de audio
+                        Domina tÃ©cnicas avanzadas de mezcla, balance, ecualizaciÃ³n y procesamiento de audio
                     </p>
                 </div>
 
                 <div class="content-category">
-                    <div class="content-category__icon">🎚️</div>
+                    <div class="content-category__icon">ðŸŽšï¸</div>
                     <h4 class="content-category__title">Mastering</h4>
                     <p class="content-category__description">
                         Aprende a masterizar tus tracks como un profesional de la industria
@@ -255,47 +255,47 @@
                 </div>
 
                 <div class="content-category">
-                    <div class="content-category__icon">🎹</div>
+                    <div class="content-category__icon">ðŸŽ¹</div>
                     <h4 class="content-category__title">Beatmaking</h4>
                     <p class="content-category__description">
-                        Técnicas de producción, estructura de beats y creación desde cero
+                        TÃ©cnicas de producciÃ³n, estructura de beats y creaciÃ³n desde cero
                     </p>
                 </div>
 
                 <div class="content-category">
-                    <div class="content-category__icon">🔊</div>
+                    <div class="content-category__icon">ðŸ”Š</div>
                     <h4 class="content-category__title">Sound Design</h4>
                     <p class="content-category__description">
-                        Crea tus propios sonidos únicos: bajos, leads, pads y más
+                        Crea tus propios sonidos Ãºnicos: bajos, leads, pads y mÃ¡s
                     </p>
                 </div>
 
                 <div class="content-category">
-                    <div class="content-category__icon">🎤</div>
-                    <h4 class="content-category__title">Grabación de Voces</h4>
+                    <div class="content-category__icon">ðŸŽ¤</div>
+                    <h4 class="content-category__title">GrabaciÃ³n de Voces</h4>
                     <p class="content-category__description">
-                        Técnicas de grabación, edición y producción vocal profesional
+                        TÃ©cnicas de grabaciÃ³n, ediciÃ³n y producciÃ³n vocal profesional
                     </p>
                 </div>
 
                 <div class="content-category">
-                    <div class="content-category__icon">💼</div>
+                    <div class="content-category__icon">ðŸ’¼</div>
                     <h4 class="content-category__title">Negocios Musicales</h4>
                     <p class="content-category__description">
-                        Monetiza tu música, estrategias de marketing y venta de beats
+                        Monetiza tu mÃºsica, estrategias de marketing y venta de beats
                     </p>
                 </div>
 
                 <div class="content-category">
-                    <div class="content-category__icon">📉</div>
+                    <div class="content-category__icon">ðŸ“‰</div>
                     <h4 class="content-category__title">Deconstrucciones</h4>
                     <p class="content-category__description">
-                        Análisis profundo de hits famosos y cómo replicarlos
+                        AnÃ¡lisis profundo de hits famosos y cÃ³mo replicarlos
                     </p>
                 </div>
 
                 <div class="content-category">
-                    <div class="content-category__icon">🎁</div>
+                    <div class="content-category__icon">ðŸŽ</div>
                     <h4 class="content-category__title">Samples Exclusivos</h4>
                     <p class="content-category__description">
                         Miles de samples, loops y MIDI files profesionales
@@ -308,51 +308,51 @@
     <!-- BENEFITS -->
     <section class="membership-benefits">
         <div class="membership-benefits__container container">
-            <h3 class="membership-benefits__title">¿Por qué Graykids Members?</h3>
+            <h3 class="membership-benefits__title">Â¿Por quÃ© Graykids Members?</h3>
             
             <div class="benefits__grid">
                 <div class="benefit-item">
-                    <div class="benefit-item__icon">📱</div>
-                    <h4 class="benefit-item__title">Acceso Móvil</h4>
+                    <div class="benefit-item__icon">ðŸ“±</div>
+                    <h4 class="benefit-item__title">Acceso MÃ³vil</h4>
                     <p class="benefit-item__description">
                         Aprende desde cualquier dispositivo. Celular, tablet o computadora.
                     </p>
                 </div>
 
                 <div class="benefit-item">
-                    <div class="benefit-item__icon">🔄</div>
+                    <div class="benefit-item__icon">ðŸ”„</div>
                     <h4 class="benefit-item__title">Contenido Actualizado</h4>
                     <p class="benefit-item__description">
-                        Nuevos episodios cada mes. Siempre aprendiendo las últimas técnicas.
+                        Nuevos episodios cada mes. Siempre aprendiendo las Ãºltimas tÃ©cnicas.
                     </p>
                 </div>
 
                 <div class="benefit-item">
-                    <div class="benefit-item__icon">👥</div>
+                    <div class="benefit-item__icon">ðŸ‘¥</div>
                     <h4 class="benefit-item__title">Comunidad Exclusiva</h4>
                     <p class="benefit-item__description">
-                        Únete a miles de productores apasionados por la música.
+                        Ãšnete a miles de productores apasionados por la mÃºsica.
                     </p>
                 </div>
 
                 <div class="benefit-item">
-                    <div class="benefit-item__icon">🎯</div>
+                    <div class="benefit-item__icon">ðŸŽ¯</div>
                     <h4 class="benefit-item__title">Feedback Personalizado</h4>
                     <p class="benefit-item__description">
-                        Recibe críticas constructivas de productores experimentados.
+                        Recibe crÃ­ticas constructivas de productores experimentados.
                     </p>
                 </div>
 
                 <div class="benefit-item">
-                    <div class="benefit-item__icon">💾</div>
+                    <div class="benefit-item__icon">ðŸ’¾</div>
                     <h4 class="benefit-item__title">Descarga Ilimitada</h4>
                     <p class="benefit-item__description">
-                        Descarga recursos, presets, plantillas y más sin límites.
+                        Descarga recursos, presets, plantillas y mÃ¡s sin lÃ­mites.
                     </p>
                 </div>
 
                 <div class="benefit-item">
-                    <div class="benefit-item__icon">🚀</div>
+                    <div class="benefit-item__icon">ðŸš€</div>
                     <h4 class="benefit-item__title">Sin Compromiso</h4>
                     <p class="benefit-item__description">
                         Cancela cuando quieras. Sin restricciones, sin problemas.
@@ -371,25 +371,25 @@
                 <div class="testimonial">
                     <h4 class="testimonial__author">@productor_elite</h4>
                     <p class="testimonial__text">
-                        Graykids Members es como tener un mentor personal 24/7. Los episodios son increíbles, 
-                        el contenido es profesional y siempre aprendo algo nuevo. Vale cada centavo. 🔥
+                        Graykids Members es como tener un mentor personal 24/7. Los episodios son increÃ­bles, 
+                        el contenido es profesional y siempre aprendo algo nuevo. Vale cada centavo. ðŸ”¥
                     </p>
                 </div>
 
                 <div class="testimonial">
                     <h4 class="testimonial__author">@beatmaker.pro</h4>
                     <p class="testimonial__text">
-                        Me suscribí al plan anual y no me arrepiento. La cantidad de contenido y la calidad 
-                        es increíble. Además, la comunidad Discord es muy activa y siempre hay ayuda disponible.
+                        Me suscribÃ­ al plan anual y no me arrepiento. La cantidad de contenido y la calidad 
+                        es increÃ­ble. AdemÃ¡s, la comunidad Discord es muy activa y siempre hay ayuda disponible.
                     </p>
                 </div>
 
                 <div class="testimonial">
                     <h4 class="testimonial__author">@sounddesigner.mx</h4>
                     <p class="testimonial__text">
-                        Los episodios de sound design me han abierto un mundo nuevo. Aprendí a crear 
+                        Los episodios de sound design me han abierto un mundo nuevo. AprendÃ­ a crear 
                         mis propios sonidos desde cero. Clareny explica todo tan claro que cualquiera puede seguir. 
-                        Totalmente recomendado! 🎛️
+                        Totalmente recomendado! ðŸŽ›ï¸
                     </p>
                 </div>
             </div>
@@ -399,11 +399,11 @@
     <!-- CTA -->
     <section class="cta">
         <div class="cta__container container">
-            <h2 class="cta__title">¿Listo para llevar tu música al siguiente nivel?</h2>
-            <p class="cta__subtitle">Únete a miles de productores que ya están creando música increíble</p>
+            <h2 class="cta__title">Â¿Listo para llevar tu mÃºsica al siguiente nivel?</h2>
+            <p class="cta__subtitle">Ãšnete a miles de productores que ya estÃ¡n creando mÃºsica increÃ­ble</p>
             <div class="cta__actions">
                 <a href="#membresia" class="btn btn--primary btn--large">Ver Planes</a>
-                <a href="contacto.html" class="btn btn--outline btn--large">Más Información</a>
+                <a href="contacto.html" class="btn btn--outline btn--large">MÃ¡s InformaciÃ³n</a>
             </div>
         </div>
     </section>
@@ -412,16 +412,25 @@
     <footer id="contacto" class="footer">
         <div class="footer__container container">
             <div class="footer__logo">
-                <img src="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+                <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
             </div>
             <div class="footer__links">
                 <a href="contacto.html" class="footer__link">Contact</a>
-                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="#" class="footer__link">TÃ©rminos y Condiciones</a>
                 <a href="index.html#faq" class="footer__link">FAQ</a>
             </div>
-            <p class="footer__copyright">© 2025 Graykids Academy</p>
+            <p class="footer__copyright">Â© 2025 Graykids Academy</p>
         </div>
     </footer>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
 

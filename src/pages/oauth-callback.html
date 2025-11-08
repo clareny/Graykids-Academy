@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png">
-    <link rel="stylesheet" href="/Graykids-Academy/src/styles/Normalize.css">
-    <link rel="stylesheet" href="/Graykids-Academy/src/styles/estilos.css">
-    <script src="/Graykids-Academy/src/scripts/config.js"></script>
-    <script src="/Graykids-Academy/src/scripts/oauth-config.js"></script>
+    <link rel="icon" href="../assets/images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="../styles/Normalize.css">
+    <link rel="stylesheet" href="../styles/estilos.css">
+    <script src="../scripts/config.js"></script>
+    <script src="../scripts/oauth-config.js"></script>
     <title>Autenticando... - Graykids Academy</title>
     <style>
         body {
@@ -78,7 +78,7 @@
             return null;
         }
 
-        // Obtener parámetros de la URL
+        // Obtener parÃ¡metros de la URL
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         const state = urlParams.get('state'); // provider viene en el state
@@ -88,7 +88,7 @@
 
         // Manejar errores de OAuth
         if (error) {
-            document.querySelector('.auth-loading__text').textContent = 'Error de autenticación';
+            document.querySelector('.auth-loading__text').textContent = 'Error de autenticaciÃ³n';
             document.querySelector('.auth-loading__text').className = 'auth-error';
             document.querySelector('.auth-loading__icon').style.display = 'none';
             
@@ -100,9 +100,9 @@
             throw new Error('OAuth error: ' + error);
         }
 
-        // Verificar que tengamos el código de autorización
+        // Verificar que tengamos el cÃ³digo de autorizaciÃ³n
         if (!code) {
-            document.querySelector('.auth-loading__text').textContent = 'No se recibió el código de autorización';
+            document.querySelector('.auth-loading__text').textContent = 'No se recibiÃ³ el cÃ³digo de autorizaciÃ³n';
             document.querySelector('.auth-loading__text').className = 'auth-error';
             document.querySelector('.auth-loading__icon').style.display = 'none';
             
@@ -112,7 +112,7 @@
             throw new Error('No authorization code received');
         }
 
-        // Procesar según el proveedor
+        // Procesar segÃºn el proveedor
         if (provider === 'google') {
             handleGoogleCallback(code);
         } else {
@@ -122,28 +122,28 @@
 
         async function handleGoogleCallback(code) {
             try {
-                document.querySelector('.auth-loading__text').textContent = 'Obteniendo información del usuario...';
+                document.querySelector('.auth-loading__text').textContent = 'Obteniendo informaciÃ³n del usuario...';
                 
-                // ⚠️ IMPORTANTE: Esta es una implementación del lado del cliente
-                // En producción, DEBES intercambiar el código por tokens en tu backend
+                // âš ï¸ IMPORTANTE: Esta es una implementaciÃ³n del lado del cliente
+                // En producciÃ³n, DEBES intercambiar el cÃ³digo por tokens en tu backend
                 // porque necesitas el CLIENT_SECRET que NUNCA debe estar en el frontend
                 
-                // Para desarrollo/testing, usaremos una aproximación alternativa:
-                // Usaremos el código directamente para obtener la info (solo funciona en algunas configuraciones)
+                // Para desarrollo/testing, usaremos una aproximaciÃ³n alternativa:
+                // Usaremos el cÃ³digo directamente para obtener la info (solo funciona en algunas configuraciones)
                 
-                // URL para intercambiar código por tokens (esto normalmente se hace en el backend)
+                // URL para intercambiar cÃ³digo por tokens (esto normalmente se hace en el backend)
                 const tokenUrl = 'https://oauth2.googleapis.com/token';
                 
-                // ⚠️ NOTA: Este enfoque requiere que configures el flujo completo en el backend
-                // Por ahora, vamos a usar un enfoque híbrido:
-                // 1. Guardamos el código
+                // âš ï¸ NOTA: Este enfoque requiere que configures el flujo completo en el backend
+                // Por ahora, vamos a usar un enfoque hÃ­brido:
+                // 1. Guardamos el cÃ³digo
                 // 2. Intentamos obtener info del usuario usando Google Identity API
                 
                 // Para simplificar en desarrollo, vamos a usar localStorage para simular
-                // En producción, usa tu backend para intercambiar el código por tokens
+                // En producciÃ³n, usa tu backend para intercambiar el cÃ³digo por tokens
                 
                 // Simulamos obtener datos del usuario
-                // En producción, tu backend haría esto:
+                // En producciÃ³n, tu backend harÃ­a esto:
                 /*
                 const response = await fetch(tokenUrl, {
                     method: 'POST',
@@ -153,7 +153,7 @@
                     body: new URLSearchParams({
                         code: code,
                         client_id: OAUTH_CONFIG.google.clientId,
-                        client_secret: 'TU_CLIENT_SECRET', // ⚠️ Solo en backend
+                        client_secret: 'TU_CLIENT_SECRET', // âš ï¸ Solo en backend
                         redirect_uri: OAUTH_CONFIG.google.redirectUri + '?provider=google',
                         grant_type: 'authorization_code'
                     })
@@ -172,12 +172,12 @@
                 */
                 
                 // Por ahora, usamos localStorage para desarrollo
-                // Guardamos el código de autorización (en producción esto se hace en backend)
+                // Guardamos el cÃ³digo de autorizaciÃ³n (en producciÃ³n esto se hace en backend)
                 localStorage.setItem('oauth_code', code);
                 localStorage.setItem('oauth_provider', 'google');
                 
-                // ⚠️ MODO DESARROLLO: Simulamos datos del usuario
-                // En producción, estos datos vendrían de la API de Google
+                // âš ï¸ MODO DESARROLLO: Simulamos datos del usuario
+                // En producciÃ³n, estos datos vendrÃ­an de la API de Google
                 const userEmail = sessionStorage.getItem('google_user_email') || prompt('Ingresa tu email de Google para continuar:');
                 
                 if (!userEmail) {
@@ -185,14 +185,14 @@
                     return;
                 }
                 
-                // Guardar email en sessionStorage para la próxima vez
+                // Guardar email en sessionStorage para la prÃ³xima vez
                 sessionStorage.setItem('google_user_email', userEmail);
                 
                 const userInfo = {
                     name: userEmail.split('@')[0],
                     email: userEmail.trim(),
                     provider: 'google',
-                    picture: `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${code}` // En producción usar token real
+                    picture: `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${code}` // En producciÃ³n usar token real
                 };
                 
                 // Verificar si es administrador
@@ -203,7 +203,7 @@
                     userInfo.isAdmin = userInfo.email.toLowerCase() === defaultAdminEmail.toLowerCase();
                 }
                 
-                // Marcar como verificado si es Google (ya está verificado por Google)
+                // Marcar como verificado si es Google (ya estÃ¡ verificado por Google)
                 userInfo.emailVerified = true;
                 
                 // Guardar en localStorage
@@ -225,9 +225,9 @@
                     localStorage.setItem('emailVerifications', JSON.stringify(verifications));
                 }
                 
-                document.querySelector('.auth-loading__text').textContent = '¡Autenticación exitosa!';
+                document.querySelector('.auth-loading__text').textContent = 'Â¡AutenticaciÃ³n exitosa!';
                 
-                // Redirigir según el tipo de usuario
+                // Redirigir segÃºn el tipo de usuario
                 setTimeout(() => {
                     if (userInfo.isAdmin) {
                         window.location.href = 'admin.html';
@@ -250,4 +250,13 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
 

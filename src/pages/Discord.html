@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <link rel="icon" href="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png">
-    <link rel="stylesheet" href="/Graykids-Academy/src/styles/Normalize.css">
-    <link rel="stylesheet" href="/Graykids-Academy/src/styles/estilos.css">
-    <script src="/Graykids-Academy/src/scripts/header.js" defer></script>
-    <script src="/Graykids-Academy/src/scripts/animaciones.js" defer></script>
+    <link rel="icon" href="../assets/images/Graykids Academy Logo.png">
+    <link rel="stylesheet" href="../styles/Normalize.css">
+    <link rel="stylesheet" href="../styles/estilos.css">
+    <script src="../scripts/header.js" defer></script>
+    <script src="../scripts/animaciones.js" defer></script>
     <title>Discord - Graykids Academy</title>
 </head>
 <body>
@@ -16,12 +16,12 @@
     <header class="header">
         <div class="header__container container">
             <div class="header__logo">
-                <a href="index.html">
-                    <img src="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
+                <a href="../index.html">
+                    <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="header__logo-img">
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
-            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menú de navegación">
+            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menÃº de navegaciÃ³n">
                 <svg class="header__toggle-icon header__toggle-icon--menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z"></path>
                 </svg>
@@ -30,36 +30,36 @@
                 </svg>
             </button>
             <div class="header__menu" id="mainNavigation">
-                <button class="header__menu-close" type="button" aria-label="Cerrar menú">
+                <button class="header__menu-close" type="button" aria-label="Cerrar menÃº">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
                     </svg>
                 </button>
                 <nav class="header__nav">
                     <a href="cursos.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
                         <span class="header__link-label">Cursos VIP</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                     <a href="GraykidsMembers.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
                         <span class="header__link-label">Graykids Members</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                     <a href="Discord.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
                         <span class="header__link-label">Discord</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                     <a href="librerias.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
-                        <span class="header__link-label">Librerías</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
+                        <span class="header__link-label">LibrerÃ­as</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                     <a href="index.html#faq" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
                         <span class="header__link-label">FAQ</span>
-                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
                     </a>
                 </nav>
                 <span id="headerAuthButton" class="header__auth">
@@ -71,7 +71,7 @@
     </header>
 
     <script>
-        // Detectar si está en iframe y ocultar header
+        // Detectar si estÃ¡ en iframe y ocultar header
         if (window.self !== window.top || new URLSearchParams(window.location.search).get('iframe') === 'true') {
             document.querySelector('.header').style.display = 'none';
         }
@@ -80,14 +80,14 @@
     <!-- HERO -->
     <section class="hero">
         <div class="hero__container container">
-            <h1 class="hero__title">Únete a nuestra comunidad en Discord</h1>
+            <h1 class="hero__title">Ãšnete a nuestra comunidad en Discord</h1>
             <div class="hero__content">
                 <p class="hero__intro">Comunidad de Productores</p>
                 <h2 class="hero__subtitle">Conecta con productores de todo el mundo</h2>
                 <p class="hero__description">
-                    Únete a miles de productores musicales en nuestra comunidad de Discord. 
-                    Comparte tu música, recibe feedback de profesionales, colabora en proyectos, 
-                    aprende nuevas técnicas y forma parte de una comunidad apasionada por la producción musical.
+                    Ãšnete a miles de productores musicales en nuestra comunidad de Discord. 
+                    Comparte tu mÃºsica, recibe feedback de profesionales, colabora en proyectos, 
+                    aprende nuevas tÃ©cnicas y forma parte de una comunidad apasionada por la producciÃ³n musical.
                 </p>
                 <br> <br>
                 <a href="https://discord.gg/UzVx65jw" target="_blank" class="btn btn--primary">Unirme a Discord</a>
@@ -100,25 +100,25 @@
         <div class="discord-info__container container">
             <div class="discord-info__content">
                 <div class="discord-info__header">
-                    <p class="discord-info__badge">💬 Comunidad Exclusiva</p>
-                    <h3 class="discord-info__title">¿Qué encontrarás en nuestro Discord?</h3>
-                    <p class="discord-info__subtitle">Una comunidad donde el conocimiento fluye y la música cobra vida</p>
+                    <p class="discord-info__badge">ðŸ’¬ Comunidad Exclusiva</p>
+                    <h3 class="discord-info__title">Â¿QuÃ© encontrarÃ¡s en nuestro Discord?</h3>
+                    <p class="discord-info__subtitle">Una comunidad donde el conocimiento fluye y la mÃºsica cobra vida</p>
                 </div>
 
                 <div class="discord-info__grid">
                     <!-- FEATURE 1 -->
                     <div class="discord-feature">
-                        <div class="discord-feature__icon">🎵</div>
+                        <div class="discord-feature__icon">ðŸŽµ</div>
                         <h4 class="discord-feature__title">Feedback Profesional</h4>
                         <p class="discord-feature__description">
-                            Comparte tus beats y recibe críticas constructivas de productores experimentados. 
-                            Aprende a mejorar tu música con feedback real y útil.
+                            Comparte tus beats y recibe crÃ­ticas constructivas de productores experimentados. 
+                            Aprende a mejorar tu mÃºsica con feedback real y Ãºtil.
                         </p>
                     </div>
 
                     <!-- FEATURE 2 -->
                     <div class="discord-feature">
-                        <div class="discord-feature__icon">🤝</div>
+                        <div class="discord-feature__icon">ðŸ¤</div>
                         <h4 class="discord-feature__title">Colaboraciones</h4>
                         <p class="discord-feature__description">
                             Conecta con otros productores para colaborar en proyectos. 
@@ -128,37 +128,37 @@
 
                     <!-- FEATURE 3 -->
                     <div class="discord-feature">
-                        <div class="discord-feature__icon">🎓</div>
+                        <div class="discord-feature__icon">ðŸŽ“</div>
                         <h4 class="discord-feature__title">Clases en Vivo</h4>
                         <p class="discord-feature__description">
-                            Accede a sesiones de producción en vivo con Clareny y otros productores. 
-                            Aprende técnicas avanzadas directamente de los profesionales.
+                            Accede a sesiones de producciÃ³n en vivo con Clareny y otros productores. 
+                            Aprende tÃ©cnicas avanzadas directamente de los profesionales.
                         </p>
                     </div>
 
                     <!-- FEATURE 4 -->
                     <div class="discord-feature">
-                        <div class="discord-feature__icon">💡</div>
+                        <div class="discord-feature__icon">ðŸ’¡</div>
                         <h4 class="discord-feature__title">Tips Diarios</h4>
                         <p class="discord-feature__description">
-                            Recibe consejos, trucos y secretos de producción cada día. 
-                            Mantente al día con las últimas tendencias y técnicas.
+                            Recibe consejos, trucos y secretos de producciÃ³n cada dÃ­a. 
+                            Mantente al dÃ­a con las Ãºltimas tendencias y tÃ©cnicas.
                         </p>
                     </div>
 
                     <!-- FEATURE 5 -->
                     <div class="discord-feature">
-                        <div class="discord-feature__icon">🎤</div>
+                        <div class="discord-feature__icon">ðŸŽ¤</div>
                         <h4 class="discord-feature__title">Oportunidades de Trabajo</h4>
                         <p class="discord-feature__description">
-                            Descubre oportunidades de colaboración con artistas, 
+                            Descubre oportunidades de colaboraciÃ³n con artistas, 
                             productores y profesionales de la industria musical.
                         </p>
                     </div>
 
                     <!-- FEATURE 6 -->
                     <div class="discord-feature">
-                        <div class="discord-feature__icon">🎁</div>
+                        <div class="discord-feature__icon">ðŸŽ</div>
                         <h4 class="discord-feature__title">Recursos Exclusivos</h4>
                         <p class="discord-feature__description">
                             Accede a sample packs, presets, plantillas y herramientas exclusivas 
@@ -179,27 +179,27 @@
                 <div class="testimonial">
                     <h4 class="testimonial__author">@productor.dj</h4>
                     <p class="testimonial__text">
-                        Desde que entré al Discord de Graykids Academy mi música mejoró exponencialmente. 
+                        Desde que entrÃ© al Discord de Graykids Academy mi mÃºsica mejorÃ³ exponencialmente. 
                         El feedback de la comunidad es invaluable y los tips diarios me han salvado muchas veces. 
-                        Además, he hecho amistades increíbles con productores de todo el mundo. 🔥
+                        AdemÃ¡s, he hecho amistades increÃ­bles con productores de todo el mundo. ðŸ”¥
                     </p>
                 </div>
 
                 <div class="testimonial">
                     <h4 class="testimonial__author">@beatmaker.pro</h4>
                     <p class="testimonial__text">
-                        La mejor inversión que he hecho. No solo aprendo en los cursos, sino que la comunidad 
-                        Discord me ha dado una educación continua. Las clases en vivo con Clareny son oro puro. 
-                        Totalmente recomendado! 🎹
+                        La mejor inversiÃ³n que he hecho. No solo aprendo en los cursos, sino que la comunidad 
+                        Discord me ha dado una educaciÃ³n continua. Las clases en vivo con Clareny son oro puro. 
+                        Totalmente recomendado! ðŸŽ¹
                     </p>
                 </div>
 
                 <div class="testimonial">
                     <h4 class="testimonial__author">@sounddesigner</h4>
                     <p class="testimonial__text">
-                        El ambiente en el Discord es increíble. Todo el mundo está dispuesto a ayudar, 
+                        El ambiente en el Discord es increÃ­ble. Todo el mundo estÃ¡ dispuesto a ayudar, 
                         compartir conocimientos y colaborar. Las sesiones de feedback son insuperables y 
-                        los recursos exclusivos son una locura. 100% recomendado! 🎛️
+                        los recursos exclusivos son una locura. 100% recomendado! ðŸŽ›ï¸
                     </p>
                 </div>
             </div>
@@ -215,7 +215,7 @@
             <div class="channels__grid">
                 <div class="channel-card">
                     <div class="channel-card__header">
-                        <div class="channel-card__icon">🎵</div>
+                        <div class="channel-card__icon">ðŸŽµ</div>
                         <h4 class="channel-card__title">share-your-music</h4>
                     </div>
                     <p class="channel-card__description">
@@ -225,17 +225,17 @@
 
                 <div class="channel-card">
                     <div class="channel-card__header">
-                        <div class="channel-card__icon">💬</div>
+                        <div class="channel-card__icon">ðŸ’¬</div>
                         <h4 class="channel-card__title">general</h4>
                     </div>
                     <p class="channel-card__description">
-                        Chatea con productores sobre música y producción
+                        Chatea con productores sobre mÃºsica y producciÃ³n
                     </p>
                 </div>
 
                 <div class="channel-card">
                     <div class="channel-card__header">
-                        <div class="channel-card__icon">🎓</div>
+                        <div class="channel-card__icon">ðŸŽ“</div>
                         <h4 class="channel-card__title">clases-en-vivo</h4>
                     </div>
                     <p class="channel-card__description">
@@ -245,17 +245,17 @@
 
                 <div class="channel-card">
                     <div class="channel-card__header">
-                        <div class="channel-card__icon">🔧</div>
-                        <h4 class="channel-card__title">tips-técnicos</h4>
+                        <div class="channel-card__icon">ðŸ”§</div>
+                        <h4 class="channel-card__title">tips-tÃ©cnicos</h4>
                     </div>
                     <p class="channel-card__description">
-                        Tips, trucos y técnicas de producción diarias
+                        Tips, trucos y tÃ©cnicas de producciÃ³n diarias
                     </p>
                 </div>
 
                 <div class="channel-card">
                     <div class="channel-card__header">
-                        <div class="channel-card__icon">🎁</div>
+                        <div class="channel-card__icon">ðŸŽ</div>
                         <h4 class="channel-card__title">recursos-exclusivos</h4>
                     </div>
                     <p class="channel-card__description">
@@ -265,7 +265,7 @@
 
                 <div class="channel-card">
                     <div class="channel-card__header">
-                        <div class="channel-card__icon">🤝</div>
+                        <div class="channel-card__icon">ðŸ¤</div>
                         <h4 class="channel-card__title">colaboraciones</h4>
                     </div>
                     <p class="channel-card__description">
@@ -279,8 +279,8 @@
     <!-- CTA SECTION -->
     <section class="cta">
         <div class="cta__container container">
-            <h2 class="cta__title">¿Listo para unirte a la mejor comunidad de productores?</h2>
-            <p class="cta__subtitle">Únete a miles de productores que están creando música increíble</p>
+            <h2 class="cta__title">Â¿Listo para unirte a la mejor comunidad de productores?</h2>
+            <p class="cta__subtitle">Ãšnete a miles de productores que estÃ¡n creando mÃºsica increÃ­ble</p>
             <div class="cta__actions">
                 <a href="https://discord.gg/tu-servidor" target="_blank" class="btn btn--primary btn--large">Unirme ahora</a>
             </div>
@@ -291,15 +291,24 @@
     <footer id="contacto" class="footer">
         <div class="footer__container container">
             <div class="footer__logo">
-                <img src="/Graykids-Academy/src/assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
+                <img src="../assets/images/Graykids Academy Logo.png" alt="Graykids Academy Logo" class="footer__logo-img">
             </div>
             <div class="footer__links">
                 <a href="contacto.html" class="footer__link">Contact</a>
-                <a href="#" class="footer__link">Términos y Condiciones</a>
+                <a href="#" class="footer__link">TÃ©rminos y Condiciones</a>
                 <a href="index.html#faq" class="footer__link">FAQ</a>
             </div>
-            <p class="footer__copyright">© 2025 Graykids Academy</p>
+            <p class="footer__copyright">Â© 2025 Graykids Academy</p>
         </div>
     </footer>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
