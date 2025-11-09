@@ -65,5 +65,41 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (mediaQuery.addListener) {
         mediaQuery.addListener(handleViewportChange);
     }
+    const navLinks = Array.from(document.querySelectorAll('.header__nav .header__link'));
+    if (navLinks.length) {
+        const normalisePath = path => {
+            if (!path || path === '/') {
+                return 'index.html';
+            }
+            const segments = path.split('/').filter(Boolean);
+            return segments.length ? segments[segments.length - 1] : 'index.html';
+        };
+
+        const updateActiveNavLink = () => {
+            const currentPath = normalisePath(window.location.pathname);
+            const currentHash = window.location.hash;
+
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href') || '';
+                const linkUrl = new URL(href, window.location.href);
+                const linkPath = normalisePath(linkUrl.pathname);
+
+                const isSamePage = linkPath === currentPath;
+                const isSameSection = isSamePage && link.hash && link.hash === currentHash;
+
+                if (isSamePage || isSameSection) {
+                    link.classList.add('header__link--active');
+                    link.setAttribute('aria-current', 'page');
+                } else {
+                    link.classList.remove('header__link--active');
+                    link.removeAttribute('aria-current');
+                }
+            });
+        };
+
+        updateActiveNavLink();
+        window.addEventListener('hashchange', updateActiveNavLink);
+        window.addEventListener('popstate', updateActiveNavLink);
+    }
 });
 

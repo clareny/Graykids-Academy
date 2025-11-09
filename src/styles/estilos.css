@@ -435,6 +435,31 @@ body.no-scroll {
     width: 100%;
 }
 
+.header__link.header__link--active {
+    color: var(--text-primary);
+    text-shadow: 0 0 14px rgba(57, 243, 212, 0.3);
+}
+
+.header__link.header__link--active::before {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.header__link.header__link--active::after {
+    width: 100%;
+}
+
+.header__link.header__link--active .header__link-icon {
+    transform: translateX(4px) scale(1.08);
+    color: rgba(57, 243, 212, 0.92);
+}
+
+.header__link.header__link--active .header__link-trail {
+    transform: translateX(2px);
+    opacity: 1;
+    color: rgba(255, 255, 255, 0.92);
+}
+
 
 /* ========================================
    🔘 BOTONES - Estilos Reutilizables
@@ -1216,9 +1241,20 @@ details[open] .faq__question::after {
         box-shadow: none;
     }
     
+    .header__link.header__link--active {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 1);
+        box-shadow: none;
+    }
+    
     .header__link:hover::before,
     .header__link:active::before,
     .header__link:focus::before {
+        background: rgba(57, 243, 212, 0.8);
+    }
+    
+    .header__link.header__link--active::before {
         background: rgba(57, 243, 212, 0.8);
     }
 

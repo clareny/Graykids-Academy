@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -11,6 +11,8 @@
     <script src="../scripts/header.js" defer></script>
     <script type="module">
         import { guardPage } from '../scripts/auth-guard.js';
+        import { db, firebaseConfigured } from '../scripts/firebase-init.js';
+        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
         guardPage({
             requireAdmin: true,
@@ -323,7 +325,7 @@
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
-            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menÃº de navegaciÃ³n">
+            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menú de navegación">
                 <svg class="header__toggle-icon header__toggle-icon--menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z"></path>
                 </svg>
@@ -332,25 +334,25 @@
                 </svg>
             </button>
             <div class="header__menu" id="mainNavigation">
-                <button class="header__menu-close" type="button" aria-label="Cerrar menÃº">
+                <button class="header__menu-close" type="button" aria-label="Cerrar menú">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
                     </svg>
                 </button>
                 <nav class="header__nav">
                     <a href="campus.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
-                        <span class="header__link-label">â† Volver al Campus</span>
-                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
+                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-label">← Volver al Campus</span>
+                        <span class="header__link-trail" aria-hidden="true">▹</span>
                     </a>
                     <a href="cursos.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
+                        <span class="header__link-icon" aria-hidden="true">✦</span>
                         <span class="header__link-label">Cursos</span>
-                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
+                        <span class="header__link-trail" aria-hidden="true">▹</span>
                     </a>
                 </nav>
                 <div class="header__user">
-                    <button class="btn btn--outline" onclick="logout()" style="background: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--dark-bg)'" onmouseout="this.style.background='transparent'; this.style.color='var(--primary-color)'">Cerrar SesiÃ³n</button>
+                    <button class="btn btn--outline" onclick="logout()" style="background: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--dark-bg)'" onmouseout="this.style.background='transparent'; this.style.color='var(--primary-color)'">Cerrar Sesión</button>
                 </div>
             </div>
         </div>
@@ -359,7 +361,7 @@
 
     <div class="admin-container" id="adminContent" style="display: none;">
         <div class="admin-header">
-            <h1>ðŸŽ›ï¸ Panel de Administrador</h1>
+            <h1>🎛️ Panel de Administrador</h1>
             <p style="color: var(--text-secondary);">Gestiona los videos y contenido de tus cursos</p>
             <div style="margin-top: 15px; padding: 15px; background: rgba(57, 243, 212, 0.1); border-radius: 8px; border-left: 4px solid var(--primary-color);">
                 <p style="color: var(--text-secondary); margin-bottom: 10px;">
@@ -367,7 +369,7 @@
                     <span id="currentAdminEmail" style="color: white;"></span>
                 </p>
                 <button class="btn btn--secondary" onclick="configureAdminEmails()" style="background: var(--dark-tertiary); border: 1px solid var(--primary-color); color: var(--primary-color);">
-                    âš™ï¸ Configurar Administradores
+                    ⚙️ Configurar Administradores
                 </button>
             </div>
             
@@ -377,9 +379,9 @@
 
         <!-- TABS -->
         <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--dark-tertiary);">
-            <button class="admin-tab active" onclick="switchTab('videos')" id="tabVideos">ðŸŽ“ Gestionar Cursos</button>
-            <button class="admin-tab" onclick="switchTab('newCourse')" id="tabNewCourse">âž• Nuevo Curso</button>
-            <button class="admin-tab" onclick="switchTab('users')" id="tabUsers">ðŸ‘¥ Usuarios Registrados</button>
+            <button class="admin-tab active" onclick="switchTab('videos')" id="tabVideos">🎓 Gestionar Cursos</button>
+            <button class="admin-tab" onclick="switchTab('newCourse')" id="tabNewCourse">➕ Nuevo Curso</button>
+            <button class="admin-tab" onclick="switchTab('users')" id="tabUsers">👥 Usuarios Registrados</button>
         </div>
 
         <!-- TAB: GESTIONAR CURSOS -->
@@ -387,36 +389,36 @@
             <!-- VISTA: Lista de Cursos -->
             <div id="coursesListView">
                 <div style="margin-bottom: 30px;">
-                    <h2 style="color: var(--primary-color); margin-bottom: 10px;">ðŸŽ“ Tus Cursos</h2>
+                    <h2 style="color: var(--primary-color); margin-bottom: 10px;">🎓 Tus Cursos</h2>
                     <p style="color: var(--text-secondary); font-size: 1rem;">
-                        Selecciona un curso para editarlo, agregar mÃ³dulos y videos, o realizar cambios.
+                        Selecciona un curso para editarlo, agregar módulos y videos, o realizar cambios.
                     </p>
                 </div>
                 
                 <div id="coursesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; margin-top: 30px;">
-                    <!-- Los cursos se cargarÃ¡n aquÃ­ -->
+                    <!-- Los cursos se cargarán aquí -->
                 </div>
             </div>
 
         <!-- TAB: USUARIOS REGISTRADOS -->
         <div id="panelUsers" class="admin-panel" style="display: none;">
             <div style="margin-bottom: 30px;">
-                <h2 style="color: var(--primary-color); margin-bottom: 10px;">ðŸ‘¥ Usuarios Registrados</h2>
+                <h2 style="color: var(--primary-color); margin-bottom: 10px;">👥 Usuarios Registrados</h2>
                 <p style="color: var(--text-secondary); font-size: 1rem;">
                     Visualiza y gestiona todos los usuarios registrados en la plataforma.
                 </p>
             </div>
             
             <div id="usersListContainer" style="margin-top: 20px;">
-                <!-- Los usuarios se cargarÃ¡n aquÃ­ -->
+                <!-- Los usuarios se cargarán aquí -->
             </div>
         </div>
 
-            <!-- VISTA: Editar Curso EspecÃ­fico -->
+            <!-- VISTA: Editar Curso Específico -->
             <div id="courseEditView" style="display: none;">
                 <div style="margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
                     <button onclick="showCoursesList()" style="background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem;">
-                        â† Volver a Cursos
+                        ← Volver a Cursos
                     </button>
                     <div>
                         <h2 id="editingCourseTitle" style="color: var(--primary-color); margin: 0; font-size: 1.8rem;"></h2>
@@ -428,53 +430,53 @@
                     <!-- LEFT: Add Modules and Lessons -->
                     <div class="admin-section">
                         <div style="margin-bottom: 25px;">
-                            <h3 style="color: var(--primary-color); margin-bottom: 10px; font-size: 1.3rem;">âž• Agregar Contenido</h3>
+                            <h3 style="color: var(--primary-color); margin-bottom: 10px; font-size: 1.3rem;">➕ Agregar Contenido</h3>
                             <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
-                                Crea mÃ³dulos y agrega videos a este curso.
+                                Crea módulos y agrega videos a este curso.
                             </p>
                         </div>
                         
                         <div class="module-form" style="background: rgba(57, 243, 212, 0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(57, 243, 212, 0.2); margin-bottom: 25px;">
-                            <h4 style="color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem; font-weight: 700;" id="moduleFormTitle">ðŸ“¦ Crear Nuevo MÃ³dulo</h4>
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem; font-weight: 700;" id="moduleFormTitle">📦 Crear Nuevo Módulo</h4>
                             <input type="hidden" id="editingModuleId" value="">
                             <div class="form-group">
-                                <label>TÃ­tulo del MÃ³dulo</label>
-                                <input type="text" id="moduleTitle" placeholder="Ej: IntroducciÃ³n a la ProducciÃ³n">
+                                <label>Título del Módulo</label>
+                                <input type="text" id="moduleTitle" placeholder="Ej: Introducción a la Producción">
                             </div>
                             <div style="display: flex; gap: 10px;">
-                                <button class="btn-add" onclick="saveModule()" id="moduleSaveBtn">Agregar MÃ³dulo</button>
+                                <button class="btn-add" onclick="saveModule()" id="moduleSaveBtn">Agregar Módulo</button>
                                 <button class="btn-add" onclick="cancelEditModule()" id="moduleCancelBtn" style="display: none; background: var(--dark-tertiary);">Cancelar</button>
                             </div>
                         </div>
 
                         <div class="lesson-form" style="background: rgba(57, 243, 212, 0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(57, 243, 212, 0.2);">
-                            <h4 style="color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem; font-weight: 700;" id="lessonFormTitle">ðŸŽ¬ Agregar Nuevo Video/LecciÃ³n</h4>
-                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Completa los campos para agregar un video a un mÃ³dulo del curso</p>
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem; font-weight: 700;" id="lessonFormTitle">🎬 Agregar Nuevo Video/Lección</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Completa los campos para agregar un video a un módulo del curso</p>
                             <input type="hidden" id="editingLessonId" value="">
                             <input type="hidden" id="editingLessonModuleId" value="">
                             <div class="form-group">
-                                <label style="font-weight: 600; color: white;">ðŸ“¦ Selecciona MÃ³dulo</label>
+                                <label style="font-weight: 600; color: white;">📦 Selecciona Módulo</label>
                                 <select id="lessonModule" style="background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); border-radius: 8px; padding: 12px; width: 100%; cursor: pointer; font-weight: 500;" onchange="document.getElementById('editingLessonModuleId').value = this.value;">
-                                    <option value="">ðŸ‘‰ Selecciona un mÃ³dulo para agregar el video</option>
+                                    <option value="">👉 Selecciona un módulo para agregar el video</option>
                                 </select>
-                                <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 5px;">ðŸ’¡ TambiÃ©n puedes usar el botÃ³n "âž• Agregar Video" en cada mÃ³dulo</p>
+                                <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 5px;">💡 También puedes usar el botón "➕ Agregar Video" en cada módulo</p>
                             </div>
                             <div class="form-group">
-                                <label style="font-weight: 600; color: white;">ðŸ“ TÃ­tulo de la LecciÃ³n</label>
-                                <input type="text" id="lessonTitle" placeholder="Ej: IntroducciÃ³n a la Mezcla Vocales" style="border: 2px solid rgba(255, 255, 255, 0.1);">
+                                <label style="font-weight: 600; color: white;">📝 Título de la Lección</label>
+                                <input type="text" id="lessonTitle" placeholder="Ej: Introducción a la Mezcla Vocales" style="border: 2px solid rgba(255, 255, 255, 0.1);">
                             </div>
                             <div class="form-group">
-                                <label style="font-weight: 600; color: white;">â±ï¸ DuraciÃ³n (formato: MM:SS)</label>
+                                <label style="font-weight: 600; color: white;">⏱️ Duración (formato: MM:SS)</label>
                                 <input type="text" id="lessonDuration" placeholder="Ej: 15:30" style="border: 2px solid rgba(255, 255, 255, 0.1);">
                             </div>
                             <div class="form-group">
-                                <label style="font-weight: 600; color: white;">ðŸŽ¥ URL del Video</label>
+                                <label style="font-weight: 600; color: white;">🎥 URL del Video</label>
                                 <input type="text" id="lessonVideoUrl" placeholder="https://www.youtube.com/watch?v=... o URL directa" style="border: 2px solid rgba(255, 255, 255, 0.1);">
-                                <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 5px;">ðŸ”— Acepta: YouTube, Vimeo, o URLs directas de videos</p>
+                                <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 5px;">🔗 Acepta: YouTube, Vimeo, o URLs directas de videos</p>
                             </div>
                             <div style="display: flex; gap: 10px;">
-                                <button class="btn-add" onclick="saveLesson()" id="lessonSaveBtn" style="flex: 1; padding: 15px; font-size: 1.1rem; font-weight: 700;">âœ… Agregar Video</button>
-                                <button class="btn-add" onclick="cancelEditLesson()" id="lessonCancelBtn" style="display: none; background: var(--dark-tertiary); padding: 15px;">âŒ Cancelar</button>
+                                <button class="btn-add" onclick="saveLesson()" id="lessonSaveBtn" style="flex: 1; padding: 15px; font-size: 1.1rem; font-weight: 700;">✅ Agregar Video</button>
+                                <button class="btn-add" onclick="cancelEditLesson()" id="lessonCancelBtn" style="display: none; background: var(--dark-tertiary); padding: 15px;">❌ Cancelar</button>
                             </div>
                         </div>
                     </div>
@@ -482,13 +484,13 @@
                     <!-- RIGHT: View Modules and Lessons -->
                     <div class="admin-section">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h3 style="margin: 0; color: var(--primary-color);">ðŸ“š MÃ³dulos y Videos</h3>
+                            <h3 style="margin: 0; color: var(--primary-color);">📚 Módulos y Videos</h3>
                         </div>
                         <div style="padding: 15px; background: rgba(57, 243, 212, 0.1); border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
                             <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
-                                <strong style="color: var(--primary-color);">ðŸ’¡ GuÃ­a rÃ¡pida:</strong> 
-                                Haz clic en <strong>"âœï¸ Editar"</strong> para modificar mÃ³dulos o videos. 
-                                Usa <strong>"âž• Agregar Video"</strong> en cada mÃ³dulo para agregar videos rÃ¡pidamente.
+                                <strong style="color: var(--primary-color);">💡 Guía rápida:</strong> 
+                                Haz clic en <strong>"✏️ Editar"</strong> para modificar módulos o videos. 
+                                Usa <strong>"➕ Agregar Video"</strong> en cada módulo para agregar videos rápidamente.
                             </p>
                         </div>
                         <div class="modules-list" id="modulesList">
@@ -496,38 +498,38 @@
                         </div>
                         <div style="margin-top: 25px; padding: 20px; background: rgba(57, 243, 212, 0.1); border-radius: 10px; border: 2px solid rgba(57, 243, 212, 0.3);">
                             <p style="color: var(--text-secondary); margin: 0 0 15px 0; font-size: 0.95rem;">
-                                <strong style="color: var(--primary-color);">ðŸ’¾ Guardar Cambios:</strong> 
-                                DespuÃ©s de agregar, editar o eliminar mÃ³dulos y videos, haz clic en el botÃ³n de abajo para guardar todos los cambios permanentemente.
+                                <strong style="color: var(--primary-color);">💾 Guardar Cambios:</strong> 
+                                Después de agregar, editar o eliminar módulos y videos, haz clic en el botón de abajo para guardar todos los cambios permanentemente.
                             </p>
-                            <button class="btn-save" onclick="saveCourseData()" style="width: 100%; padding: 18px; font-size: 1.2rem; font-weight: 700;">ðŸ’¾ Guardar Todos los Cambios</button>
+                            <button class="btn-save" onclick="saveCourseData()" style="width: 100%; padding: 18px; font-size: 1.2rem; font-weight: 700;">💾 Guardar Todos los Cambios</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- MODAL: Editar InformaciÃ³n del Curso -->
+        <!-- MODAL: Editar Información del Curso -->
         <div id="courseInfoModal" onclick="if(event.target === this) closeCourseInfoModal();" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10000; overflow-y: auto; align-items: flex-start; padding-top: 50px;">
             <div onclick="event.stopPropagation();" style="max-width: 600px; margin: 0 auto 50px auto; background: var(--dark-bg); border-radius: 15px; padding: 30px; border: 2px solid var(--primary-color); position: relative; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);">
-                <button onclick="closeCourseInfoModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700; transition: transform 0.2s;" onmouseover="this.style.transform='rotate(90deg)'" onmouseout="this.style.transform='rotate(0deg)'">Ã—</button>
+                <button onclick="closeCourseInfoModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700; transition: transform 0.2s;" onmouseover="this.style.transform='rotate(90deg)'" onmouseout="this.style.transform='rotate(0deg)'">×</button>
                 
-                <h2 style="color: var(--primary-color); margin-bottom: 25px; font-size: 1.8rem;">ðŸ“ Editar InformaciÃ³n del Curso</h2>
+                <h2 style="color: var(--primary-color); margin-bottom: 25px; font-size: 1.8rem;">📝 Editar Información del Curso</h2>
                 
                 <div class="form-group">
-                    <label style="font-weight: 600; color: white;">TÃ­tulo del Curso</label>
-                    <input type="text" id="modalCourseName" placeholder="Ej: Mezcla y GrabaciÃ³n de Voces" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                    <label style="font-weight: 600; color: white;">Título del Curso</label>
+                    <input type="text" id="modalCourseName" placeholder="Ej: Mezcla y Grabación de Voces" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
                 </div>
                 
                 <div class="form-group">
-                    <label style="font-weight: 600; color: white;">DescripciÃ³n del Curso</label>
+                    <label style="font-weight: 600; color: white;">Descripción del Curso</label>
                     <textarea id="modalCourseDescription" placeholder="Describe el curso..." style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; min-height: 120px; resize: vertical;"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label style="font-weight: 600; color: white;">Video de PresentaciÃ³n (URL)</label>
+                    <label style="font-weight: 600; color: white;">Video de Presentación (URL)</label>
                     <input type="text" id="modalCoursePresentation" placeholder="https://www.youtube.com/watch?v=..." style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
                     <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 6px;">
-                        ðŸ”— Acepta enlaces de YouTube, Vimeo o archivos MP4. Se mostrarÃ¡ como video introductorio del curso.
+                        🔗 Acepta enlaces de YouTube, Vimeo o archivos MP4. Se mostrará como video introductorio del curso.
                     </p>
                 </div>
                 
@@ -550,17 +552,17 @@
                 <div class="form-group">
                     <label style="font-weight: 600; color: white;">Estado del Curso</label>
                     <select id="modalCourseStatus" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; cursor: pointer;">
-                        <option value="available">âœ… Lanzado</option>
-                        <option value="pre-sale">ðŸ’° Pre-Venta</option>
-                        <option value="coming-soon">â³ PrÃ³ximamente</option>
+                        <option value="available">✅ Lanzado</option>
+                        <option value="pre-sale">💰 Pre-Venta</option>
+                        <option value="coming-soon">⏳ Próximamente</option>
                     </select>
-                    <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 5px;">Lanzado: Disponible para comprar | Pre-Venta: Disponible con descuento | PrÃ³ximamente: En desarrollo</p>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 5px;">Lanzado: Disponible para comprar | Pre-Venta: Disponible con descuento | Próximamente: En desarrollo</p>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div class="form-group">
                         <label style="font-weight: 600; color: white;">Icono (emoji)</label>
-                        <input type="text" id="modalCourseIcon" placeholder="ðŸŽ¤" maxlength="2" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                        <input type="text" id="modalCourseIcon" placeholder="🎤" maxlength="2" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
                     </div>
                     
                     <div class="form-group">
@@ -574,12 +576,12 @@
                 </div>
                 
                 <div style="display: flex; gap: 15px; margin-top: 25px;">
-                    <button onclick="saveCourseInfoFromModal()" class="btn-save" style="flex: 1; padding: 15px; font-size: 1.1rem; font-weight: 700;">ðŸ’¾ Guardar Cambios</button>
-                    <button onclick="closeCourseInfoModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 15px 25px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">âŒ Cancelar</button>
+                    <button onclick="saveCourseInfoFromModal()" class="btn-save" style="flex: 1; padding: 15px; font-size: 1.1rem; font-weight: 700;">💾 Guardar Cambios</button>
+                    <button onclick="closeCourseInfoModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 15px 25px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">❌ Cancelar</button>
                 </div>
                 
                 <div id="modalDeleteBtnContainer" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                    <button onclick="deleteCourseFromModal()" style="width: 100%; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">ðŸ—‘ï¸ Eliminar Curso</button>
+                    <button onclick="deleteCourseFromModal()" style="width: 100%; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">🗑️ Eliminar Curso</button>
                 </div>
             </div>
         </div>
@@ -588,7 +590,7 @@
         <div id="panelNewCourse" class="admin-panel" style="display: none;">
             <div class="admin-content">
                 <div class="admin-section" style="grid-column: 1 / -1;">
-                    <h2>âž• Crear Nuevo Curso</h2>
+                    <h2>➕ Crear Nuevo Curso</h2>
                     <div id="newCourseMessage" class="alert alert-success" style="display: none; margin-bottom: 20px;"></div>
                     
                     <div class="form-group">
@@ -597,20 +599,20 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>TÃ­tulo del Curso</label>
+                        <label>Título del Curso</label>
                         <input type="text" id="newCourseName" placeholder="Ej: Nuevo Curso">
                     </div>
                     
                     <div class="form-group">
-                        <label>DescripciÃ³n</label>
+                        <label>Descripción</label>
                         <textarea id="newCourseDescription" placeholder="Describe el curso..."></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label>Video de presentaciÃ³n (URL)</label>
+                        <label>Video de presentación (URL)</label>
                         <input type="text" id="newCoursePresentation" placeholder="https://www.youtube.com/watch?v=...">
                         <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 6px;">
-                            ðŸ“¹ Acepta enlaces de YouTube, Vimeo o archivos MP4/M3U8. Este video se mostrarÃ¡ a los estudiantes antes de comprar o acceder al curso.
+                            📹 Acepta enlaces de YouTube, Vimeo o archivos MP4/M3U8. Este video se mostrará a los estudiantes antes de comprar o acceder al curso.
                         </p>
                     </div>
                     
@@ -631,27 +633,27 @@
                         
                         <div class="form-group">
                             <label>Icono (emoji)</label>
-                            <input type="text" id="newCourseIcon" placeholder="ðŸŽ¤" maxlength="2">
+                            <input type="text" id="newCourseIcon" placeholder="🎤" maxlength="2">
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label>Estado</label>
                         <select id="newCourseStatus" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px; width: 100%; cursor: pointer;">
-                            <option value="available">âœ… Lanzado (Disponible para comprar)</option>
-                            <option value="pre-sale">ðŸ’° Pre-Venta</option>
-                            <option value="coming-soon">â³ PrÃ³ximamente</option>
+                            <option value="available">✅ Lanzado (Disponible para comprar)</option>
+                            <option value="pre-sale">💰 Pre-Venta</option>
+                            <option value="coming-soon">⏳ Próximamente</option>
                         </select>
                     </div>
                     
-                    <button class="btn-save" onclick="createNewCourse()">âž• Crear Nuevo Curso</button>
+                    <button class="btn-save" onclick="createNewCourse()">➕ Crear Nuevo Curso</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // FunciÃ³n para ocultar loading screen
+        // Función para ocultar loading screen
         function hideLoadingScreen() {
             const loadingScreen = document.getElementById('loadingScreen');
             if (loadingScreen) {
@@ -664,30 +666,30 @@
             }
         }
         
-        // Verificar al cargar la pÃ¡gina (usando funciÃ³n de config.js)
+        // Verificar al cargar la página (usando función de config.js)
         let checkAdminAttempts = 0;
-        const maxCheckAttempts = 20; // MÃ¡ximo 2 segundos esperando
+        const maxCheckAttempts = 20; // Máximo 2 segundos esperando
         
         function checkAdminAccess() {
-            // Primero, asegurarse de ocultar el loading despuÃ©s de un tiempo mÃ¡ximo
+            // Primero, asegurarse de ocultar el loading después de un tiempo máximo
             if (checkAdminAttempts === 0) {
                 setTimeout(() => {
                     hideLoadingScreen();
-                }, 1500); // Ocultar despuÃ©s de 1.5s mÃ¡ximo
+                }, 1500); // Ocultar después de 1.5s máximo
             }
             
             checkAdminAttempts++;
             
-            // Si se superÃ³ el lÃ­mite de intentos, ocultar loading y permitir acceso (modo desarrollo)
+            // Si se superó el límite de intentos, ocultar loading y permitir acceso (modo desarrollo)
             if (checkAdminAttempts > maxCheckAttempts) {
-                console.error('âš ï¸ Timeout esperando config.js. Ocultando loading y permitiendo acceso.');
+                console.error('⚠️ Timeout esperando config.js. Ocultando loading y permitiendo acceso.');
                 hideLoadingScreen();
                 return; // Permitir acceso en caso de timeout (para desarrollo)
             }
             
             // Esperar a que config.js se cargue
             if (typeof isCurrentUserAdmin !== 'function') {
-                console.warn('config.js no cargado aÃºn, reintentando... (' + checkAdminAttempts + ')');
+                console.warn('config.js no cargado aún, reintentando... (' + checkAdminAttempts + ')');
                 setTimeout(checkAdminAccess, 100);
                 return;
             }
@@ -704,11 +706,11 @@
             // Ocultar loading antes de verificar
             hideLoadingScreen();
             
-            // Verificar si estÃ¡ logueado
+            // Verificar si está logueado
             if (!isLoggedIn || !user || !user.email) {
                 console.warn('Usuario no logueado, redirigiendo a Login');
                 setTimeout(() => {
-                    alert('âš ï¸ Por favor inicia sesiÃ³n para acceder al panel de administrador.');
+                    alert('⚠️ Por favor inicia sesión para acceder al panel de administrador.');
                     window.location.href = 'Login.html';
                 }, 500); // Esperar a que el loading se oculte
                 return;
@@ -718,21 +720,21 @@
             if (!isCurrentUserAdmin()) {
                 console.warn('Usuario no es administrador:', user.email);
                 setTimeout(() => {
-                    alert('âš ï¸ Acceso denegado. Solo los administradores pueden acceder a esta pÃ¡gina.\n\nTu email: ' + user.email + '\n\nContacta al administrador si necesitas acceso.');
+                    alert('⚠️ Acceso denegado. Solo los administradores pueden acceder a esta página.\n\nTu email: ' + user.email + '\n\nContacta al administrador si necesitas acceso.');
                     window.location.href = 'Login.html';
                 }, 500); // Esperar a que el loading se oculte
                 return;
             }
             
-            console.log('âœ… Acceso de administrador confirmado:', user.email);
+            console.log('✅ Acceso de administrador confirmado:', user.email);
             // Loading ya fue ocultado arriba
             if (typeof switchTab === 'function') {
-                // Asegurar que la pestaÃ±a principal se active automÃ¡ticamente
+                // Asegurar que la pestaña principal se active automáticamente
                 setTimeout(() => switchTab('videos'), 0);
             }
         }
         
-        // Ejecutar verificaciÃ³n cuando el DOM estÃ© listo
+        // Ejecutar verificación cuando el DOM esté listo
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', checkAdminAccess);
         } else {
@@ -742,14 +744,14 @@
         let currentCourseId = 'curso-voces';
         let courseData = {
             id: currentCourseId,
-            title: 'Mezcla y GrabaciÃ³n de Voces',
+            title: 'Mezcla y Grabación de Voces',
             modules: []
         };
 
         const courseNames = {
-            'curso-voces': 'Mezcla y GrabaciÃ³n de Voces',
-            'curso-maquetizacion': 'MaquetizaciÃ³n Composicional',
-            'curso-beats': 'ProgramaciÃ³n de Beats'
+            'curso-voces': 'Mezcla y Grabación de Voces',
+            'curso-maquetizacion': 'Maquetización Composicional',
+            'curso-beats': 'Programación de Beats'
         };
 
         // Inicializar cursos por defecto si no existen
@@ -784,14 +786,14 @@
                     };
                 }
                 
-                // Inicializar informaciÃ³n del curso si no existe
+                // Inicializar información del curso si no existe
                 if (!coursesInfo[courseId]) {
                     coursesInfo[courseId] = {
                         name: courseNames[courseId],
                         description: getDefaultDescription(courseId),
                         level: courseId === 'curso-voces' ? 'Avanzado' : 'Intermedio',
                         price: courseId === 'curso-voces' ? 99.99 : courseId === 'curso-maquetizacion' ? 89.99 : 79.99,
-                        icon: courseId === 'curso-voces' ? 'ðŸŽ¤' : courseId === 'curso-maquetizacion' ? 'ðŸŽ¹' : 'ðŸŽ›ï¸',
+                        icon: courseId === 'curso-voces' ? '🎤' : courseId === 'curso-maquetizacion' ? '🎹' : '🎛️',
                         videos: '0+',
                         hours: '0+ Horas',
                         status: courseId === 'curso-voces' ? 'available' : 'coming-soon',
@@ -807,28 +809,28 @@
             localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
         }
         
-        // Obtener descripciÃ³n por defecto
+        // Obtener descripción por defecto
         function getDefaultDescription(courseId) {
             const descriptions = {
-                'curso-voces': 'Nivel Avanzado. Aprende tÃ©cnicas profesionales para grabar y mezclar voces como los grandes productores. Domina el proceso completo desde la grabaciÃ³n hasta la mezcla final con estÃ¡ndares de la industria.',
+                'curso-voces': 'Nivel Avanzado. Aprende técnicas profesionales para grabar y mezclar voces como los grandes productores. Domina el proceso completo desde la grabación hasta la mezcla final con estándares de la industria.',
                 'curso-maquetizacion': 'Nivel Intermedio. Domina el arte de estructurar y organizar tus composiciones musicales. Aprende a crear arreglos profesionales y maquetas que conecten con tu audiencia desde el primer segundo.',
-                'curso-beats': 'Nivel Intermedio. Aprende a programar beats profesionales desde cero. Domina la creaciÃ³n de ritmos, patrones de baterÃ­a y tÃ©cnicas avanzadas de programaciÃ³n que harÃ¡n que tus producciones destaquen.'
+                'curso-beats': 'Nivel Intermedio. Aprende a programar beats profesionales desde cero. Domina la creación de ritmos, patrones de batería y técnicas avanzadas de programación que harán que tus producciones destaquen.'
             };
             return descriptions[courseId] || '';
         }
         
-        // FunciÃ³n para editar contenido del curso
+        // Función para editar contenido del curso
         function editCourseContent(courseId) {
             if (!courseId || courseId === 'q' || courseId === '') {
-                console.error('Error: courseId invÃ¡lido:', courseId);
-                alert('Error: No se pudo identificar el curso. Por favor, intÃ©ntalo de nuevo.');
+                console.error('Error: courseId inválido:', courseId);
+                alert('Error: No se pudo identificar el curso. Por favor, inténtalo de nuevo.');
                 return;
             }
             const encodedCourseId = encodeURIComponent(courseId);
             window.location.href = `curso-player.html?course=${encodedCourseId}&admin=true`;
         }
         
-        // Hacer funciÃ³n disponible globalmente
+        // Hacer función disponible globalmente
         window.editCourseContent = editCourseContent;
         
         // Cargar lista de cursos
@@ -850,14 +852,14 @@
             
             // Filtrar eliminados y renderizar
             const validCourseIds = Array.from(allCourseIds).filter(id => !deletedCourses.includes(id));
-            console.log('ðŸ“š Cursos a mostrar:', validCourseIds);
+            console.log('📚 Cursos a mostrar:', validCourseIds);
             
             if (validCourseIds.length === 0) {
                 coursesGrid.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-                        <div style="font-size: 4rem; margin-bottom: 20px;">ðŸ“š</div>
-                        <h3 style="color: var(--text-secondary); margin-bottom: 10px;">No hay cursos aÃºn</h3>
-                        <p style="color: var(--text-secondary);">Ve a la pestaÃ±a "âž• Nuevo Curso" para crear tu primer curso.</p>
+                        <div style="font-size: 4rem; margin-bottom: 20px;">📚</div>
+                        <h3 style="color: var(--text-secondary); margin-bottom: 10px;">No hay cursos aún</h3>
+                        <p style="color: var(--text-secondary);">Ve a la pestaña "➕ Nuevo Curso" para crear tu primer curso.</p>
                     </div>
                 `;
                 return;
@@ -871,11 +873,11 @@
                     const totalVideos = courseData.modules ? courseData.modules.reduce((total, m) => total + (m.lessons ? m.lessons.length : 0), 0) : 0;
                     const hasPresentation = Boolean(courseInfo.presentationVideoUrl || defaultInfo.presentationVideoUrl);
                     const presentationIndicator = hasPresentation
-                        ? '<span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(57, 243, 212, 0.18); color: var(--primary-color); padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;">ðŸŽ¬ Video de presentaciÃ³n listo</span>'
-                        : '<span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 77, 77, 0.15); color: #ff4d4d; padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;">âš ï¸ Sin video de presentaciÃ³n</span>';
+                        ? '<span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(57, 243, 212, 0.18); color: var(--primary-color); padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;">🎬 Video de presentación listo</span>'
+                        : '<span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 77, 77, 0.15); color: #ff4d4d; padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;">⚠️ Sin video de presentación</span>';
                     
                     const card = document.createElement('div');
-                    card.setAttribute('data-course-id', courseId); // Agregar atributo para encontrar el curso despuÃ©s
+                    card.setAttribute('data-course-id', courseId); // Agregar atributo para encontrar el curso después
                     card.style.cssText = 'background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(57, 243, 212, 0.1) 100%); border-radius: 15px; padding: 25px; border: 2px solid rgba(57, 243, 212, 0.3); cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;';
                     card.onmouseover = function() {
                         this.style.transform = 'translateY(-5px)';
@@ -888,7 +890,7 @@
                         this.style.boxShadow = 'none';
                     };
                     card.onclick = function(e) {
-                        // Evitar que el click del botÃ³n "Editar Curso" tambiÃ©n dispare el onclick del card
+                        // Evitar que el click del botón "Editar Curso" también dispare el onclick del card
                         if (e.target.closest('button')) {
                             return;
                         }
@@ -901,7 +903,7 @@
                     let statusColor = '';
                     let statusText = '';
                     
-                    // Determinar estado del curso con mejor lÃ³gica
+                    // Determinar estado del curso con mejor lógica
                     let courseStatus = courseInfo.status;
                     if (!courseStatus && defaultInfo.status) {
                         courseStatus = defaultInfo.status;
@@ -914,36 +916,36 @@
                     if (courseStatus === 'available') {
                         statusText = 'Lanzado';
                         statusColor = '#4ade80';
-                        statusBadge = `<span style="background: ${statusColor}; color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block;">âœ… ${statusText}</span>`;
+                        statusBadge = `<span style="background: ${statusColor}; color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block;">✅ ${statusText}</span>`;
                     } else if (courseStatus === 'pre-sale') {
                         statusText = 'Pre-Venta';
                         statusColor = '#ff9800';
-                        statusBadge = `<span style="background: ${statusColor}; color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block;">ðŸ’° ${statusText}</span>`;
+                        statusBadge = `<span style="background: ${statusColor}; color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block;">💰 ${statusText}</span>`;
                     } else {
-                        statusText = 'PrÃ³ximamente';
+                        statusText = 'Próximamente';
                         statusColor = 'rgba(255, 255, 255, 0.3)';
-                        statusBadge = `<span style="background: ${statusColor}; color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block;">â³ ${statusText}</span>`;
+                        statusBadge = `<span style="background: ${statusColor}; color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block;">⏳ ${statusText}</span>`;
                     }
                     
                     const price = courseInfo.price ? `$${courseInfo.price.toFixed(2)}` : '$0.00';
                     
-                    // Crear contenido HTML (sin el botÃ³n de editar contenido que serÃ¡ aÃ±adido despuÃ©s)
+                    // Crear contenido HTML (sin el botón de editar contenido que será añadido después)
                     card.innerHTML = `
                         <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                            <div style="font-size: 3rem;">${courseInfo.icon || 'ðŸŽ“'}</div>
+                            <div style="font-size: 3rem;">${courseInfo.icon || '🎓'}</div>
                             <div style="flex: 1;">
                                 <h3 style="color: var(--primary-color); margin: 0 0 5px 0; font-size: 1.3rem; font-weight: 700;">${courseInfo.name}</h3>
                                 ${statusBadge}
                             </div>
                         </div>
                         <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px; line-height: 1.5;">
-                            ${courseInfo.description ? (courseInfo.description.length > 120 ? courseInfo.description.substring(0, 120) + '...' : courseInfo.description) : 'Sin descripciÃ³n'}
+                            ${courseInfo.description ? (courseInfo.description.length > 120 ? courseInfo.description.substring(0, 120) + '...' : courseInfo.description) : 'Sin descripción'}
                         </p>
                         <div style="margin-bottom: 18px;">${presentationIndicator}</div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
                             <div style="text-align: center;">
                                 <div style="color: var(--primary-color); font-size: 1.5rem; font-weight: 700;">${totalModules}</div>
-                                <div style="color: var(--text-secondary); font-size: 0.8rem;">MÃ³dulos</div>
+                                <div style="color: var(--text-secondary); font-size: 0.8rem;">Módulos</div>
                             </div>
                             <div style="text-align: center;">
                                 <div style="color: var(--primary-color); font-size: 1.5rem; font-weight: 700;">${totalVideos}</div>
@@ -957,21 +959,21 @@
                                     <div style="color: var(--primary-color); font-size: 1.3rem; font-weight: 700;">${price}</div>
                                 </div>
                                 <button onclick="editCourseInfoInPanel('${courseId}', event)" style="background: rgba(57, 243, 212, 0.2); color: var(--primary-color); border: 1px solid var(--primary-color); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--dark-bg)'" onmouseout="this.style.background='rgba(57, 243, 212, 0.2)'; this.style.color='var(--primary-color)'">
-                                    âœï¸ Editar Info
+                                    ✏️ Editar Info
                                 </button>
                             </div>
                         </div>
                         <div id="editContentBtnContainer-${courseId}" style="display: flex; gap: 10px;">
-                            <!-- Botones serÃ¡n creados programÃ¡ticamente aquÃ­ -->
+                            <!-- Botones serán creados programáticamente aquí -->
                         </div>
                     `;
                     
-                    // Crear botones de "Editar Contenido" y "Eliminar" programÃ¡ticamente
+                    // Crear botones de "Editar Contenido" y "Eliminar" programáticamente
                     const editBtnContainer = card.querySelector(`#editContentBtnContainer-${courseId}`);
                     if (editBtnContainer) {
-                        // BotÃ³n de Editar Contenido
+                        // Botón de Editar Contenido
                         const editBtn = document.createElement('button');
-                        editBtn.textContent = 'âœï¸ Editar Contenido';
+                        editBtn.textContent = '✏️ Editar Contenido';
                         editBtn.style.cssText = 'flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: transform 0.2s;';
                         editBtn.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
                         editBtn.onmouseout = function() { this.style.transform = 'scale(1)'; };
@@ -982,9 +984,9 @@
                         };
                         editBtnContainer.appendChild(editBtn);
 
-                        // BotÃ³n de Eliminar (disponible para todos los cursos)
+                        // Botón de Eliminar (disponible para todos los cursos)
                         const deleteBtn = document.createElement('button');
-                        deleteBtn.textContent = 'ðŸ—‘ï¸ Eliminar';
+                        deleteBtn.textContent = '🗑️ Eliminar';
                         deleteBtn.style.cssText = 'flex: 1; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 2px solid #ff4d4d; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: all 0.2s;';
                         deleteBtn.onmouseover = function() {
                             this.style.background = '#ff4d4d';
@@ -1002,14 +1004,14 @@
 
                             const courseName = courseInfo.name || defaultInfo.name || courseId;
 
-                            if (confirm(`âš ï¸ Â¿EstÃ¡s seguro de eliminar el curso "${courseName}"?\n\nEsta acciÃ³n eliminarÃ¡ el curso completamente y no se puede deshacer.`)) {
-                                console.log('ðŸ—‘ï¸ Eliminando curso:', courseId);
+                            if (confirm(`⚠️ ¿Estás seguro de eliminar el curso "${courseName}"?\n\nEsta acción eliminará el curso completamente y no se puede deshacer.`)) {
+                                console.log('🗑️ Eliminando curso:', courseId);
                                 deleteCourse(courseId);
 
-                                // Recargar la lista despuÃ©s de eliminar
+                                // Recargar la lista después de eliminar
                                 setTimeout(() => {
                                     loadCoursesList();
-                                    showAlert('âœ… Curso "' + courseName + '" eliminado exitosamente');
+                                    showAlert('✅ Curso "' + courseName + '" eliminado exitosamente');
                                 }, 300);
                             }
                         };
@@ -1023,15 +1025,15 @@
             if (coursesGrid.children.length === 0) {
                 coursesGrid.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-                        <div style="font-size: 4rem; margin-bottom: 20px;">ðŸ“š</div>
-                        <h3 style="color: var(--text-secondary); margin-bottom: 10px;">No hay cursos aÃºn</h3>
-                        <p style="color: var(--text-secondary);">Ve a la pestaÃ±a "âž• Nuevo Curso" para crear tu primer curso.</p>
+                        <div style="font-size: 4rem; margin-bottom: 20px;">📚</div>
+                        <h3 style="color: var(--text-secondary); margin-bottom: 10px;">No hay cursos aún</h3>
+                        <p style="color: var(--text-secondary);">Ve a la pestaña "➕ Nuevo Curso" para crear tu primer curso.</p>
                     </div>
                 `;
             }
         }
         
-        // Obtener informaciÃ³n de curso para la lista
+        // Obtener información de curso para la lista
         function getCourseInfoForList(courseId, coursesInfo) {
             if (coursesInfo[courseId]) {
                 return coursesInfo[courseId];
@@ -1048,10 +1050,10 @@
                     presentationVideoUrl: defaultInfo.presentationVideoUrl || ''
                 };
             }
-            return { name: 'Curso sin nombre', description: '', icon: 'ðŸŽ“', status: 'coming-soon' };
+            return { name: 'Curso sin nombre', description: '', icon: '🎓', status: 'coming-soon' };
         }
         
-        // Abrir editor de curso especÃ­fico
+        // Abrir editor de curso específico
         function openCourseEditor(courseId) {
             currentCourseId = courseId;
             
@@ -1070,7 +1072,7 @@
             loadCoursesList();
         }
         
-        // Load course data (cuando se abre un curso especÃ­fico)
+        // Load course data (cuando se abre un curso específico)
         function loadCourseData() {
             if (!currentCourseId) return;
             
@@ -1078,11 +1080,11 @@
             const storedCourses = JSON.parse(localStorage.getItem('coursesData') || '{}');
             const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
             
-            // Obtener tÃ­tulo del curso desde coursesInfo si existe
+            // Obtener título del curso desde coursesInfo si existe
             const courseInfo = coursesInfo[currentCourseId];
             const courseTitle = courseInfo ? courseInfo.name : (courseNames[currentCourseId] || 'Nuevo Curso');
             
-            // Actualizar tÃ­tulo en el editor
+            // Actualizar título en el editor
             const titleElement = document.getElementById('editingCourseTitle');
             if (titleElement) {
                 titleElement.textContent = courseTitle;
@@ -1099,15 +1101,15 @@
                 };
             }
             
-            // Actualizar estadÃ­sticas
+            // Actualizar estadísticas
             const totalModules = courseData.modules ? courseData.modules.length : 0;
             const totalVideos = courseData.modules ? courseData.modules.reduce((total, m) => total + (m.lessons ? m.lessons.length : 0), 0) : 0;
             const statsElement = document.getElementById('editingCourseStats');
             if (statsElement) {
-                statsElement.textContent = `${totalModules} mÃ³dulo(s) | ${totalVideos} video(s)`;
+                statsElement.textContent = `${totalModules} módulo(s) | ${totalVideos} video(s)`;
             }
             
-            // Cancelar cualquier ediciÃ³n en curso
+            // Cancelar cualquier edición en curso
             cancelEditModule();
             cancelEditLesson();
             
@@ -1119,28 +1121,28 @@
         function saveModule() {
             const title = document.getElementById('moduleTitle').value.trim();
             if (!title) {
-                alert('Por favor ingresa un tÃ­tulo para el mÃ³dulo');
+                alert('Por favor ingresa un título para el módulo');
                 return;
             }
             
             const editingModuleId = document.getElementById('editingModuleId').value;
             
             if (editingModuleId) {
-                // Editar mÃ³dulo existente
+                // Editar módulo existente
                 const module = courseData.modules.find(m => m.id === editingModuleId);
                 if (module) {
                     module.title = title;
-                    showAlert('âœ… MÃ³dulo actualizado exitosamente');
+                    showAlert('✅ Módulo actualizado exitosamente');
                 }
             } else {
-                // Agregar nuevo mÃ³dulo
+                // Agregar nuevo módulo
                 const moduleId = 'modulo-' + (Date.now());
                 courseData.modules.push({
                     id: moduleId,
                     title: title,
                     lessons: []
                 });
-                showAlert('âœ… MÃ³dulo agregado exitosamente');
+                showAlert('✅ Módulo agregado exitosamente');
             }
             
             // Limpiar formulario
@@ -1158,8 +1160,8 @@
             
             document.getElementById('moduleTitle').value = module.title;
             document.getElementById('editingModuleId').value = moduleId;
-            document.getElementById('moduleFormTitle').textContent = 'âœï¸ Editar MÃ³dulo';
-            document.getElementById('moduleSaveBtn').textContent = 'ðŸ’¾ Guardar Cambios';
+            document.getElementById('moduleFormTitle').textContent = '✏️ Editar Módulo';
+            document.getElementById('moduleSaveBtn').textContent = '💾 Guardar Cambios';
             document.getElementById('moduleCancelBtn').style.display = 'block';
             
             // Scroll to form
@@ -1170,8 +1172,8 @@
         function cancelEditModule() {
             document.getElementById('moduleTitle').value = '';
             document.getElementById('editingModuleId').value = '';
-            document.getElementById('moduleFormTitle').textContent = 'Nuevo MÃ³dulo';
-            document.getElementById('moduleSaveBtn').textContent = 'Agregar MÃ³dulo';
+            document.getElementById('moduleFormTitle').textContent = 'Nuevo Módulo';
+            document.getElementById('moduleSaveBtn').textContent = 'Agregar Módulo';
             document.getElementById('moduleCancelBtn').style.display = 'none';
         }
 
@@ -1183,29 +1185,29 @@
             const videoUrl = document.getElementById('lessonVideoUrl').value.trim();
             
             if (!moduleId || !title || !duration) {
-                alert('Por favor completa todos los campos requeridos (MÃ³dulo, TÃ­tulo, DuraciÃ³n)');
+                alert('Por favor completa todos los campos requeridos (Módulo, Título, Duración)');
                 return;
             }
             
             const module = courseData.modules.find(m => m.id === moduleId);
             if (!module) {
-                alert('MÃ³dulo no encontrado');
+                alert('Módulo no encontrado');
                 return;
             }
             
             const editingLessonId = parseInt(document.getElementById('editingLessonId').value);
             
             if (editingLessonId) {
-                // Editar lecciÃ³n existente
+                // Editar lección existente
                 const lesson = module.lessons.find(l => l.id === editingLessonId);
                 if (lesson) {
                     lesson.title = title;
                     lesson.duration = duration;
                     lesson.videoUrl = videoUrl || '';
-                    showAlert('âœ… LecciÃ³n actualizada exitosamente');
+                    showAlert('✅ Lección actualizada exitosamente');
                 }
             } else {
-                // Agregar nueva lecciÃ³n
+                // Agregar nueva lección
                 const lessonId = module.lessons.length > 0 
                     ? Math.max(...module.lessons.map(l => l.id)) + 1 
                     : 1;
@@ -1217,7 +1219,7 @@
                     videoUrl: videoUrl || '',
                     completed: false
                 });
-                showAlert('âœ… LecciÃ³n agregada exitosamente');
+                showAlert('✅ Lección agregada exitosamente');
             }
             
             // Limpiar formulario
@@ -1239,7 +1241,7 @@
             const lesson = module.lessons.find(l => l.id === lessonId);
             if (!lesson) return;
             
-            // Asegurarse de que el selector estÃ© actualizado
+            // Asegurarse de que el selector esté actualizado
             updateModuleSelector();
             
             // Llenar formulario
@@ -1252,9 +1254,9 @@
                 document.getElementById('editingLessonModuleId').value = moduleId;
             }, 100);
             
-            // Cambiar tÃ­tulo y botÃ³n
-            document.getElementById('lessonFormTitle').textContent = 'âœï¸ Editar LecciÃ³n';
-            document.getElementById('lessonSaveBtn').textContent = 'ðŸ’¾ Guardar Cambios';
+            // Cambiar título y botón
+            document.getElementById('lessonFormTitle').textContent = '✏️ Editar Lección';
+            document.getElementById('lessonSaveBtn').textContent = '💾 Guardar Cambios';
             document.getElementById('lessonCancelBtn').style.display = 'block';
             
             // Scroll to form
@@ -1270,23 +1272,23 @@
             document.getElementById('lessonVideoUrl').value = '';
             document.getElementById('editingLessonId').value = '';
             document.getElementById('editingLessonModuleId').value = '';
-            document.getElementById('lessonFormTitle').textContent = 'Nueva LecciÃ³n';
-            document.getElementById('lessonSaveBtn').textContent = 'Agregar LecciÃ³n';
+            document.getElementById('lessonFormTitle').textContent = 'Nueva Lección';
+            document.getElementById('lessonSaveBtn').textContent = 'Agregar Lección';
             document.getElementById('lessonCancelBtn').style.display = 'none';
             document.getElementById('lessonModule').value = '';
         }
         
         // Quick add lesson to specific module
         function quickAddLesson(moduleId) {
-            // Asegurar que el selector estÃ© actualizado
+            // Asegurar que el selector esté actualizado
             updateModuleSelector();
             
-            // Establecer el mÃ³dulo seleccionado
+            // Establecer el módulo seleccionado
             setTimeout(() => {
                 document.getElementById('lessonModule').value = moduleId;
                 document.getElementById('editingLessonModuleId').value = moduleId;
                 
-                // Limpiar formulario para nueva lecciÃ³n
+                // Limpiar formulario para nueva lección
                 cancelEditLesson();
                 document.getElementById('lessonModule').value = moduleId;
                 document.getElementById('editingLessonModuleId').value = moduleId;
@@ -1309,22 +1311,22 @@
 
         // Remove module
         function removeModule(moduleId) {
-            if (confirm('Â¿EstÃ¡s seguro de eliminar este mÃ³dulo y todas sus lecciones?')) {
+            if (confirm('¿Estás seguro de eliminar este módulo y todas sus lecciones?')) {
                 courseData.modules = courseData.modules.filter(m => m.id !== moduleId);
                 renderModules();
                 updateModuleSelector();
-                showAlert('MÃ³dulo eliminado');
+                showAlert('Módulo eliminado');
             }
         }
 
         // Remove lesson
         function removeLesson(moduleId, lessonId) {
-            if (confirm('Â¿EstÃ¡s seguro de eliminar esta lecciÃ³n?')) {
+            if (confirm('¿Estás seguro de eliminar esta lección?')) {
                 const module = courseData.modules.find(m => m.id === moduleId);
                 if (module) {
                     module.lessons = module.lessons.filter(l => l.id !== lessonId);
                     renderModules();
-                    showAlert('LecciÃ³n eliminada');
+                    showAlert('Lección eliminada');
                 }
             }
         }
@@ -1336,18 +1338,18 @@
             
             container.innerHTML = '';
             
-            // Actualizar estadÃ­sticas en el editor
+            // Actualizar estadísticas en el editor
             if (courseData && currentCourseId) {
                 const totalModules = courseData.modules ? courseData.modules.length : 0;
                 const totalVideos = courseData.modules ? courseData.modules.reduce((total, m) => total + (m.lessons ? m.lessons.length : 0), 0) : 0;
                 const statsElement = document.getElementById('editingCourseStats');
                 if (statsElement) {
-                    statsElement.textContent = `${totalModules} mÃ³dulo(s) | ${totalVideos} video(s)`;
+                    statsElement.textContent = `${totalModules} módulo(s) | ${totalVideos} video(s)`;
                 }
             }
             
             if (courseData.modules.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">No hay mÃ³dulos agregados. Crea uno nuevo usando el formulario de la izquierda.</p>';
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">No hay módulos agregados. Crea uno nuevo usando el formulario de la izquierda.</p>';
                 return;
             }
             
@@ -1358,26 +1360,26 @@
                     <div class="module-item" style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 2px solid rgba(57, 243, 212, 0.2);">
                     <div class="module-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid rgba(57, 243, 212, 0.3);">
                         <div>
-                            <h3 style="color: var(--primary-color); margin: 0; font-size: 1.3rem; font-weight: 700;">ðŸ“¦ MÃ³dulo ${moduleIndex + 1}: ${module.title}</h3>
+                            <h3 style="color: var(--primary-color); margin: 0; font-size: 1.3rem; font-weight: 700;">📦 Módulo ${moduleIndex + 1}: ${module.title}</h3>
                             <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 5px 0 0 0;">
-                                ${module.lessons ? module.lessons.length : 0} video(s) en este mÃ³dulo
+                                ${module.lessons ? module.lessons.length : 0} video(s) en este módulo
                             </p>
                         </div>
                         <div style="display: flex; gap: 10px;">
-                            <button class="btn-edit" onclick="editModule('${module.id}')" style="background: var(--primary-color); color: var(--dark-bg); padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">âœï¸ Editar Nombre</button>
-                            <button class="btn-remove" onclick="removeModule('${module.id}')" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; padding: 10px 18px; border: 2px solid #ff4d4d; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">ðŸ—‘ï¸ Eliminar MÃ³dulo</button>
+                            <button class="btn-edit" onclick="editModule('${module.id}')" style="background: var(--primary-color); color: var(--dark-bg); padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">✏️ Editar Nombre</button>
+                            <button class="btn-remove" onclick="removeModule('${module.id}')" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; padding: 10px 18px; border: 2px solid #ff4d4d; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">🗑️ Eliminar Módulo</button>
                         </div>
                     </div>
                     <div class="lessons-container">
                         <div style="margin-bottom: 15px; padding: 15px; background: rgba(57, 243, 212, 0.15); border: 2px dashed var(--primary-color); border-radius: 10px; text-align: center;">
                             <button onclick="quickAddLesson('${module.id}')" style="background: var(--gradient-primary); color: var(--dark-bg); padding: 12px 24px; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 1.05rem; width: 100%; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(57, 243, 212, 0.3);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 20px rgba(57, 243, 212, 0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 15px rgba(57, 243, 212, 0.3)'">
-                                âž• Agregar Nuevo Video a este MÃ³dulo
+                                ➕ Agregar Nuevo Video a este Módulo
                             </button>
-                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 10px; margin-bottom: 0;">ðŸ“¹ Agrega videos directamente a este mÃ³dulo</p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 10px; margin-bottom: 0;">📹 Agrega videos directamente a este módulo</p>
                         </div>
                         ${module.lessons.length === 0 
-                            ? '<div style="text-align: center; padding: 30px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; margin-top: 10px; border: 2px dashed rgba(255, 255, 255, 0.1);"><p style="color: var(--text-secondary); font-size: 0.95rem;">ðŸ“¹ Este mÃ³dulo no tiene videos aÃºn. Usa el botÃ³n de arriba para agregar el primer video.</p></div>'
-                            : '<div style="margin-bottom: 10px;"><strong style="color: var(--primary-color); font-size: 0.9rem;">ðŸ“¹ Videos en este mÃ³dulo (' + module.lessons.length + '):</strong></div>' + module.lessons.map((lesson, lessonIndex) => `
+                            ? '<div style="text-align: center; padding: 30px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; margin-top: 10px; border: 2px dashed rgba(255, 255, 255, 0.1);"><p style="color: var(--text-secondary); font-size: 0.95rem;">📹 Este módulo no tiene videos aún. Usa el botón de arriba para agregar el primer video.</p></div>'
+                            : '<div style="margin-bottom: 10px;"><strong style="color: var(--primary-color); font-size: 0.9rem;">📹 Videos en este módulo (' + module.lessons.length + '):</strong></div>' + module.lessons.map((lesson, lessonIndex) => `
                                 <div class="lesson-item" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: linear-gradient(135deg, rgba(57, 243, 212, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%); border-radius: 10px; margin-bottom: 12px; border-left: 5px solid var(--primary-color); transition: transform 0.2s;" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
                                     <div class="lesson-info" style="flex: 1; min-width: 0;">
                                         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap;">
@@ -1386,29 +1388,29 @@
                                         </div>
                                         <div style="display: flex; gap: 20px; font-size: 0.85rem; color: var(--text-secondary); flex-wrap: wrap; margin-top: 8px;">
                                             <span style="display: flex; align-items: center; gap: 5px;">
-                                                <span style="font-size: 1.1rem;">â±ï¸</span>
+                                                <span style="font-size: 1.1rem;">⏱️</span>
                                                 <strong style="color: white;">${lesson.duration || 'N/A'}</strong>
                                             </span>
                                             ${lesson.videoUrl ? 
                                                 `<span style="color: #4ade80; display: flex; align-items: center; gap: 5px;">
-                                                    <span>âœ…</span>
+                                                    <span>✅</span>
                                                     <strong>Video disponible</strong>
                                                 </span>` : 
                                                 `<span style="color: #ff4d4d; display: flex; align-items: center; gap: 5px;">
-                                                    <span>âŒ</span>
+                                                    <span>❌</span>
                                                     <strong>Sin video asignado</strong>
                                                 </span>`
                                             }
                                             ${lesson.videoUrl ? `
                                                 <span style="color: var(--primary-color); font-size: 0.75rem; word-break: break-all; max-width: 400px; background: rgba(57, 243, 212, 0.1); padding: 4px 8px; border-radius: 5px;">
-                                                    ðŸ”— ${lesson.videoUrl.length > 45 ? lesson.videoUrl.substring(0, 45) + '...' : lesson.videoUrl}
+                                                    🔗 ${lesson.videoUrl.length > 45 ? lesson.videoUrl.substring(0, 45) + '...' : lesson.videoUrl}
                                                 </span>
                                             ` : ''}
                                         </div>
                                     </div>
                                     <div style="display: flex; gap: 10px; flex-shrink: 0; margin-left: 15px;">
-                                        <button class="btn-edit" onclick="editLesson('${module.id}', ${lesson.id})" style="background: var(--primary-color); color: var(--dark-bg); padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; white-space: nowrap; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(57, 243, 212, 0.3);" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Editar tÃ­tulo, duraciÃ³n y URL del video">âœï¸ Editar</button>
-                                        <button class="btn-remove" onclick="removeLesson('${module.id}', ${lesson.id})" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; padding: 10px 18px; border: 2px solid #ff4d4d; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; white-space: nowrap; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Eliminar este video permanentemente">ðŸ—‘ï¸ Eliminar</button>
+                                        <button class="btn-edit" onclick="editLesson('${module.id}', ${lesson.id})" style="background: var(--primary-color); color: var(--dark-bg); padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; white-space: nowrap; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(57, 243, 212, 0.3);" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Editar título, duración y URL del video">✏️ Editar</button>
+                                        <button class="btn-remove" onclick="removeLesson('${module.id}', ${lesson.id})" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; padding: 10px 18px; border: 2px solid #ff4d4d; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; white-space: nowrap; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Eliminar este video permanentemente">🗑️ Eliminar</button>
                                     </div>
                                 </div>
                             `).join('')
@@ -1423,7 +1425,7 @@
         // Update module selector
         function updateModuleSelector() {
             const selector = document.getElementById('lessonModule');
-            selector.innerHTML = '<option value="">Selecciona un mÃ³dulo</option>';
+            selector.innerHTML = '<option value="">Selecciona un módulo</option>';
             
             courseData.modules.forEach(module => {
                 const option = document.createElement('option');
@@ -1439,12 +1441,12 @@
             storedCourses[currentCourseId] = courseData;
             localStorage.setItem('coursesData', JSON.stringify(storedCourses));
             
-            // Actualizar estadÃ­sticas despuÃ©s de guardar
+            // Actualizar estadísticas después de guardar
             renderModules();
             
-            showAlert('âœ… Curso guardado exitosamente! Los cambios se verÃ¡n reflejados en el curso-player cuando los usuarios accedan al curso.');
+            showAlert('✅ Curso guardado exitosamente! Los cambios se verán reflejados en el curso-player cuando los usuarios accedan al curso.');
             
-            // Recargar lista de cursos para actualizar estadÃ­sticas
+            // Recargar lista de cursos para actualizar estadísticas
             setTimeout(() => {
                 if (document.getElementById('coursesListView').style.display === 'block') {
                     loadCoursesList();
@@ -1456,13 +1458,13 @@
         function showAlert(message) {
             const alertElement = document.getElementById('alertMessage');
             if (!alertElement) {
-                console.error('âŒ Elemento alertMessage no encontrado');
+                console.error('❌ Elemento alertMessage no encontrado');
                 // Fallback: usar alert nativo
                 window.alert(message);
                 return;
             }
             
-            console.log('ðŸ“¢ Mostrando mensaje:', message);
+            console.log('📢 Mostrando mensaje:', message);
             
             alertElement.innerHTML = message; // Permitir HTML para mejor formato
             alertElement.style.display = 'block';
@@ -1475,8 +1477,8 @@
                 alertElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
             
-            // DuraciÃ³n mÃ¡s larga para mensajes importantes
-            const duration = message.includes('âœ…') ? 5000 : 3000;
+            // Duración más larga para mensajes importantes
+            const duration = message.includes('✅') ? 5000 : 3000;
             
             setTimeout(() => {
                 alertElement.style.animation = 'fadeOut 0.3s ease-out';
@@ -1494,7 +1496,7 @@
         function showInlineNewCourseMessage(message) {
             const inlineMessage = document.getElementById('newCourseMessage');
             if (!inlineMessage) {
-                showToast(message, { icon: 'ðŸŽ“' });
+                showToast(message, { icon: '🎓' });
                 return;
             }
 
@@ -1527,7 +1529,7 @@
         }
 
         function showToast(message, options = {}) {
-            const { duration = 3200, icon = 'âœ…' } = options;
+            const { duration = 3200, icon = '✅' } = options;
             const container = getToastContainer();
             const toast = document.createElement('div');
             toast.className = 'admin-toast';
@@ -1571,14 +1573,14 @@
             if (adminList !== null) {
                 const emails = adminList.split(',').map(e => e.trim()).filter(e => e);
                 setAdminEmails(emails);
-                showAlert('âœ… Lista de administradores actualizada');
+                showAlert('✅ Lista de administradores actualizada');
                 
-                // Si el usuario actual no estÃ¡ en la lista, agregarlo
+                // Si el usuario actual no está en la lista, agregarlo
                 if (currentUser.email && !emails.some(e => e.toLowerCase() === currentUser.email.toLowerCase())) {
-                    if (confirm('Â¿Quieres agregar tu email actual a la lista de administradores?')) {
+                    if (confirm('¿Quieres agregar tu email actual a la lista de administradores?')) {
                         emails.push(currentUser.email);
                         setAdminEmails(emails);
-                        showAlert('âœ… Tu email ha sido agregado como administrador');
+                        showAlert('✅ Tu email ha sido agregado como administrador');
                     }
                 }
             }
@@ -1623,10 +1625,10 @@
         window.switchTab = switchTab;
         
         // ========================================
-        // FUNCIONES DE INFORMACIÃ“N DEL CURSO (MODAL)
+        // FUNCIONES DE INFORMACIÓN DEL CURSO (MODAL)
         // ========================================
         
-        // Abrir modal para editar informaciÃ³n del curso
+        // Abrir modal para editar información del curso
         function editCourseInfoInPanel(courseId, event) {
             if (event) event.stopPropagation();
             
@@ -1644,9 +1646,9 @@
             document.getElementById('modalCourseLevel').value = courseInfo.level || defaultInfo.level || 'Intermedio';
             document.getElementById('modalCoursePrice').value = courseInfo.price || defaultInfo.price || '';
             document.getElementById('modalCourseStatus').value = courseInfo.status || defaultInfo.status || 'coming-soon';
-            document.getElementById('modalCourseIcon').value = courseInfo.icon || defaultInfo.icon || 'ðŸŽ“';
+            document.getElementById('modalCourseIcon').value = courseInfo.icon || defaultInfo.icon || '🎓';
             
-            // Asegurar que el botÃ³n de eliminar estÃ© disponible
+            // Asegurar que el botón de eliminar esté disponible
             const deleteBtnContainer = document.getElementById('modalDeleteBtnContainer');
             if (deleteBtnContainer) {
                 deleteBtnContainer.style.display = 'block';
@@ -1664,7 +1666,7 @@
             document.getElementById('courseInfoModal').style.display = 'none';
         }
         
-        // Guardar informaciÃ³n del curso desde el modal
+        // Guardar información del curso desde el modal
         function saveCourseInfoFromModal() {
             const courseId = document.getElementById('courseInfoModal').getAttribute('data-course-id');
             if (!courseId) return;
@@ -1679,7 +1681,7 @@
             const presentationVideoUrl = presentationVideoInput ? presentationVideoInput.value.trim() : '';
             
             if (!name) {
-                alert('Por favor ingresa el tÃ­tulo del curso');
+                alert('Por favor ingresa el título del curso');
                 return;
             }
             
@@ -1706,7 +1708,7 @@
             // Cerrar modal
             closeCourseInfoModal();
             
-            showAlert('âœ… InformaciÃ³n del curso guardada! Los cambios se reflejarÃ¡n automÃ¡ticamente en todas las pÃ¡ginas.');
+            showAlert('✅ Información del curso guardada! Los cambios se reflejarán automáticamente en todas las páginas.');
         }
         
         // Eliminar curso desde modal
@@ -1718,21 +1720,21 @@
             deleteCourse(courseId);
         }
         
-        // Cargar informaciÃ³n del curso actual (funciÃ³n antigua - mantener por compatibilidad)
+        // Cargar información del curso actual (función antigua - mantener por compatibilidad)
         function loadCourseInfo() {
             const courseInfo = getCourseInfo(currentCourseId);
             
             // Si no hay info guardada, usar valores por defecto
             const defaultCourseNames = {
-                'curso-voces': 'Mezcla y GrabaciÃ³n de Voces',
-                'curso-maquetizacion': 'MaquetizaciÃ³n Composicional',
-                'curso-beats': 'ProgramaciÃ³n de Beats'
+                'curso-voces': 'Mezcla y Grabación de Voces',
+                'curso-maquetizacion': 'Maquetización Composicional',
+                'curso-beats': 'Programación de Beats'
             };
             
             const defaultDescriptions = {
-                'curso-voces': 'Nivel Avanzado. Aprende tÃ©cnicas profesionales para grabar y mezclar voces como los grandes productores. Domina el proceso completo desde la grabaciÃ³n hasta la mezcla final con estÃ¡ndares de la industria.',
+                'curso-voces': 'Nivel Avanzado. Aprende técnicas profesionales para grabar y mezclar voces como los grandes productores. Domina el proceso completo desde la grabación hasta la mezcla final con estándares de la industria.',
                 'curso-maquetizacion': 'Nivel Intermedio. Domina el arte de estructurar y organizar tus composiciones musicales. Aprende a crear arreglos profesionales y maquetas que conecten con tu audiencia desde el primer segundo.',
-                'curso-beats': 'Nivel Intermedio. Aprende a programar beats profesionales desde cero. Domina la creaciÃ³n de ritmos, patrones de baterÃ­a y tÃ©cnicas avanzadas de programaciÃ³n que harÃ¡n que tus producciones destaquen.'
+                'curso-beats': 'Nivel Intermedio. Aprende a programar beats profesionales desde cero. Domina la creación de ritmos, patrones de batería y técnicas avanzadas de programación que harán que tus producciones destaquen.'
             };
             
             const defaultLevels = {
@@ -1748,9 +1750,9 @@
             };
             
             const defaultIcons = {
-                'curso-voces': 'ðŸŽ¤',
-                'curso-maquetizacion': 'ðŸŽ¹',
-                'curso-beats': 'ðŸŽ›ï¸'
+                'curso-voces': '🎤',
+                'curso-maquetizacion': '🎹',
+                'curso-beats': '🎛️'
             };
             
             if (courseInfo) {
@@ -1759,7 +1761,7 @@
                 document.getElementById('courseLevel').value = courseInfo.level || defaultLevels[currentCourseId] || 'Intermedio';
                 document.getElementById('coursePrice').value = courseInfo.price || defaultPrices[currentCourseId] || '';
                 document.getElementById('courseImage').value = courseInfo.image || '';
-                document.getElementById('courseIcon').value = courseInfo.icon || defaultIcons[currentCourseId] || 'ðŸŽ“';
+                document.getElementById('courseIcon').value = courseInfo.icon || defaultIcons[currentCourseId] || '🎓';
                 document.getElementById('courseVideos').value = courseInfo.videos || '';
                 document.getElementById('courseHours').value = courseInfo.hours || '';
                 const coursePresentationInput = document.getElementById('coursePresentation');
@@ -1776,7 +1778,7 @@
                 document.getElementById('courseLevel').value = defaultLevels[currentCourseId] || 'Intermedio';
                 document.getElementById('coursePrice').value = defaultPrices[currentCourseId] || '';
                 document.getElementById('courseImage').value = '';
-                document.getElementById('courseIcon').value = defaultIcons[currentCourseId] || 'ðŸŽ“';
+                document.getElementById('courseIcon').value = defaultIcons[currentCourseId] || '🎓';
                 document.getElementById('courseVideos').value = '';
                 document.getElementById('courseHours').value = '';
                 const coursePresentationInput = document.getElementById('coursePresentation');
@@ -1788,20 +1790,20 @@
                 }
             }
             
-            // Mantener visible el botÃ³n de eliminar
+            // Mantener visible el botón de eliminar
             const deleteBtn = document.getElementById('deleteCourseBtn');
             if (deleteBtn) {
                 deleteBtn.style.display = 'block';
             }
         }
         
-        // Obtener informaciÃ³n de un curso
+        // Obtener información de un curso
         function getCourseInfo(courseId) {
             const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
             return coursesInfo[courseId] || null;
         }
         
-        // Guardar informaciÃ³n del curso
+        // Guardar información del curso
         function saveCourseInfo() {
             const name = document.getElementById('courseName').value.trim();
             const description = document.getElementById('courseDescription').value.trim();
@@ -1815,7 +1817,7 @@
             const presentationField = document.getElementById('coursePresentation');
             
             if (!name) {
-                alert('Por favor ingresa el tÃ­tulo del curso');
+                alert('Por favor ingresa el título del curso');
                 return;
             }
             
@@ -1838,16 +1840,16 @@
             
             localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
             
-            // Actualizar selector de cursos si el nombre cambiÃ³
+            // Actualizar selector de cursos si el nombre cambió
             updateCourseSelector();
             
-            // Mantener visible el botÃ³n de eliminar
+            // Mantener visible el botón de eliminar
             const deleteBtn = document.getElementById('deleteCourseBtn');
             if (deleteBtn) {
                 deleteBtn.style.display = 'block';
             }
             
-            showAlert('âœ… InformaciÃ³n del curso guardada! Los cambios se reflejarÃ¡n automÃ¡ticamente en la pÃ¡gina de cursos y en todas las demÃ¡s pÃ¡ginas.');
+            showAlert('✅ Información del curso guardada! Los cambios se reflejarán automáticamente en la página de cursos y en todas las demás páginas.');
         }
         
         // ========================================
@@ -1855,7 +1857,7 @@
         // ========================================
         
         function createNewCourse() {
-            console.log('ðŸš€ createNewCourse() llamada');
+            console.log('🚀 createNewCourse() llamada');
             
             // Obtener valores de los campos
             const courseIdInput = document.getElementById('newCourseId');
@@ -1863,8 +1865,8 @@
             const descriptionInput = document.getElementById('newCourseDescription');
             
             if (!courseIdInput || !nameInput || !descriptionInput) {
-                console.error('âŒ Campos del formulario no encontrados');
-                window.alert('âŒ Error: Los campos del formulario no se encontraron. Por favor recarga la pÃ¡gina.');
+                console.error('❌ Campos del formulario no encontrados');
+                window.alert('❌ Error: Los campos del formulario no se encontraron. Por favor recarga la página.');
                 return;
             }
             
@@ -1875,25 +1877,25 @@
             const presentationVideoUrl = presentationInput ? presentationInput.value.trim() : '';
             const level = document.getElementById('newCourseLevel') ? document.getElementById('newCourseLevel').value : 'Intermedio';
             const price = document.getElementById('newCoursePrice') ? parseFloat(document.getElementById('newCoursePrice').value) || 0 : 0;
-            const icon = document.getElementById('newCourseIcon') ? document.getElementById('newCourseIcon').value.trim() || 'ðŸŽ“' : 'ðŸŽ“';
+            const icon = document.getElementById('newCourseIcon') ? document.getElementById('newCourseIcon').value.trim() || '🎓' : '🎓';
             const status = document.getElementById('newCourseStatus') ? document.getElementById('newCourseStatus').value : 'coming-soon';
             
-            console.log('ðŸ“ Datos del formulario:', { courseId, name, description, level, price, icon, status });
+            console.log('📝 Datos del formulario:', { courseId, name, description, level, price, icon, status });
             
             if (!courseId || !name || !description) {
-                window.alert('âš ï¸ Por favor completa todos los campos requeridos:\n- ID del Curso\n- Nombre del Curso\n- DescripciÃ³n');
+                window.alert('⚠️ Por favor completa todos los campos requeridos:\n- ID del Curso\n- Nombre del Curso\n- Descripción');
                 if (typeof showAlert === 'function') {
-                    showAlert('âŒ Por favor completa todos los campos requeridos');
+                    showAlert('❌ Por favor completa todos los campos requeridos');
                 }
                 if (typeof showToast === 'function') {
-                    showToast('Completa los campos requeridos antes de crear el curso.', { icon: 'âš ï¸', duration: 3800 });
+                    showToast('Completa los campos requeridos antes de crear el curso.', { icon: '⚠️', duration: 3800 });
                 }
                 return;
             }
             
-            console.log('ðŸš€ Creando nuevo curso:', { courseId, name, description });
+            console.log('🚀 Creando nuevo curso:', { courseId, name, description });
             
-            // Guardar informaciÃ³n del curso
+            // Guardar información del curso
             const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
             const existingEntry = coursesInfo[courseId] || {};
             coursesInfo[courseId] = {
@@ -1910,49 +1912,49 @@
             };
             localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
             
-            // Inicializar estructura de videos con mÃ³dulos por defecto (estructura de producciÃ³n musical)
+            // Inicializar estructura de videos con módulos por defecto (estructura de producción musical)
             const coursesData = JSON.parse(localStorage.getItem('coursesData') || '{}');
             
-            // Estructura por defecto de mÃ³dulos para producciÃ³n musical
+            // Estructura por defecto de módulos para producción musical
             const defaultModules = [
                 {
                     id: 'modulo-1',
-                    title: 'IntroducciÃ³n',
+                    title: 'Introducción',
                     lessons: [
-                        { id: 1, title: 'Bienvenida al Curso', duration: '5:00', videoUrl: '', description: 'PresentaciÃ³n del curso y recomendaciones para aprovechar cada mÃ³dulo.', completed: false },
-                        { id: 2, title: 'Â¿QuÃ© es la ProducciÃ³n Musical?', duration: '10:00', videoUrl: '', description: 'Contexto general del mundo de la producciÃ³n y conceptos clave para principiantes.', completed: false }
+                        { id: 1, title: 'Bienvenida al Curso', duration: '5:00', videoUrl: '', description: 'Presentación del curso y recomendaciones para aprovechar cada módulo.', completed: false },
+                        { id: 2, title: '¿Qué es la Producción Musical?', duration: '10:00', videoUrl: '', description: 'Contexto general del mundo de la producción y conceptos clave para principiantes.', completed: false }
                     ]
                 },
                 {
                     id: 'modulo-2',
                     title: 'Fundamentos del Audio',
                     lessons: [
-                        { id: 1, title: 'El Sonido y sus CaracterÃ­sticas', duration: '12:00', videoUrl: '', description: 'Define conceptos como frecuencia, amplitud y fase con ejemplos prÃ¡cticos.', completed: false },
-                        { id: 2, title: 'Frecuencias y EcualizaciÃ³n', duration: '15:00', videoUrl: '', description: 'GuÃ­a bÃ¡sica de EQ para identificar problemas y realzar elementos en la mezcla.', completed: false }
+                        { id: 1, title: 'El Sonido y sus Características', duration: '12:00', videoUrl: '', description: 'Define conceptos como frecuencia, amplitud y fase con ejemplos prácticos.', completed: false },
+                        { id: 2, title: 'Frecuencias y Ecualización', duration: '15:00', videoUrl: '', description: 'Guía básica de EQ para identificar problemas y realzar elementos en la mezcla.', completed: false }
                     ]
                 },
                 {
                     id: 'modulo-3',
-                    title: 'Herramientas de ProducciÃ³n',
+                    title: 'Herramientas de Producción',
                     lessons: [
-                        { id: 1, title: 'IntroducciÃ³n al DAW', duration: '18:00', videoUrl: '', description: 'Recorrido por la interfaz del DAW y configuraciÃ³n inicial del proyecto.', completed: false },
-                        { id: 2, title: 'Plugins y Efectos', duration: '20:00', videoUrl: '', description: 'Tipos de plugins imprescindibles y cÃ³mo integrarlos a tu flujo de trabajo.', completed: false }
+                        { id: 1, title: 'Introducción al DAW', duration: '18:00', videoUrl: '', description: 'Recorrido por la interfaz del DAW y configuración inicial del proyecto.', completed: false },
+                        { id: 2, title: 'Plugins y Efectos', duration: '20:00', videoUrl: '', description: 'Tipos de plugins imprescindibles y cómo integrarlos a tu flujo de trabajo.', completed: false }
                     ]
                 },
                 {
                     id: 'modulo-4',
-                    title: 'ComposiciÃ³n Musical',
+                    title: 'Composición Musical',
                     lessons: [
-                        { id: 1, title: 'Estructura de una CanciÃ³n', duration: '14:00', videoUrl: '', description: 'Analiza las partes de una canciÃ³n moderna y cÃ³mo distribuir la energÃ­a.', completed: false },
-                        { id: 2, title: 'CreaciÃ³n de MelodÃ­as', duration: '16:00', videoUrl: '', description: 'TÃ©cnicas sencillas para crear melodÃ­as memorables utilizando escalas y motivos.', completed: false }
+                        { id: 1, title: 'Estructura de una Canción', duration: '14:00', videoUrl: '', description: 'Analiza las partes de una canción moderna y cómo distribuir la energía.', completed: false },
+                        { id: 2, title: 'Creación de Melodías', duration: '16:00', videoUrl: '', description: 'Técnicas sencillas para crear melodías memorables utilizando escalas y motivos.', completed: false }
                     ]
                 },
                 {
                     id: 'modulo-5',
-                    title: 'Mezcla y MasterizaciÃ³n',
+                    title: 'Mezcla y Masterización',
                     lessons: [
-                        { id: 1, title: 'Fundamentos de la Mezcla', duration: '22:00', videoUrl: '', description: 'Proceso bÃ¡sico de mezcla y checklist de balance, paneo y dinÃ¡mica.', completed: false },
-                        { id: 2, title: 'TÃ©cnicas de MasterizaciÃ³n', duration: '25:00', videoUrl: '', description: 'Pasos finales para preparar tu canciÃ³n para su distribuciÃ³n.', completed: false }
+                        { id: 1, title: 'Fundamentos de la Mezcla', duration: '22:00', videoUrl: '', description: 'Proceso básico de mezcla y checklist de balance, paneo y dinámica.', completed: false },
+                        { id: 2, title: 'Técnicas de Masterización', duration: '25:00', videoUrl: '', description: 'Pasos finales para preparar tu canción para su distribución.', completed: false }
                     ]
                 }
             ];
@@ -1967,42 +1969,42 @@
             // Actualizar selector
             updateCourseSelector();
             
-            console.log('âœ… Curso guardado en localStorage:', { courseId, name });
+            console.log('✅ Curso guardado en localStorage:', { courseId, name });
             
-            // Validar que todo se guardÃ³ correctamente
+            // Validar que todo se guardó correctamente
             const savedInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
             const savedData = JSON.parse(localStorage.getItem('coursesData') || '{}');
-            console.log('ðŸ“‹ VerificaciÃ³n - Info guardada:', !!savedInfo[courseId]);
-            console.log('ðŸ“‹ VerificaciÃ³n - Data guardada:', !!savedData[courseId]);
+            console.log('📋 Verificación - Info guardada:', !!savedInfo[courseId]);
+            console.log('📋 Verificación - Data guardada:', !!savedData[courseId]);
             
             // Mostrar mensaje INMEDIATAMENTE con alert nativo (siempre funciona)
             try {
-                window.alert('âœ… Â¡Curso agregado correctamente!\n\nEl curso "' + name + '" ha sido creado exitosamente.\n\nRedirigiendo a "Gestionar Cursos"...');
-                console.log('âœ… Alert nativo mostrado');
+                window.alert('✅ ¡Curso agregado correctamente!\n\nEl curso "' + name + '" ha sido creado exitosamente.\n\nRedirigiendo a "Gestionar Cursos"...');
+                console.log('✅ Alert nativo mostrado');
             } catch (e) {
-                console.error('âŒ Error al mostrar alert:', e);
+                console.error('❌ Error al mostrar alert:', e);
             }
             
-            // TambiÃ©n mostrar mensaje visual
+            // También mostrar mensaje visual
             try {
                 if (typeof showAlert === 'function') {
-                    showAlert('âœ… Â¡Curso agregado correctamente! Redirigiendo a "Gestionar Cursos"...');
-                    console.log('âœ… Mensaje visual mostrado');
+                    showAlert('✅ ¡Curso agregado correctamente! Redirigiendo a "Gestionar Cursos"...');
+                    console.log('✅ Mensaje visual mostrado');
                 } else {
-                    console.error('âŒ showAlert no estÃ¡ definida');
+                    console.error('❌ showAlert no está definida');
                 }
                 if (typeof showInlineNewCourseMessage === 'function') {
-                    showInlineNewCourseMessage('âœ… El curso <strong>' + name + '</strong> se creÃ³ exitosamente. En unos segundos te llevaremos a "Gestionar Cursos".');
+                    showInlineNewCourseMessage('✅ El curso <strong>' + name + '</strong> se creó exitosamente. En unos segundos te llevaremos a "Gestionar Cursos".');
                 }
             } catch (e) {
-                console.error('âŒ Error al mostrar mensaje visual:', e);
+                console.error('❌ Error al mostrar mensaje visual:', e);
             }
 
             if (typeof showToast === 'function') {
-                showToast(`Â¡${name} ha sido creado!`, { icon: 'ðŸŽ“', duration: 4500 });
+                showToast(`¡${name} ha sido creado!`, { icon: '🎓', duration: 4500 });
             }
             
-            console.log('âœ… Curso creado:', { courseId, name, coursesInfo, coursesData });
+            console.log('✅ Curso creado:', { courseId, name, coursesInfo, coursesData });
             
             // Limpiar formulario primero
             document.getElementById('newCourseId').value = '';
@@ -2016,22 +2018,22 @@
             
             // Esperar un momento para que se vea el mensaje y luego cambiar a gestionar cursos
             setTimeout(() => {
-                // Cambiar a la pestaÃ±a de gestionar cursos
+                // Cambiar a la pestaña de gestionar cursos
                 switchTab('videos');
                 
                 // Esperar a que la vista se actualice y luego recargar la lista
                 setTimeout(() => {
-                    console.log('ðŸ”„ Recargando lista de cursos...');
+                    console.log('🔄 Recargando lista de cursos...');
                     loadCoursesList();
                     
-                    // Mostrar mensaje final de Ã©xito
+                    // Mostrar mensaje final de éxito
                     setTimeout(() => {
-                        showAlert('âœ… ' + name + ' estÃ¡ disponible en "Gestionar Cursos"');
+                        showAlert('✅ ' + name + ' está disponible en "Gestionar Cursos"');
                         
-                        // Desplazarse al curso reciÃ©n creado despuÃ©s de que se renderice
+                        // Desplazarse al curso recién creado después de que se renderice
                         setTimeout(() => {
                             const newCourseCard = document.querySelector(`[data-course-id="${courseId}"]`);
-                            console.log('ðŸ” Buscando curso:', courseId, 'Encontrado:', !!newCourseCard);
+                            console.log('🔍 Buscando curso:', courseId, 'Encontrado:', !!newCourseCard);
                             if (newCourseCard) {
                                 newCourseCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
                                 // Resaltar el curso nuevo por 3 segundos
@@ -2044,8 +2046,8 @@
                                     newCourseCard.style.transform = '';
                                 }, 3000);
                             } else {
-                                console.warn('âš ï¸ Curso creado pero no se encontrÃ³ en la vista:', courseId);
-                                console.log('ðŸ“‹ Cursos disponibles en localStorage:', Object.keys(JSON.parse(localStorage.getItem('coursesInfo') || '{}')));
+                                console.warn('⚠️ Curso creado pero no se encontró en la vista:', courseId);
+                                console.log('📋 Cursos disponibles en localStorage:', Object.keys(JSON.parse(localStorage.getItem('coursesInfo') || '{}')));
                             }
                         }, 800);
                     }, 300);
@@ -2058,22 +2060,22 @@
         
         // Eliminar curso completamente
         function deleteCourse(courseId) {
-            console.log('ðŸ—‘ï¸ deleteCourse llamada con courseId:', courseId);
+            console.log('🗑️ deleteCourse llamada con courseId:', courseId);
             
             if (!courseId || courseId.trim() === '') {
-                console.error('âŒ Error: courseId invÃ¡lido');
-                showAlert('âŒ Error: No se pudo identificar el curso a eliminar');
+                console.error('❌ Error: courseId inválido');
+                showAlert('❌ Error: No se pudo identificar el curso a eliminar');
                 return false;
             }
             
-            console.log('âœ… Eliminando curso:', courseId);
+            console.log('✅ Eliminando curso:', courseId);
             
             // Agregar a lista de cursos eliminados
             const deletedCourses = JSON.parse(localStorage.getItem('deletedCourses') || '[]');
             if (!deletedCourses.includes(courseId)) {
                 deletedCourses.push(courseId);
                 localStorage.setItem('deletedCourses', JSON.stringify(deletedCourses));
-                console.log('ðŸ“‹ Curso agregado a lista de eliminados');
+                console.log('📋 Curso agregado a lista de eliminados');
             }
             
             // Eliminar de coursesInfo
@@ -2081,7 +2083,7 @@
             if (coursesInfo[courseId]) {
                 delete coursesInfo[courseId];
                 localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
-                console.log('âœ… Eliminado de coursesInfo');
+                console.log('✅ Eliminado de coursesInfo');
             }
             
             // Eliminar de coursesData
@@ -2089,7 +2091,7 @@
             if (coursesData[courseId]) {
                 delete coursesData[courseId];
                 localStorage.setItem('coursesData', JSON.stringify(coursesData));
-                console.log('âœ… Eliminado de coursesData');
+                console.log('✅ Eliminado de coursesData');
             }
             
             // Actualizar selector (quitar curso eliminado)
@@ -2097,7 +2099,7 @@
                 updateCourseSelector();
             }
             
-            console.log('âœ… Curso eliminado completamente:', courseId);
+            console.log('✅ Curso eliminado completamente:', courseId);
             return true;
         }
         
@@ -2167,31 +2169,31 @@
         }
         
         // ========================================
-        // INICIALIZACIÃ“N
+        // INICIALIZACIÓN
         // ========================================
         
         // Variable global para cursos por defecto
         const defaultCoursesInfo = {
             'curso-voces': {
-                name: 'Mezcla y GrabaciÃ³n de Voces',
-                description: 'Nivel Avanzado. Aprende tÃ©cnicas profesionales para grabar y mezclar voces como los grandes productores.',
-                icon: 'ðŸŽ¤',
+                name: 'Mezcla y Grabación de Voces',
+                description: 'Nivel Avanzado. Aprende técnicas profesionales para grabar y mezclar voces como los grandes productores.',
+                icon: '🎤',
                 level: 'Avanzado',
                 status: 'available',
                 presentationVideoUrl: 'https://www.youtube.com/watch?v=ysz5S6PUM-U'
             },
             'curso-maquetizacion': {
-                name: 'MaquetizaciÃ³n Composicional',
+                name: 'Maquetización Composicional',
                 description: 'Nivel Intermedio. Domina el arte de estructurar y organizar tus composiciones musicales.',
-                icon: 'ðŸŽ¹',
+                icon: '🎹',
                 level: 'Intermedio',
                 status: 'coming-soon',
                 presentationVideoUrl: 'https://www.youtube.com/watch?v=Vx2xTI4_7oA'
             },
             'curso-beats': {
-                name: 'ProgramaciÃ³n de Beats',
+                name: 'Programación de Beats',
                 description: 'Nivel Intermedio. Aprende a programar beats profesionales desde cero.',
-                icon: 'ðŸŽ›ï¸',
+                icon: '🎛️',
                 level: 'Intermedio',
                 status: 'coming-soon',
                 presentationVideoUrl: 'https://www.youtube.com/watch?v=4TnQq0FJ4sI'
@@ -2199,7 +2201,7 @@
         };
         
         // ========================================
-        // FUNCIONES DE GESTIÃ“N DE USUARIOS
+        // FUNCIONES DE GESTIÓN DE USUARIOS
         // ========================================
         
         function normalizeEmail(email) {
@@ -2216,8 +2218,8 @@
             if (userList.length === 0) {
                 usersContainer.innerHTML = `
                     <div style="text-align: center; padding: 40px; background: var(--dark-secondary); border-radius: 12px; border: 2px dashed var(--text-muted);">
-                        <p style="color: var(--text-secondary); font-size: 1.1rem;">ðŸ“­ No hay usuarios registrados aÃºn</p>
-                        <p style="color: var(--text-muted); margin-top: 10px; font-size: 0.9rem;">Los usuarios aparecerÃ¡n aquÃ­ cuando se registren en la plataforma</p>
+                        <p style="color: var(--text-secondary); font-size: 1.1rem;">📭 No hay usuarios registrados aún</p>
+                        <p style="color: var(--text-muted); margin-top: 10px; font-size: 0.9rem;">Los usuarios aparecerán aquí cuando se registren en la plataforma</p>
                     </div>
                 `;
                 return;
@@ -2238,19 +2240,19 @@
                 
                 html += `
                     <div style="background: var(--dark-secondary); border-radius: 12px; padding: 20px; border: 2px solid ${isAdmin ? 'var(--primary-color)' : 'rgba(255,255,255,0.1)'}; position: relative;">
-                        ${isAdmin ? '<span style="position: absolute; top: 10px; right: 10px; background: var(--primary-color); color: var(--dark-bg); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">ðŸ‘‘ ADMIN</span>' : ''}
-                        ${isCurrentUser ? '<span style="position: absolute; top: 10px; left: 10px; background: #4ade80; color: var(--dark-bg); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">âœ“ TÃš</span>' : ''}
+                        ${isAdmin ? '<span style="position: absolute; top: 10px; right: 10px; background: var(--primary-color); color: var(--dark-bg); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">👑 ADMIN</span>' : ''}
+                        ${isCurrentUser ? '<span style="position: absolute; top: 10px; left: 10px; background: #4ade80; color: var(--dark-bg); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">✓ TÚ</span>' : ''}
                         <div style="margin-bottom: 15px;">
                             <h3 style="color: var(--primary-color); margin: 0 0 8px 0; font-size: 1.2rem; font-weight: 700;">${user.name || email.split('@')[0]}</h3>
-                            <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem; word-break: break-all;">ðŸ“§ ${email}</p>
+                            <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem; word-break: break-all;">📧 ${email}</p>
                         </div>
                         <div style="display: flex; gap: 10px; margin-top: 15px;">
                             <button onclick="viewUserDetails('${email}')" style="flex: 1; background: var(--dark-tertiary); color: white; border: 1px solid var(--primary-color); padding: 8px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">
-                                ðŸ‘ï¸ Ver Detalles
+                                👁️ Ver Detalles
                             </button>
                             ${!isAdmin && !isCurrentUser ? `
                             <button onclick="deleteUser('${email}')" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">
-                                ðŸ—‘ï¸ Eliminar
+                                🗑️ Eliminar
                             </button>
                             ` : ''}
                         </div>
@@ -2276,7 +2278,7 @@
             
             const detailsHtml = `
                 <div style="background: var(--dark-bg); padding: 25px; border-radius: 15px; max-width: 600px; margin: 0 auto; border: 2px solid var(--primary-color);">
-                    <h2 style="color: var(--primary-color); margin-bottom: 20px;">ðŸ‘¤ Detalles del Usuario</h2>
+                    <h2 style="color: var(--primary-color); margin-bottom: 20px;">👤 Detalles del Usuario</h2>
                     <div style="margin-bottom: 15px;">
                         <strong style="color: var(--text-secondary);">Nombre:</strong>
                         <p style="color: white; margin-top: 5px;">${user.name || 'No especificado'}</p>
@@ -2306,7 +2308,7 @@
         }
         
         function deleteUser(email) {
-            if (!confirm(`Â¿EstÃ¡s seguro de eliminar al usuario ${email}?\n\nEsta acciÃ³n no se puede deshacer.`)) {
+            if (!confirm(`¿Estás seguro de eliminar al usuario ${email}?\n\nEsta acción no se puede deshacer.`)) {
                 return;
             }
             
@@ -2314,7 +2316,7 @@
             delete users[email];
             localStorage.setItem('users', JSON.stringify(users));
             
-            // TambiÃ©n eliminar de purchasedCourses si existe
+            // También eliminar de purchasedCourses si existe
             const purchasedCourses = JSON.parse(localStorage.getItem('purchasedCourses') || '{}');
             const normalizedEmail = normalizeEmail(email);
 
@@ -2331,7 +2333,7 @@
                 localStorage.setItem('purchasedCourses', JSON.stringify(purchasedCourses));
             }
             
-            alert('âœ… Usuario eliminado exitosamente');
+            alert('✅ Usuario eliminado exitosamente');
             loadUsersList(); // Recargar lista
         }
         
@@ -2341,11 +2343,11 @@
         window.deleteUser = deleteUser;
         
         // ========================================
-        // INICIALIZACIÃ“N
+        // INICIALIZACIÓN
         // ========================================
         
         // ========================================
-        // FUNCIÃ“N DE CERRAR SESIÃ“N
+        // FUNCIÓN DE CERRAR SESIÓN
         // ========================================
         
         function deleteCookie(name) {
@@ -2353,7 +2355,7 @@
         }
         
         function logout() {
-            if (confirm('Â¿EstÃ¡s seguro que quieres cerrar sesiÃ³n?')) {
+            if (confirm('¿Estás seguro que quieres cerrar sesión?')) {
                 // Limpiar localStorage
                 localStorage.removeItem('user');
                 localStorage.removeItem('isLoggedIn');
@@ -2378,7 +2380,7 @@
         // Initialize
         showCurrentAdmin();
         initializeDefaultCourses(); // Inicializar cursos por defecto primero
-        updateCourseSelector(); // Actualizar selector para otras pestaÃ±as
+        updateCourseSelector(); // Actualizar selector para otras pestañas
         loadCoursesList(); // Cargar lista de cursos
         
         // Loading Screen - Backup (en caso de que checkAdminAccess no lo oculte)
@@ -2393,7 +2395,7 @@
                         loadingScreen.style.display = 'none';
                     }, 200);
                 }
-            }, 2000); // Backup despuÃ©s de 2 segundos
+            }, 2000); // Backup después de 2 segundos
         });
     </script>
 </body>

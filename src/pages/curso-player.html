@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -22,7 +22,7 @@
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
-            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menÃº de navegaciÃ³n">
+            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menú de navegación">
                 <svg class="header__toggle-icon header__toggle-icon--menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z"></path>
                 </svg>
@@ -31,24 +31,24 @@
                 </svg>
             </button>
             <div class="header__menu" id="mainNavigation">
-                <button class="header__menu-close" type="button" aria-label="Cerrar menÃº">
+                <button class="header__menu-close" type="button" aria-label="Cerrar menú">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
                     </svg>
                 </button>
                 <nav class="header__nav">
                     <a href="campus.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
-                        <span class="header__link-label">â† Volver al Campus</span>
-                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
+                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-label">← Volver al Campus</span>
+                        <span class="header__link-trail" aria-hidden="true">▹</span>
                     </a>
                     <a href="admin.html" id="adminLink" class="header__link" style="display: none;">
-                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
-                        <span class="header__link-label">ðŸŽ›ï¸ Panel Admin</span>
-                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
+                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-label">🎛️ Panel Admin</span>
+                        <span class="header__link-trail" aria-hidden="true">▹</span>
                     </a>
                     <span id="adminCourseIndicator" style="display: none; color: var(--primary-color); font-weight: 700; padding: 8px 15px; background: rgba(57, 243, 212, 0.1); border-radius: 8px; border: 1px solid var(--primary-color); margin-left: 10px; font-size: 0.9rem;">
-                        âœï¸ Editando: <span id="headerCourseName">Curso</span>
+                        ✏️ Editando: <span id="headerCourseName">Curso</span>
                     </span>
                 </nav>
             </div>
@@ -68,22 +68,22 @@
                         <div class="video-player__placeholder">
                             <div class="video-player__overlay">
                                 <button class="video-player__play" onclick="playVideo()">
-                                    <span class="play-icon">â–¶</span>
+                                    <span class="play-icon">▶</span>
                                 </button>
                             </div>
                             <div class="video-player__info">
-                                <h3 class="video-player__title" id="currentLessonTitle">IntroducciÃ³n al Curso</h3>
-                                <p class="video-player__description" id="videoPlayerDescription">Da clic en el botÃ³n play para comenzar la lecciÃ³n</p>
+                                <h3 class="video-player__title" id="currentLessonTitle">Introducción al Curso</h3>
+                                <p class="video-player__description" id="videoPlayerDescription">Da clic en el botón play para comenzar la lección</p>
                                 <div id="adminVideoEdit" class="admin-video-edit-card" style="display: none; margin-top: 20px;">
                                     <button id="adminVideoEditToggle" type="button" onclick="toggleAdminVideoEditor()" style="width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; background: rgba(57, 243, 212, 0.15); color: var(--primary-color); border: 1px solid rgba(57, 243, 212, 0.4); padding: 12px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.95rem;">
                                         <span style="display: inline-flex; align-items: center; gap: 10px;">
-                                            <span>ðŸŽ¬ Configurar video de la lecciÃ³n</span>
+                                            <span>🎬 Configurar video de la lección</span>
                                             <small id="adminVideoEditStatus" style="color: rgba(255,255,255,0.7); font-weight: 500;">(sin video)</small>
                                         </span>
-                                        <span id="adminVideoEditToggleIcon" style="font-size: 1.1rem;">â–¼</span>
+                                        <span id="adminVideoEditToggleIcon" style="font-size: 1.1rem;">▼</span>
                                     </button>
                                     <div id="adminVideoEditContent" style="display: none; margin-top: 12px; padding: 16px; background: rgba(0,0,0,0.45); border-radius: 12px; border: 1px solid rgba(57, 243, 212, 0.25); display: grid; gap: 14px;">
-                                        <div style="color: white; font-weight: 600;">ðŸŽ¥ Fuente del video:</div>
+                                        <div style="color: white; font-weight: 600;">🎥 Fuente del video:</div>
                                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                                             <label style="color: white; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
                                                 <input type="radio" name="videoSourceType" value="youtube" checked>
@@ -116,7 +116,7 @@
                                         </div>
 
                                         <div style="display: flex; gap: 10px;">
-                                            <button onclick="saveLessonVideo()" style="background: var(--primary-color); color: var(--dark-bg); border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem;">ðŸ’¾ Guardar Video</button>
+                                            <button onclick="saveLessonVideo()" style="background: var(--primary-color); color: var(--dark-bg); border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem;">💾 Guardar Video</button>
                                             <button type="button" onclick="toggleAdminVideoEditor(false)" style="background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">Cerrar</button>
                                         </div>
                                     </div>
@@ -128,15 +128,15 @@
                         </div>
                         <video id="lessonVideo" class="video-player__video" style="display: none; width: 100%; max-height: 600px; border-radius: 12px;" controls>
                             <source src="#" type="video/mp4">
-                            Tu navegador no soporta la reproducciÃ³n de video.
+                            Tu navegador no soporta la reproducción de video.
                         </video>
                         
-                        <!-- NavegaciÃ³n entre lecciones -->
+                        <!-- Navegación entre lecciones -->
                         <div id="lessonNavigation" style="display: none; margin-top: 20px; flex-direction: column; gap: 15px; padding: 15px; background: rgba(57, 243, 212, 0.1); border-radius: 10px; border: 1px solid var(--primary-color);">
                             <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
-                                <button id="prevLessonBtn" onclick="navigateLesson('prev')" style="flex: 1; background: var(--dark-tertiary); color: white; border: 1px solid var(--primary-color); padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s;" onmouseover="if(!this.disabled) {this.style.background='var(--primary-color)'; this.style.color='var(--dark-bg)'}" onmouseout="if(!this.disabled) {this.style.background='var(--dark-tertiary)'; this.style.color='white'}">â¬…ï¸ LecciÃ³n Anterior</button>
+                                <button id="prevLessonBtn" onclick="navigateLesson('prev')" style="flex: 1; background: var(--dark-tertiary); color: white; border: 1px solid var(--primary-color); padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s;" onmouseover="if(!this.disabled) {this.style.background='var(--primary-color)'; this.style.color='var(--dark-bg)'}" onmouseout="if(!this.disabled) {this.style.background='var(--dark-tertiary)'; this.style.color='white'}">⬅️ Lección Anterior</button>
                                 <span id="lessonCounter" style="color: var(--text-secondary); font-weight: 600; padding: 0 15px; min-width: 60px; text-align: center;">1 / 1</span>
-                                <button id="nextLessonBtn" onclick="navigateLesson('next')" style="flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: transform 0.2s;" onmouseover="if(!this.disabled) {this.style.transform='scale(1.05)'}" onmouseout="if(!this.disabled) {this.style.transform='scale(1)'}">Siguiente LecciÃ³n âž¡ï¸</button>
+                                <button id="nextLessonBtn" onclick="navigateLesson('next')" style="flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: transform 0.2s;" onmouseover="if(!this.disabled) {this.style.transform='scale(1.05)'}" onmouseout="if(!this.disabled) {this.style.transform='scale(1)'}">Siguiente Lección ➡️</button>
                             </div>
                         </div>
                     </div>
@@ -149,45 +149,45 @@
                             <h2 class="lesson-info__title" id="lessonTitle">Bienvenido al Curso</h2>
                                     <input type="text" id="lessonTitleInput" style="display: none; width: 100%; padding: 10px; background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); border-radius: 8px; font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">
                             <div class="lesson-info__meta">
-                                <span class="lesson-info__badge">LecciÃ³n 1 de 50</span>
+                                <span class="lesson-info__badge">Lección 1 de 50</span>
                                         <span class="lesson-info__duration" id="lessonDuration">15:30 minutos</span>
                                         <input type="text" id="lessonDurationInput" style="display: none; padding: 5px 10px; background: var(--dark-tertiary); color: white; border: 1px solid var(--primary-color); border-radius: 6px; font-size: 0.9rem; margin-left: 10px;">
                                     </div>
                                 </div>
                                 <div id="adminLessonEdit" style="display: none;">
-                                    <button onclick="editCurrentLesson()" style="background: var(--primary-color); color: var(--dark-bg); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; margin-right: 8px;">âœï¸ Editar</button>
-                                    <button onclick="deleteCurrentLesson()" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">ðŸ—‘ï¸ Eliminar</button>
+                                    <button onclick="editCurrentLesson()" style="background: var(--primary-color); color: var(--dark-bg); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; margin-right: 8px;">✏️ Editar</button>
+                                    <button onclick="deleteCurrentLesson()" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">🗑️ Eliminar</button>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="lesson-info__content" style="margin-top: 15px;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap;">
-                                <h3 class="lesson-info__subtitle" style="margin: 0;">DescripciÃ³n de la lecciÃ³n</h3>
+                                <h3 class="lesson-info__subtitle" style="margin: 0;">Descripción de la lección</h3>
                                 <div id="lessonDescriptionActions" style="display: none; gap: 10px; flex-wrap: wrap;">
-                                    <button id="editLessonDescriptionBtn" onclick="startLessonDescriptionEdit()" style="background: rgba(57, 243, 212, 0.15); color: var(--primary-color); border: 1px solid rgba(57, 243, 212, 0.4); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">âœï¸ Editar</button>
-                                    <button id="saveLessonDescriptionBtn" onclick="saveLessonDescription()" style="display: none; background: var(--primary-color); color: var(--dark-bg); border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem;">ðŸ’¾ Guardar</button>
-                                    <button id="cancelLessonDescriptionBtn" onclick="cancelLessonDescriptionEdit()" style="display: none; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">âŒ Cancelar</button>
+                                    <button id="editLessonDescriptionBtn" onclick="startLessonDescriptionEdit()" style="background: rgba(57, 243, 212, 0.15); color: var(--primary-color); border: 1px solid rgba(57, 243, 212, 0.4); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">✏️ Editar</button>
+                                    <button id="saveLessonDescriptionBtn" onclick="saveLessonDescription()" style="display: none; background: var(--primary-color); color: var(--dark-bg); border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem;">💾 Guardar</button>
+                                    <button id="cancelLessonDescriptionBtn" onclick="cancelLessonDescriptionEdit()" style="display: none; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">❌ Cancelar</button>
                                     </div>
                                     </div>
                             <div id="lessonDescription" style="margin-top: 15px; color: rgba(255,255,255,0.9); line-height: 1.6; font-size: 1rem;"></div>
-                            <textarea id="lessonDescriptionInput" placeholder="Escribe la descripciÃ³n detallada de la lecciÃ³n..." style="display: none; width: 100%; min-height: 160px; margin-top: 15px; padding: 15px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; font-size: 0.95rem; line-height: 1.5; resize: vertical;"></textarea>
+                            <textarea id="lessonDescriptionInput" placeholder="Escribe la descripción detallada de la lección..." style="display: none; width: 100%; min-height: 160px; margin-top: 15px; padding: 15px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; font-size: 0.95rem; line-height: 1.5; resize: vertical;"></textarea>
                             </div>
 
                         <div id="lessonDiscussion" style="margin-top: 35px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px;">
                             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-                                <h3 style="margin: 0; color: white; font-size: 1.2rem;">RetroalimentaciÃ³n y Preguntas</h3>
+                                <h3 style="margin: 0; color: white; font-size: 1.2rem;">Retroalimentación y Preguntas</h3>
                                 <span id="lessonDiscussionCount" style="color: var(--text-secondary); font-weight: 600;">0 preguntas</span>
                             </div>
-                            <p style="color: var(--text-secondary); margin-top: 10px; font-size: 0.95rem;">Comparte tus dudas y revisa las respuestas de tus compaÃ±eros y del equipo de Graykids Academy.</p>
+                            <p style="color: var(--text-secondary); margin-top: 10px; font-size: 0.95rem;">Comparte tus dudas y revisa las respuestas de tus compañeros y del equipo de Graykids Academy.</p>
 
                             <div id="lessonDiscussionList" style="margin-top: 18px; display: flex; flex-direction: column; gap: 18px;"></div>
 
                             <div style="margin-top: 22px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; display: flex; flex-direction: column; gap: 12px;">
                                 <label for="lessonQuestionInput" style="color: white; font-weight: 600;">Enviar una nueva pregunta</label>
-                                <textarea id="lessonQuestionInput" rows="4" placeholder="Escribe tu pregunta aquÃ­..." style="width: 100%; padding: 14px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; resize: vertical;"></textarea>
+                                <textarea id="lessonQuestionInput" rows="4" placeholder="Escribe tu pregunta aquí..." style="width: 100%; padding: 14px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; resize: vertical;"></textarea>
                                 <button onclick="submitLessonQuestion()" style="align-self: flex-end; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 10px 24px; border-radius: 8px; cursor: pointer; font-weight: 700;">Enviar pregunta</button>
-                                <small style="color: var(--text-secondary);">Tu pregunta serÃ¡ visible para todos los estudiantes del curso.</small>
+                                <small style="color: var(--text-secondary);">Tu pregunta será visible para todos los estudiantes del curso.</small>
                             </div>
                         </div>
                     </div>
@@ -200,55 +200,55 @@
                         <div style="padding: 20px; background: rgba(57, 243, 212, 0.15); border-radius: 12px; border: 2px solid var(--primary-color); margin-bottom: 15px;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid rgba(57, 243, 212, 0.3);">
                                 <div>
-                                    <h3 style="color: var(--primary-color); margin: 0 0 5px 0; font-size: 1.2rem; font-weight: 700;">ðŸŽ›ï¸ Modo Administrador</h3>
+                                    <h3 style="color: var(--primary-color); margin: 0 0 5px 0; font-size: 1.2rem; font-weight: 700;">🎛️ Modo Administrador</h3>
                                     <p style="color: var(--text-secondary); margin: 0; font-size: 0.85rem; font-weight: 600;">Editando: <span id="adminCurrentCourseName" style="color: var(--primary-color); font-weight: 700;">Cargando...</span></p>
                                 </div>
                             </div>
                             <button onclick="showAddModuleModal()" style="width: 100%; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; margin-bottom: 10px; font-size: 1rem;">
-                                âž• Agregar MÃ³dulo
+                                ➕ Agregar Módulo
                             </button>
                             <button onclick="showAddLessonModal()" style="width: 100%; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; margin-bottom: 10px; font-size: 1rem;">
-                                ðŸŽ¬ Agregar Video/LecciÃ³n
+                                🎬 Agregar Video/Lección
                             </button>
                             <button onclick="saveCourseDataFromPlayer()" style="width: 100%; background: rgba(57, 243, 212, 0.3); color: white; border: 2px solid var(--primary-color); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem;">
-                                ðŸ’¾ Guardar Cambios
+                                💾 Guardar Cambios
                             </button>
                         </div>
                     </div>
                     
-                    <!-- MODAL: Agregar MÃ³dulo -->
+                    <!-- MODAL: Agregar Módulo -->
                     <div id="addModuleModal" onclick="if(event.target === this) closeAddModuleModal();" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10001; align-items: center; justify-content: center;">
                         <div onclick="event.stopPropagation();" style="background: var(--dark-bg); border-radius: 15px; padding: 30px; border: 2px solid var(--primary-color); max-width: 500px; width: 90%; position: relative;">
-                            <button onclick="closeAddModuleModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700;">Ã—</button>
-                            <h3 style="color: var(--primary-color); margin-bottom: 20px; font-size: 1.5rem;">âž• Agregar Nuevo MÃ³dulo</h3>
+                            <button onclick="closeAddModuleModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700;">×</button>
+                            <h3 style="color: var(--primary-color); margin-bottom: 20px; font-size: 1.5rem;">➕ Agregar Nuevo Módulo</h3>
                             <div style="margin-bottom: 15px;">
-                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Nombre del MÃ³dulo:</label>
-                                <input type="text" id="newModuleTitleInput" placeholder="Ej: IntroducciÃ³n a la ProducciÃ³n Musical" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Nombre del Módulo:</label>
+                                <input type="text" id="newModuleTitleInput" placeholder="Ej: Introducción a la Producción Musical" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem;">
                             </div>
                             <div style="display: flex; gap: 10px;">
-                                <button onclick="saveNewModule()" style="flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem;">âœ… Agregar</button>
-                                <button onclick="closeAddModuleModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">âŒ Cancelar</button>
+                                <button onclick="saveNewModule()" style="flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem;">✅ Agregar</button>
+                                <button onclick="closeAddModuleModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">❌ Cancelar</button>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- MODAL: Agregar Video/LecciÃ³n -->
+                    <!-- MODAL: Agregar Video/Lección -->
                     <div id="addLessonModal" onclick="if(event.target === this) closeAddLessonModal();" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10001; align-items: center; justify-content: center;">
                         <div onclick="event.stopPropagation();" style="background: var(--dark-bg); border-radius: 15px; padding: 30px; border: 2px solid var(--primary-color); max-width: 600px; width: 90%; position: relative;">
-                            <button onclick="closeAddLessonModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700;">Ã—</button>
-                            <h3 style="color: var(--primary-color); margin-bottom: 20px; font-size: 1.5rem;">ðŸŽ¬ Agregar Nuevo Video/LecciÃ³n</h3>
+                            <button onclick="closeAddLessonModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700;">×</button>
+                            <h3 style="color: var(--primary-color); margin-bottom: 20px; font-size: 1.5rem;">🎬 Agregar Nuevo Video/Lección</h3>
                             <div style="margin-bottom: 15px;">
-                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Selecciona el MÃ³dulo:</label>
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Selecciona el Módulo:</label>
                                 <select id="lessonModuleSelect" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem; cursor: pointer;">
-                                    <option value="">-- Selecciona un mÃ³dulo --</option>
+                                    <option value="">-- Selecciona un módulo --</option>
                                 </select>
                             </div>
                             <div style="margin-bottom: 15px;">
-                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">TÃ­tulo de la LecciÃ³n:</label>
-                                <input type="text" id="newLessonTitleInput" placeholder="Ej: IntroducciÃ³n al DAW" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem;">
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Título de la Lección:</label>
+                                <input type="text" id="newLessonTitleInput" placeholder="Ej: Introducción al DAW" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem;">
                             </div>
                             <div style="margin-bottom: 15px;">
-                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">DuraciÃ³n (MM:SS):</label>
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Duración (MM:SS):</label>
                                 <input type="text" id="newLessonDurationInput" placeholder="15:30" style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem;">
                             </div>
                             <div style="margin-bottom: 20px;">
@@ -282,16 +282,16 @@
                             <div id="newLessonVideoInputFile" style="margin-bottom: 15px; display: none;">
                                 <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Archivo local (MP4/WebM):</label>
                                 <input type="file" id="newLessonVideoFileInput" accept="video/mp4,video/webm" style="width: 100%; padding: 10px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;">
-                                <small style="color: #bbb; display: block; margin-top: 6px;">El archivo se previsualiza en esta sesiÃ³n y no se almacena en el servidor.</small>
+                                <small style="color: #bbb; display: block; margin-top: 6px;">El archivo se previsualiza en esta sesión y no se almacena en el servidor.</small>
                             </div>
 
                             <div class="form-group" style="margin-bottom: 20px;">
-                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">DescripciÃ³n de la lecciÃ³n</label>
-                                <textarea id="newLessonDescriptionInput" placeholder="Describe los objetivos, temas y tareas de esta lecciÃ³n..." style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; min-height: 120px; resize: vertical;"></textarea>
+                                <label style="color: white; font-weight: 600; display: block; margin-bottom: 8px;">Descripción de la lección</label>
+                                <textarea id="newLessonDescriptionInput" placeholder="Describe los objetivos, temas y tareas de esta lección..." style="width: 100%; padding: 12px; background: var(--dark-tertiary); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; min-height: 120px; resize: vertical;"></textarea>
                             </div>
                             <div style="display: flex; gap: 10px;">
-                                <button onclick="saveNewLesson()" style="flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem;">âœ… Agregar Video</button>
-                                <button onclick="closeAddLessonModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">âŒ Cancelar</button>
+                                <button onclick="saveNewLesson()" style="flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem;">✅ Agregar Video</button>
+                                <button onclick="closeAddLessonModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">❌ Cancelar</button>
                             </div>
                         </div>
                     </div>
@@ -309,7 +309,7 @@
                     <div class="course-menu">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <h3 class="course-menu__title" id="courseMenuTitle">Contenido del Curso</h3>
-                            <span id="editCourseTitle" style="display: none; color: var(--primary-color); font-size: 0.85rem; cursor: pointer; font-weight: 600;" onclick="editCourseTitle()">âœï¸ Editar TÃ­tulo</span>
+                            <span id="editCourseTitle" style="display: none; color: var(--primary-color); font-size: 0.85rem; cursor: pointer; font-weight: 600;" onclick="editCourseTitle()">✏️ Editar Título</span>
                         </div>
                         <input type="text" id="courseTitleInput" style="display: none; width: 100%; padding: 10px; background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); border-radius: 8px; margin-bottom: 15px; font-size: 1.1rem;">
                         <div class="course-modules" id="courseModules">
@@ -329,10 +329,10 @@
             </div>
             <div class="footer__links">
                 <a href="contacto.html" class="footer__link">Contact</a>
-                <a href="#" class="footer__link">TÃ©rminos y Condiciones</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
                 <a href="../../index.html#faq" class="footer__link">FAQ</a>
             </div>
-            <p class="footer__copyright">Â© 2025 Graykids Academy</p>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
         </div>
     </footer>
 
@@ -390,14 +390,14 @@
             const defaultCourses = {
                 'curso-voces': {
                     id: 'curso-voces',
-                    title: 'Mezcla y GrabaciÃ³n de Voces',
+                    title: 'Mezcla y Grabación de Voces',
             modules: [
                 {
                     id: 'modulo-1',
-                    title: 'IntroducciÃ³n',
+                    title: 'Introducción',
                     lessons: [
-                                { id: 1, title: 'Bienvenida al Curso', duration: '5:30', videoUrl: '', description: 'Conoce al instructor, el objetivo general del curso y cÃ³mo sacar el mÃ¡ximo provecho del campus.', completed: false },
-                                { id: 2, title: 'Fundamentos de GrabaciÃ³n', duration: '8:15', videoUrl: '', description: 'Repaso de la cadena de audio, niveles y configuraciones esenciales antes de grabar voces.', completed: false }
+                                { id: 1, title: 'Bienvenida al Curso', duration: '5:30', videoUrl: '', description: 'Conoce al instructor, el objetivo general del curso y cómo sacar el máximo provecho del campus.', completed: false },
+                                { id: 2, title: 'Fundamentos de Grabación', duration: '8:15', videoUrl: '', description: 'Repaso de la cadena de audio, niveles y configuraciones esenciales antes de grabar voces.', completed: false }
                             ]
                         }
                     ]
@@ -417,7 +417,7 @@
 
         function normalizeCourseData(course) {
             if (!course || typeof course !== 'object') {
-                return { id: currentCourseId, title: 'Curso sin tÃ­tulo', modules: [] };
+                return { id: currentCourseId, title: 'Curso sin título', modules: [] };
             }
 
             const normalized = { ...course };
@@ -510,7 +510,7 @@
         function formatLessonDescriptionHtml(text) {
             const content = (text || '').trim();
             if (!content) {
-                return '<p style="color: var(--text-secondary); margin: 0;">Esta lecciÃ³n aÃºn no tiene una descripciÃ³n. Usa el botÃ³n "Editar" para aÃ±adir una guÃ­a para tus estudiantes.</p>';
+                return '<p style="color: var(--text-secondary); margin: 0;">Esta lección aún no tiene una descripción. Usa el botón "Editar" para añadir una guía para tus estudiantes.</p>';
             }
             return content
                 .split(/\n{2,}/)
@@ -567,7 +567,7 @@
                 } else if (lesson.videoType === 'file') {
                     sourceLabel = 'Archivo local';
                 }
-                adminVideoEditStatus.textContent = `(configurado Â· ${sourceLabel})`;
+                adminVideoEditStatus.textContent = `(configurado · ${sourceLabel})`;
             } else {
                 adminVideoEditStatus.textContent = '(sin video)';
             }
@@ -577,7 +577,7 @@
             if (!adminVideoEditContent || !adminVideoEditToggleIcon) return;
             isVideoEditorOpen = !!open;
             adminVideoEditContent.style.display = isVideoEditorOpen ? 'grid' : 'none';
-            adminVideoEditToggleIcon.textContent = isVideoEditorOpen ? 'â–²' : 'â–¼';
+            adminVideoEditToggleIcon.textContent = isVideoEditorOpen ? '▲' : '▼';
         }
 
         function toggleAdminVideoEditor(forceState) {
@@ -590,7 +590,7 @@
             if (!checkAdminMode()) return;
             const { lesson } = findLessonById(currentLessonId);
             if (!lesson) {
-                alert('Selecciona una lecciÃ³n para editar la descripciÃ³n.');
+                alert('Selecciona una lección para editar la descripción.');
                 return;
             }
             isEditingLessonDescription = true;
@@ -622,7 +622,7 @@
             if (!checkAdminMode()) return;
             const { lesson } = findLessonById(currentLessonId);
             if (!lesson) {
-                alert('No se encontrÃ³ la lecciÃ³n actual.');
+                alert('No se encontró la lección actual.');
                 resetLessonDescriptionEditor();
                 return;
             }
@@ -635,7 +635,7 @@
         }
 
         function refreshCourseTitles(newTitle) {
-            const fallback = newTitle && newTitle.trim() ? newTitle.trim() : 'Curso sin tÃ­tulo';
+            const fallback = newTitle && newTitle.trim() ? newTitle.trim() : 'Curso sin título';
             const courseMenuTitle = document.getElementById('courseMenuTitle');
             if (courseMenuTitle) {
                 courseMenuTitle.textContent = fallback;
@@ -720,7 +720,7 @@
             };
 
             const commit = () => {
-                const newTitle = titleInput.value.trim() || 'Curso sin tÃ­tulo';
+                const newTitle = titleInput.value.trim() || 'Curso sin título';
                 courseData.title = newTitle;
                 refreshCourseTitles(newTitle);
                 cleanup();
@@ -817,7 +817,7 @@
 
         // Show/hide admin controls
         function showAdminControls() {
-            // Verificar nuevamente el modo admin por si config.js se cargÃ³ despuÃ©s
+            // Verificar nuevamente el modo admin por si config.js se cargó después
             const reCheckAdmin = checkAdminMode();
             isAdminModeGlobal = reCheckAdmin;
             
@@ -847,14 +847,14 @@
                 const { lesson } = findLessonById(currentLessonId);
                 updateAdminVideoEditorStatus(lesson || null);
                 
-                // Mostrar nombre del curso que se estÃ¡ editando
-                const courseTitle = courseData && courseData.title ? courseData.title : 'Curso sin tÃ­tulo';
+                // Mostrar nombre del curso que se está editando
+                const courseTitle = courseData && courseData.title ? courseData.title : 'Curso sin título';
                 refreshCourseTitles(courseTitle);
                 
                 return true;
             } else {
                 if (urlParams.get('admin') === 'true') {
-                    alert('âš ï¸ No tienes permisos de administrador. Redirigiendo...');
+                    alert('⚠️ No tienes permisos de administrador. Redirigiendo...');
                     window.location.href = 'campus.html';
                 }
                 if (adminVideoEditCard) {
@@ -891,7 +891,7 @@
         // Intentar mostrar controles inmediatamente
         showAdminControls();
         
-        // Reintentar despuÃ©s de que la pÃ¡gina cargue completamente (por si config.js se carga despuÃ©s)
+        // Reintentar después de que la página cargue completamente (por si config.js se carga después)
         setTimeout(() => {
             showAdminControls();
         }, 500);
@@ -905,7 +905,7 @@
             isAdminModeGlobal = checkAdminMode();
             
             courseData.modules.forEach((module, moduleIndex) => {
-                const lessonCountLabel = module.lessons.length === 1 ? 'lecciÃ³n' : 'lecciones';
+                const lessonCountLabel = module.lessons.length === 1 ? 'lección' : 'lecciones';
                 const moduleElement = document.createElement('div');
                 moduleElement.className = 'course-module';
                 
@@ -921,11 +921,11 @@
                                 <span class="course-module__count">${module.lessons.length} ${lessonCountLabel}</span>
                             </div>
                             <div class="course-module__actions">
-                                <button class="course-module__action-btn course-module__action-btn--edit" onclick="editModuleTitle(${moduleIndex}, '${module.id}')" type="button" title="Editar mÃ³dulo">
-                                    <span class="course-module__action-icon">âœï¸</span>
+                                <button class="course-module__action-btn course-module__action-btn--edit" onclick="editModuleTitle(${moduleIndex}, '${module.id}')" type="button" title="Editar módulo">
+                                    <span class="course-module__action-icon">✏️</span>
                                 </button>
-                                <button class="course-module__action-btn course-module__action-btn--delete" onclick="deleteModule('${module.id}')" type="button" title="Eliminar mÃ³dulo">
-                                    <span class="course-module__action-icon">ðŸ—‘ï¸</span>
+                                <button class="course-module__action-btn course-module__action-btn--delete" onclick="deleteModule('${module.id}')" type="button" title="Eliminar módulo">
+                                    <span class="course-module__action-icon">🗑️</span>
                                 </button>
                             </div>
                         </div>
@@ -975,13 +975,13 @@
                                 </div>
                             </div>
                             <div class="lesson-item__actions">
-                                <button type="button" class="lesson-item__action-btn lesson-item__action-btn--edit" onclick="editLessonInPlayer('${module.id}', '${lesson.id}', event)" title="Editar lecciÃ³n">
-                                    <span class="lesson-item__action-icon">âœï¸</span>
+                                <button type="button" class="lesson-item__action-btn lesson-item__action-btn--edit" onclick="editLessonInPlayer('${module.id}', '${lesson.id}', event)" title="Editar lección">
+                                    <span class="lesson-item__action-icon">✏️</span>
                                 </button>
-                                <button type="button" class="lesson-item__action-btn lesson-item__action-btn--delete" onclick="deleteLessonInPlayer('${module.id}', '${lesson.id}', event)" title="Eliminar lecciÃ³n">
-                                    <span class="lesson-item__action-icon">ðŸ—‘ï¸</span>
+                                <button type="button" class="lesson-item__action-btn lesson-item__action-btn--delete" onclick="deleteLessonInPlayer('${module.id}', '${lesson.id}', event)" title="Eliminar lección">
+                                    <span class="lesson-item__action-icon">🗑️</span>
                                 </button>
-                                ${lesson.completed ? '<span class="lesson-item__check">âœ“</span>' : ''}
+                                ${lesson.completed ? '<span class="lesson-item__check">✓</span>' : ''}
                             </div>
                         `;
                     } else {
@@ -995,7 +995,7 @@
                             </div>
                         </div>
                         <div class="lesson-item__right">
-                            ${lesson.completed ? '<span class="lesson-item__check">âœ“</span>' : ''}
+                            ${lesson.completed ? '<span class="lesson-item__check">✓</span>' : ''}
                         </div>
                     `;
                     }
@@ -1020,7 +1020,7 @@
             const lessons = document.querySelectorAll('.course-module')[index].querySelector('.course-module__lessons');
             lessons.classList.toggle('course-module__lessons--expanded');
         }
-        // Guardar video de la lecciÃ³n actual (3 opciones)
+        // Guardar video de la lección actual (3 opciones)
         function saveLessonVideo() {
             const typeInput = document.querySelector('input[name="videoSourceType"]:checked');
             const sourceType = typeInput ? typeInput.value : 'youtube';
@@ -1029,29 +1029,29 @@
             const fileInput = document.getElementById('lessonVideoFileInput');
             
             const { lesson } = findLessonById(currentLessonId);
-            if (!lesson) { alert('âŒ No se encontrÃ³ la lecciÃ³n actual'); return; }
+            if (!lesson) { alert('❌ No se encontró la lección actual'); return; }
             
             // Limpiar campos previos
             delete lesson.videoDataUrl;
             lesson.videoType = sourceType;
             
             if (sourceType === 'youtube') {
-                if (!youtubeUrl) { alert('âš ï¸ Ingresa una URL de YouTube/Vimeo'); return; }
+                if (!youtubeUrl) { alert('⚠️ Ingresa una URL de YouTube/Vimeo'); return; }
                 lesson.videoUrl = youtubeUrl;
             } else if (sourceType === 'direct') {
-                if (!directUrl) { alert('âš ï¸ Ingresa una URL directa (MP4/M3U8)'); return; }
+                if (!directUrl) { alert('⚠️ Ingresa una URL directa (MP4/M3U8)'); return; }
                 lesson.videoUrl = directUrl;
             } else if (sourceType === 'file') {
-                if (!fileInput || !fileInput.files || fileInput.files.length === 0) { alert('âš ï¸ Selecciona un archivo de video'); return; }
+                if (!fileInput || !fileInput.files || fileInput.files.length === 0) { alert('⚠️ Selecciona un archivo de video'); return; }
                 const file = fileInput.files[0];
-                const objectUrl = URL.createObjectURL(file); // vÃ¡lida en la sesiÃ³n
+                const objectUrl = URL.createObjectURL(file); // válida en la sesión
                 lesson.videoUrl = objectUrl;
                 lesson.videoDataUrl = null;
             }
             
             saveCourseDataFromPlayer();
             updateAdminVideoEditorStatus(lesson);
-            alert('âœ… Video guardado');
+            alert('✅ Video guardado');
             generateCourseMenu();
             const descEl = document.getElementById('videoPlayerDescription');
             if (descEl) descEl.textContent = 'Video disponible. Clic en play para reproducir.';
@@ -1061,7 +1061,7 @@
         function playVideo() {
             const { lesson: lessonData } = findLessonById(currentLessonId);
             if (!lessonData || !lessonData.videoUrl) {
-                alert('âš ï¸ Video no disponible. Contacta al administrador para subir el video de esta lecciÃ³n.');
+                alert('⚠️ Video no disponible. Contacta al administrador para subir el video de esta lección.');
                 return;
             }
             
@@ -1075,7 +1075,7 @@
             const type = lessonData.videoType || 'youtube';
             if (type === 'youtube') {
                 const embed = getEmbedUrl(lessonData.videoUrl);
-                if (!embed) { alert('âŒ URL no vÃ¡lida'); return; }
+                if (!embed) { alert('❌ URL no válida'); return; }
                 iframe.src = embed;
                 iframeC.style.display = 'block';
                 videoEl.style.display = 'none';
@@ -1107,7 +1107,7 @@
             const user = localStorage.getItem('user');
             
             if (!isLoggedIn || !user) {
-                alert('Debes iniciar sesiÃ³n para acceder al curso');
+                alert('Debes iniciar sesión para acceder al curso');
                 window.location.href = 'Login.html';
                 return false;
             }
@@ -1118,12 +1118,12 @@
         // ADMIN FUNCTIONS
         // ========================================
         
-        // Variables para ediciÃ³n admin
+        // Variables para edición admin
         let editingModuleId = null;
         let editingLessonId = null;
         let editingModuleIndex = null;
         
-        // Mostrar modal para agregar mÃ³dulo
+        // Mostrar modal para agregar módulo
         function showAddModuleModal() {
             document.getElementById('newModuleTitleInput').value = '';
             document.getElementById('addModuleModal').style.display = 'flex';
@@ -1136,7 +1136,7 @@
         function saveNewModule() {
             const title = document.getElementById('newModuleTitleInput').value.trim();
             if (!title) {
-                alert('Por favor ingresa un nombre para el mÃ³dulo');
+                alert('Por favor ingresa un nombre para el módulo');
                 return;
             }
             
@@ -1150,24 +1150,24 @@
             saveCourseDataFromPlayer();
             closeAddModuleModal();
             
-            // Mostrar notificaciÃ³n
+            // Mostrar notificación
             const notification = document.createElement('div');
             notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: var(--dark-bg); padding: 15px 25px; border-radius: 10px; z-index: 10002; font-weight: 700; box-shadow: 0 4px 15px rgba(57, 243, 212, 0.4);';
-            notification.textContent = 'âœ… MÃ³dulo agregado exitosamente!';
+            notification.textContent = '✅ Módulo agregado exitosamente!';
             document.body.appendChild(notification);
             setTimeout(() => notification.remove(), 2000);
         }
         
-        // Mostrar modal para agregar video/lecciÃ³n
+        // Mostrar modal para agregar video/lección
         function showAddLessonModal() {
             if (courseData.modules.length === 0) {
-                alert('Primero agrega un mÃ³dulo antes de agregar videos.');
+                alert('Primero agrega un módulo antes de agregar videos.');
                 return;
             }
             
-            // Llenar selector de mÃ³dulos
+            // Llenar selector de módulos
             const moduleSelect = document.getElementById('lessonModuleSelect');
-            moduleSelect.innerHTML = '<option value="">-- Selecciona un mÃ³dulo --</option>';
+            moduleSelect.innerHTML = '<option value="">-- Selecciona un módulo --</option>';
             courseData.modules.forEach((module, index) => {
                 const option = document.createElement('option');
                 option.value = index;
@@ -1212,12 +1212,12 @@
             const description = document.getElementById('newLessonDescriptionInput')?.value.trim() || '';
             
             if (isNaN(moduleIndex) || moduleIndex < 0 || moduleIndex >= courseData.modules.length) {
-                alert('Por favor selecciona un mÃ³dulo vÃ¡lido.');
+                alert('Por favor selecciona un módulo válido.');
                 return;
             }
             
             if (!title) {
-                alert('Por favor ingresa un tÃ­tulo para la lecciÃ³n');
+                alert('Por favor ingresa un título para la lección');
                 return;
             }
             
@@ -1281,12 +1281,12 @@
             
             const notification = document.createElement('div');
             notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: var(--dark-bg); padding: 15px 25px; border-radius: 10px; z-index: 10002; font-weight: 700; box-shadow: 0 4px 15px rgba(57, 243, 212, 0.4);';
-            notification.textContent = 'âœ… Video agregado exitosamente!';
+            notification.textContent = '✅ Video agregado exitosamente!';
             document.body.appendChild(notification);
             setTimeout(() => notification.remove(), 2000);
         }
         
-        // Editar tÃ­tulo del mÃ³dulo
+        // Editar título del módulo
         function editModuleTitle(moduleIndex, moduleId) {
             const module = courseData.modules[moduleIndex];
             const titleInput = document.getElementById(`moduleTitleInput-${moduleIndex}`);
@@ -1319,17 +1319,17 @@
             }
         }
         
-        // Eliminar mÃ³dulo
+        // Eliminar módulo
         function deleteModule(moduleId) {
-            if (confirm('Â¿EstÃ¡s seguro de eliminar este mÃ³dulo y todas sus lecciones?')) {
+            if (confirm('¿Estás seguro de eliminar este módulo y todas sus lecciones?')) {
                 courseData.modules = courseData.modules.filter(m => m.id !== moduleId);
                 generateCourseMenu();
                 saveCourseDataFromPlayer();
-                alert('MÃ³dulo eliminado');
+                alert('Módulo eliminado');
             }
         }
         
-        // Editar lecciÃ³n desde el player
+        // Editar lección desde el player
         function editLessonInPlayer(moduleId, lessonId, event) {
             event.stopPropagation();
             
@@ -1339,12 +1339,12 @@
             const lesson = module.lessons.find(l => l.id === lessonId);
             if (!lesson) return;
             
-            const newTitle = prompt('Nuevo tÃ­tulo de la lecciÃ³n:', lesson.title);
+            const newTitle = prompt('Nuevo título de la lección:', lesson.title);
             if (newTitle && newTitle.trim()) {
                 lesson.title = newTitle.trim();
             }
             
-            const newDuration = prompt('Nueva duraciÃ³n (MM:SS):', lesson.duration);
+            const newDuration = prompt('Nueva duración (MM:SS):', lesson.duration);
             if (newDuration) {
                 lesson.duration = newDuration;
             }
@@ -1354,7 +1354,7 @@
                 lesson.videoUrl = newVideoUrl;
             }
 
-            const newDescription = prompt('DescripciÃ³n de la lecciÃ³n:', lesson.description || '');
+            const newDescription = prompt('Descripción de la lección:', lesson.description || '');
             if (newDescription !== null) {
                 lesson.description = newDescription.trim();
             }
@@ -1362,17 +1362,17 @@
             generateCourseMenu();
             saveCourseDataFromPlayer();
             
-            // Recargar lecciÃ³n actual si es la que se editÃ³
+            // Recargar lección actual si es la que se editó
             if (currentLessonId === lessonId) {
                 loadLesson(lessonId, lesson.title, lesson);
             }
         }
         
-        // Eliminar lecciÃ³n desde el player
+        // Eliminar lección desde el player
         function deleteLessonInPlayer(moduleId, lessonId, event) {
             event.stopPropagation();
             
-            if (!confirm('Â¿EstÃ¡s seguro de eliminar esta lecciÃ³n?')) return;
+            if (!confirm('¿Estás seguro de eliminar esta lección?')) return;
             
             const module = courseData.modules.find(m => m.id === moduleId);
             if (!module) return;
@@ -1386,7 +1386,7 @@
                 saveDiscussionsData();
             }
             
-            // Si era la lecciÃ³n actual, cargar la primera disponible
+            // Si era la lección actual, cargar la primera disponible
             if (currentLessonId === lessonId) {
                 if (courseData.modules.length > 0 && courseData.modules[0].lessons.length > 0) {
                     const firstLesson = courseData.modules[0].lessons[0];
@@ -1398,28 +1398,28 @@
             }
         }
         
-        // Editar lecciÃ³n actual
+        // Editar lección actual
         function editCurrentLesson() {
             const { lesson } = findLessonById(currentLessonId);
             if (!lesson) {
-                alert('LecciÃ³n no encontrada');
+                alert('Lección no encontrada');
                 return;
             }
             
-            const newTitle = prompt('Nuevo tÃ­tulo:', lesson.title);
+            const newTitle = prompt('Nuevo título:', lesson.title);
             if (newTitle && newTitle.trim()) {
                 lesson.title = newTitle.trim();
                 document.getElementById('lessonTitle').textContent = lesson.title;
                 document.getElementById('currentLessonTitle').textContent = lesson.title;
             }
             
-            const newDuration = prompt('Nueva duraciÃ³n (MM:SS):', lesson.duration);
+            const newDuration = prompt('Nueva duración (MM:SS):', lesson.duration);
             if (newDuration) {
                 lesson.duration = newDuration;
                 document.getElementById('lessonDuration').textContent = newDuration;
             }
 
-            const newDescription = prompt('DescripciÃ³n de la lecciÃ³n:', lesson.description || '');
+            const newDescription = prompt('Descripción de la lección:', lesson.description || '');
             if (newDescription !== null) {
                 lesson.description = newDescription.trim();
                 updateLessonDescriptionContent(lesson);
@@ -1430,13 +1430,13 @@
             saveCourseDataFromPlayer();
         }
         
-        // Eliminar lecciÃ³n actual
+        // Eliminar lección actual
         function deleteCurrentLesson() {
-            if (!confirm('Â¿EstÃ¡s seguro de eliminar esta lecciÃ³n?')) return;
+            if (!confirm('¿Estás seguro de eliminar esta lección?')) return;
             
             const { module, lessonIndex } = findLessonById(currentLessonId);
             if (!module || lessonIndex === -1) {
-                alert('No se encontrÃ³ la lecciÃ³n actual.');
+                alert('No se encontró la lección actual.');
                 return;
             }
 
@@ -1458,9 +1458,9 @@
                 }
             } else {
                 currentLessonId = null;
-                document.getElementById('lessonTitle').textContent = 'Sin lecciÃ³n seleccionada';
-                document.getElementById('currentLessonTitle').textContent = 'Sin lecciÃ³n seleccionada';
-                document.getElementById('videoPlayerDescription').textContent = 'Agrega una nueva lecciÃ³n para comenzar.';
+                document.getElementById('lessonTitle').textContent = 'Sin lección seleccionada';
+                document.getElementById('currentLessonTitle').textContent = 'Sin lección seleccionada';
+                document.getElementById('videoPlayerDescription').textContent = 'Agrega una nueva lección para comenzar.';
                 document.querySelector('.video-player__placeholder').style.display = 'block';
                 document.getElementById('lessonVideo').style.display = 'none';
                 updateLessonDescriptionContent(null);
@@ -1477,17 +1477,17 @@
             storedCourses[currentCourseId] = courseData;
             localStorage.setItem('coursesData', JSON.stringify(storedCourses));
             
-            // Actualizar informaciÃ³n del curso tambiÃ©n
+            // Actualizar información del curso también
             const coursesInfo = JSON.parse(localStorage.getItem('coursesInfo') || '{}');
             if (coursesInfo[currentCourseId]) {
                 coursesInfo[currentCourseId].name = courseData.title;
             }
             localStorage.setItem('coursesInfo', JSON.stringify(coursesInfo));
             
-            // Mostrar notificaciÃ³n
+            // Mostrar notificación
             const notification = document.createElement('div');
             notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--primary-color); color: var(--dark-bg); padding: 15px 25px; border-radius: 10px; z-index: 10000; font-weight: 700; box-shadow: 0 4px 15px rgba(57, 243, 212, 0.4);';
-            notification.textContent = 'âœ… Cambios guardados';
+            notification.textContent = '✅ Cambios guardados';
             document.body.appendChild(notification);
             setTimeout(() => notification.remove(), 2000);
         }
@@ -1501,7 +1501,7 @@
             }
 
             if (!currentLessonId) {
-                listEl.innerHTML = '<p style="color: var(--text-secondary);">Selecciona una lecciÃ³n para ver las preguntas.</p>';
+                listEl.innerHTML = '<p style="color: var(--text-secondary);">Selecciona una lección para ver las preguntas.</p>';
                 countEl.textContent = '0 preguntas';
                 if (questionInput) questionInput.disabled = true;
                 return;
@@ -1513,7 +1513,7 @@
             countEl.textContent = `${discussions.length} ${discussions.length === 1 ? 'pregunta' : 'preguntas'}`;
 
             if (!discussions.length) {
-                listEl.innerHTML = '<p style="color: var(--text-secondary); background: rgba(255,255,255,0.05); padding: 14px 18px; border-radius: 10px;">AÃºn no hay preguntas. Â¡SÃ© la primera persona en participar!</p>';
+                listEl.innerHTML = '<p style="color: var(--text-secondary); background: rgba(255,255,255,0.05); padding: 14px 18px; border-radius: 10px;">Aún no hay preguntas. ¡Sé la primera persona en participar!</p>';
                 return;
             }
 
@@ -1584,7 +1584,7 @@
 
         function submitLessonQuestion() {
             if (!currentLessonId) {
-                alert('Selecciona una lecciÃ³n antes de enviar una pregunta.');
+                alert('Selecciona una lección antes de enviar una pregunta.');
                 return;
             }
 
@@ -1633,7 +1633,7 @@
             const lessonDiscussions = getLessonDiscussions(currentCourseId, currentLessonId);
             const question = lessonDiscussions.find(q => q.id === questionId);
             if (!question) {
-                alert('No se encontrÃ³ la pregunta seleccionada.');
+                alert('No se encontró la pregunta seleccionada.');
                 return;
             }
 
@@ -1657,7 +1657,7 @@
             renderLessonDiscussion();
         }
         
-        // Cargar datos del video al seleccionar lecciÃ³n (modo admin)
+        // Cargar datos del video al seleccionar lección (modo admin)
         function loadLesson(lessonId, lessonTitle, lessonData = null, element = null) {
             currentLessonId = lessonId;
 
@@ -1674,9 +1674,9 @@
                 const totalLessons = getAllLessons().length;
                 if (module && lessonIndex >= 0) {
                     const sequential = `${moduleIndex + 1}.${lessonIndex + 1}`;
-                    badgeEl.textContent = `LecciÃ³n ${sequential} de ${totalLessons}`;
+                    badgeEl.textContent = `Lección ${sequential} de ${totalLessons}`;
                 } else {
-                    badgeEl.textContent = `LecciÃ³n - de ${totalLessons}`;
+                    badgeEl.textContent = `Lección - de ${totalLessons}`;
                 }
             }
 
@@ -1732,7 +1732,7 @@
                 const descEl = document.getElementById('videoPlayerDescription');
                 if (descEl) {
                     if (lessonToUse.videoType === 'file') {
-                        descEl.textContent = 'Video cargado desde tu equipo. No recargues la pÃ¡gina para mantenerlo disponible.';
+                        descEl.textContent = 'Video cargado desde tu equipo. No recargues la página para mantenerlo disponible.';
             } else {
                         descEl.textContent = 'Video disponible. Clic en play para reproducir.';
                     }
@@ -1761,7 +1761,7 @@
             renderLessonDiscussion();
         }
         
-        // Actualizar navegaciÃ³n entre lecciones
+        // Actualizar navegación entre lecciones
         function updateLessonNavigation() {
             const navigation = document.getElementById('lessonNavigation');
             if (!navigation) return;
@@ -1777,7 +1777,7 @@
             
             const currentIndex = allLessons.findIndex(l => l.id === currentLessonId);
             
-            // BotÃ³n anterior
+            // Botón anterior
             const prevBtn = document.getElementById('prevLessonBtn');
             if (currentIndex > 0) {
                 prevBtn.disabled = false;
@@ -1789,7 +1789,7 @@
                 prevBtn.style.cursor = 'not-allowed';
             }
             
-            // BotÃ³n siguiente
+            // Botón siguiente
             const nextBtn = document.getElementById('nextLessonBtn');
             if (currentIndex !== -1 && currentIndex < allLessons.length - 1) {
                 nextBtn.disabled = false;
@@ -1861,7 +1861,7 @@
                     const targetElement = document.querySelector(`[data-lesson-id="${firstLesson.id}"]`);
                     if (targetElement) {
                         loadLesson(firstLesson.id, firstLesson.title, firstLesson, targetElement);
-                        // Expandir primer mÃ³dulo
+                        // Expandir primer módulo
                         const moduleElement = targetElement.closest('.course-module');
                         if (moduleElement) {
                             const lessonsContainer = moduleElement.querySelector('.course-module__lessons');
@@ -1873,11 +1873,11 @@
                 } else if (isAdminModeGlobal) {
                     const desc = document.getElementById('videoPlayerDescription');
                     if (desc) {
-                        desc.textContent = 'No hay lecciones aÃºn. Usa los botones del panel derecho para agregar mÃ³dulos y videos.';
+                        desc.textContent = 'No hay lecciones aún. Usa los botones del panel derecho para agregar módulos y videos.';
                     }
                 }
                 
-                // Mostrar navegaciÃ³n si hay lecciones
+                // Mostrar navegación si hay lecciones
                 updateLessonNavigation();
             }, 200);
         }

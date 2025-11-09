@@ -9,7 +9,7 @@ const OAUTH_CONFIG = {
         // ⚠️ IMPORTANTE: Si tienes el Client ID completo, reemplázalo aquí
         // Formato: 104975106598681893735-xxxxx.apps.googleusercontent.com
         // Si solo tienes el ID único, necesitarás crear un OAuth 2.0 Client ID en Google Cloud Console
-        clientId: '622696907239-t596p4v5j3i2msh31vasfpurtih92no2.apps.googleusercontent.com',
+        clientId: '545857776481-i7qtestirno9gevfeov7kiniov7qrbtc.apps.googleusercontent.com',
         // Cuenta de servicio asociada: graykids-academy@poetic-chariot-399320.iam.gserviceaccount.com
         // Para desarrollo local, usa: http://localhost:5500 o el puerto que uses
         // Para producción, usa: https://tudominio.com

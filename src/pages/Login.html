@@ -153,29 +153,29 @@
     <!-- Verification Modal -->
     <div id="verificationModal" class="verification-modal">
         <div class="verification-content">
-            <button onclick="closeVerificationModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700; transition: transform 0.2s;" onmouseover="this.style.transform='rotate(90deg)'" onmouseout="this.style.transform='rotate(0deg)'">Ã—</button>
-            <div class="verification-icon">ðŸ“§</div>
+            <button onclick="closeVerificationModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700; transition: transform 0.2s;" onmouseover="this.style.transform='rotate(90deg)'" onmouseout="this.style.transform='rotate(0deg)'">×</button>
+            <div class="verification-icon">📧</div>
             <h2 style="color: var(--primary-color); margin-bottom: 15px; font-size: 2rem; font-weight: 700;">Verifica tu Email</h2>
             <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6; font-size: 1.05rem;">
-                Hemos enviado un enlace de verificaciÃ³n a:
+                Hemos enviado un enlace de verificación a:
             </p>
             <p style="color: var(--primary-color); margin-bottom: 25px; font-size: 1.1rem; font-weight: 700; word-break: break-all; padding: 10px; background: rgba(57, 243, 212, 0.1); border-radius: 8px;">
                 <span id="verificationEmail">email@ejemplo.com</span>
             </p>
             <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.6;">
-                Por favor, revisa tu bandeja de entrada (y tambiÃ©n la carpeta de spam) y haz clic en el enlace para verificar tu cuenta.
+                Por favor, revisa tu bandeja de entrada (y también la carpeta de spam) y haz clic en el enlace para verificar tu cuenta.
             </p>
             <div style="background: rgba(57, 243, 212, 0.15); border-radius: 12px; padding: 20px; margin-bottom: 25px; border-left: 4px solid var(--primary-color);">
                 <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0; line-height: 1.6;">
-                    <strong style="color: var(--primary-color);">ðŸ’¡ Modo Desarrollo:</strong> Puedes hacer clic en "Verificar Ahora" para continuar sin verificar el email. En producciÃ³n, esto se deshabilitarÃ¡.
+                    <strong style="color: var(--primary-color);">💡 Modo Desarrollo:</strong> Puedes hacer clic en "Verificar Ahora" para continuar sin verificar el email. En producción, esto se deshabilitará.
                 </p>
             </div>
             <div style="display: flex; gap: 10px; flex-direction: column;">
                 <button id="verifyNowBtn" style="background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 15px 25px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(57, 243, 212, 0.3);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                    âœ… Verificar Ahora
+                    ✅ Verificar Ahora
                 </button>
                 <button id="resendEmailBtn" style="background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); padding: 12px 25px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(57, 243, 212, 0.1)'" onmouseout="this.style.background='transparent'">
-                    ðŸ”„ Reenviar Email de VerificaciÃ³n
+                    🔄 Reenviar Email de Verificación
                 </button>
                 <button onclick="closeVerificationModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
                     Cerrar
@@ -192,7 +192,7 @@
                     <span class="header__logo-text">GRAYKIDS ACADEMY</span>
                 </a>
             </div>
-            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menÃº de navegaciÃ³n">
+            <button class="header__toggle" type="button" aria-expanded="false" aria-controls="mainNavigation" aria-label="Abrir menú de navegación">
                 <svg class="header__toggle-icon header__toggle-icon--menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z"></path>
                 </svg>
@@ -201,31 +201,41 @@
                 </svg>
             </button>
             <div class="header__menu" id="mainNavigation">
-                <button class="header__menu-close" type="button" aria-label="Cerrar menÃº">
+                <button class="header__menu-close" type="button" aria-label="Cerrar menú">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
                     </svg>
                 </button>
                 <nav class="header__nav">
-                    <a href="../../index.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
-                        <span class="header__link-label">Inicio</span>
-                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
-                    </a>
                     <a href="cursos.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
-                        <span class="header__link-label">Cursos</span>
-                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
+                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-label">Cursos VIP</span>
+                        <span class="header__link-trail" aria-hidden="true">▹</span>
                     </a>
                     <a href="GraykidsMembers.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
+                        <span class="header__link-icon" aria-hidden="true">✦</span>
                         <span class="header__link-label">Graykids Members</span>
-                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
+                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                    </a>
+                    <a href="Discord.html" class="header__link">
+                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-label">Discord</span>
+                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                    </a>
+                    <a href="librerias.html" class="header__link">
+                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-label">Librerías</span>
+                        <span class="header__link-trail" aria-hidden="true">▹</span>
                     </a>
                     <a href="contacto.html" class="header__link">
-                        <span class="header__link-icon" aria-hidden="true">âœ¦</span>
+                        <span class="header__link-icon" aria-hidden="true">✦</span>
                         <span class="header__link-label">Contacto</span>
-                        <span class="header__link-trail" aria-hidden="true">â–¹</span>
+                        <span class="header__link-trail" aria-hidden="true">▹</span>
+                    </a>
+                    <a href="../../index.html#faq" class="header__link">
+                        <span class="header__link-icon" aria-hidden="true">✦</span>
+                        <span class="header__link-label">FAQ</span>
+                        <span class="header__link-trail" aria-hidden="true">▹</span>
                     </a>
                 </nav>
             </div>
@@ -244,27 +254,27 @@
             <!-- Left Side - Image/Animation -->
             <div class="login-hero__left">
                 <div class="login-hero__content">
-                    <h1 class="login-hero__title">Â¡Bienvenido de vuelta! ðŸŽµ</h1>
+                    <h1 class="login-hero__title">¡Bienvenido de vuelta! 🎵</h1>
                     <p class="login-hero__subtitle">
-                        Accede a tus cursos, recursos exclusivos y a la comunidad de productores mÃ¡s grande de LatinoamÃ©rica.
+                        Accede a tus cursos, recursos exclusivos y a la comunidad de productores más grande de Latinoamérica.
                     </p>
                     
                     <!-- Features -->
                     <div class="login-features">
                         <div class="login-feature">
-                            <span class="login-feature__icon">ðŸ“š</span>
+                            <span class="login-feature__icon">📚</span>
                             <span class="login-feature__text">Cursos exclusivos</span>
                         </div>
                         <div class="login-feature">
-                            <span class="login-feature__icon">ðŸŽ</span>
+                            <span class="login-feature__icon">🎁</span>
                             <span class="login-feature__text">Recursos descargables</span>
                         </div>
                         <div class="login-feature">
-                            <span class="login-feature__icon">ðŸ’¬</span>
+                            <span class="login-feature__icon">💬</span>
                             <span class="login-feature__text">Comunidad Discord</span>
                         </div>
                         <div class="login-feature">
-                            <span class="login-feature__icon">ðŸŽ“</span>
+                            <span class="login-feature__icon">🎓</span>
                             <span class="login-feature__text">Certificados</span>
                         </div>
                     </div>
@@ -278,7 +288,7 @@
                     <!-- Login Form -->
                     <div class="login-tabs">
                         <button class="login-tab login-tab--active" onclick="showLogin()">
-                            Iniciar SesiÃ³n
+                            Iniciar Sesión
                         </button>
                         <button class="login-tab" onclick="showRegister()">
                             Registrarse
@@ -288,22 +298,22 @@
                     <!-- LOGIN FORM -->
                     <form class="login-form active" id="loginForm">
                         <div class="login-form__header">
-                            <h2 class="login-form__title">Inicia SesiÃ³n</h2>
+                            <h2 class="login-form__title">Inicia Sesión</h2>
                             <p class="login-form__subtitle">Ingresa con tu cuenta de Graykids Academy</p>
                         </div>
 
                         <div class="form-group">
-                            <label for="loginEmail" class="form-label">Correo ElectrÃ³nico</label>
+                            <label for="loginEmail" class="form-label">Correo Electrónico</label>
                             <input type="email" id="loginEmail" class="form-input" placeholder="tu@email.com" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="loginPassword" class="form-label">ContraseÃ±a</label>
+                            <label for="loginPassword" class="form-label">Contraseña</label>
                             <div class="password-input">
-                                <input type="password" id="loginPassword" class="form-input" placeholder="Tu contraseÃ±a" required>
-                                <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')" aria-label="Mostrar/Ocultar contraseÃ±a">
-                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseÃ±a" class="eye-icon eye-icon-visible" id="loginPassword-eye-visible">
-                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseÃ±a" class="eye-icon eye-icon-hidden" id="loginPassword-eye-hidden" style="display: none;">
+                                <input type="password" id="loginPassword" class="form-input" placeholder="Tu contraseña" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')" aria-label="Mostrar/Ocultar contraseña">
+                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="loginPassword-eye-visible">
+                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="loginPassword-eye-hidden" style="display: none;">
                                 </button>
                             </div>
                         </div>
@@ -316,16 +326,16 @@
                                 </span>
                                 <span class="remember-switch__text">Recordarme</span>
                             </label>
-                            <a href="#" class="login-form__forgot" onclick="showForgotPassword()">Â¿Olvidaste tu contraseÃ±a?</a>
+                            <a href="#" class="login-form__forgot" onclick="showForgotPassword()">¿Olvidaste tu contraseña?</a>
                         </div>
 
                         <button type="submit" class="btn btn--primary btn--block btn--large">
-                            Iniciar SesiÃ³n
+                            Iniciar Sesión
                         </button>
 
         <!-- Social Login -->
         <div class="login-divider">
-            <span class="login-divider__text">O continÃºa con</span>
+            <span class="login-divider__text">O continúa con</span>
         </div>
 
         <div class="social-login">
@@ -347,7 +357,7 @@
         </div>
 
                         <p class="login-form__footer">
-                            Â¿No tienes cuenta? <a href="#" class="login-form__link" onclick="showRegister()">RegÃ­strate aquÃ­</a>
+                            ¿No tienes cuenta? <a href="#" class="login-form__link" onclick="showRegister()">Regístrate aquí</a>
                         </p>
                     </form>
 
@@ -355,7 +365,7 @@
                     <form class="login-form" id="registerForm" style="display: none;">
                         <div class="login-form__header">
                             <h2 class="login-form__title">Crea tu Cuenta</h2>
-                            <p class="login-form__subtitle">Ãšnete a Graykids Academy hoy</p>
+                            <p class="login-form__subtitle">Únete a Graykids Academy hoy</p>
                         </div>
 
                         <div class="form-group">
@@ -364,28 +374,28 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="registerEmail" class="form-label">Correo ElectrÃ³nico</label>
+                            <label for="registerEmail" class="form-label">Correo Electrónico</label>
                             <input type="email" id="registerEmail" class="form-input" placeholder="tu@email.com" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="registerPassword" class="form-label">ContraseÃ±a</label>
+                            <label for="registerPassword" class="form-label">Contraseña</label>
                             <div class="password-input">
-                                <input type="password" id="registerPassword" class="form-input" placeholder="MÃ­nimo 8 caracteres" required minlength="8">
-                                <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')" aria-label="Mostrar/Ocultar contraseÃ±a">
-                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseÃ±a" class="eye-icon eye-icon-visible" id="registerPassword-eye-visible">
-                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseÃ±a" class="eye-icon eye-icon-hidden" id="registerPassword-eye-hidden" style="display: none;">
+                                <input type="password" id="registerPassword" class="form-input" placeholder="Mínimo 8 caracteres" required minlength="8">
+                                <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')" aria-label="Mostrar/Ocultar contraseña">
+                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPassword-eye-visible">
+                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPassword-eye-hidden" style="display: none;">
                                 </button>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="registerPasswordConfirm" class="form-label">Confirmar ContraseÃ±a</label>
+                            <label for="registerPasswordConfirm" class="form-label">Confirmar Contraseña</label>
                             <div class="password-input">
-                                <input type="password" id="registerPasswordConfirm" class="form-input" placeholder="Confirma tu contraseÃ±a" required>
-                                <button type="button" class="password-toggle" onclick="togglePassword('registerPasswordConfirm')" aria-label="Mostrar/Ocultar contraseÃ±a">
-                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseÃ±a" class="eye-icon eye-icon-visible" id="registerPasswordConfirm-eye-visible">
-                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseÃ±a" class="eye-icon eye-icon-hidden" id="registerPasswordConfirm-eye-hidden" style="display: none;">
+                                <input type="password" id="registerPasswordConfirm" class="form-input" placeholder="Confirma tu contraseña" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('registerPasswordConfirm')" aria-label="Mostrar/Ocultar contraseña">
+                                    <img src="../assets/images/eye-visible.svg" alt="Mostrar contraseña" class="eye-icon eye-icon-visible" id="registerPasswordConfirm-eye-visible">
+                                    <img src="../assets/images/eye-hidden.svg" alt="Ocultar contraseña" class="eye-icon eye-icon-hidden" id="registerPasswordConfirm-eye-hidden" style="display: none;">
                                 </button>
                             </div>
                         </div>
@@ -394,7 +404,7 @@
                             <label class="checkbox">
                                 <input type="checkbox" id="acceptTerms" required>
                                 <span class="checkbox__checkmark"></span>
-                                <span class="checkbox__label">Acepto los <a href="#" class="link">TÃ©rminos y Condiciones</a></span>
+                                <span class="checkbox__label">Acepto los <a href="#" class="link">Términos y Condiciones</a></span>
                             </label>
                         </div>
 
@@ -404,7 +414,7 @@
 
                         <!-- Social Register -->
                         <div class="login-divider">
-                            <span class="login-divider__text">O regÃ­strate con</span>
+                            <span class="login-divider__text">O regístrate con</span>
                         </div>
 
                         <div class="social-login">
@@ -426,28 +436,28 @@
                         </div>
 
                         <p class="login-form__footer">
-                            Â¿Ya tienes cuenta? <a href="#" class="login-form__link" onclick="showLogin()">Inicia sesiÃ³n</a>
+                            ¿Ya tienes cuenta? <a href="#" class="login-form__link" onclick="showLogin()">Inicia sesión</a>
                         </p>
                     </form>
 
                     <!-- FORGOT PASSWORD FORM -->
                     <form class="login-form" id="forgotPasswordForm" style="display: none;">
                         <div class="login-form__header">
-                            <h2 class="login-form__title">Â¿Olvidaste tu contraseÃ±a?</h2>
+                            <h2 class="login-form__title">¿Olvidaste tu contraseña?</h2>
                             <p class="login-form__subtitle">Ingresa tu email y te enviaremos un enlace para restablecerla</p>
                         </div>
 
                         <div class="form-group">
-                            <label for="resetEmail" class="form-label">Correo ElectrÃ³nico</label>
+                            <label for="resetEmail" class="form-label">Correo Electrónico</label>
                             <input type="email" id="resetEmail" class="form-input" placeholder="tu@email.com" required>
                         </div>
 
                         <button type="submit" class="btn btn--primary btn--block btn--large">
-                            Enviar enlace de recuperaciÃ³n
+                            Enviar enlace de recuperación
                         </button>
 
                         <p class="login-form__footer">
-                            <a href="#" class="login-form__link" onclick="showLogin()">â† Volver al inicio de sesiÃ³n</a>
+                            <a href="#" class="login-form__link" onclick="showLogin()">← Volver al inicio de sesión</a>
                         </p>
                     </form>
                 </div>
@@ -463,10 +473,10 @@
             </div>
             <div class="footer__links">
                 <a href="#contacto" class="footer__link">Contact</a>
-                <a href="#" class="footer__link">TÃ©rminos y Condiciones</a>
+                <a href="#" class="footer__link">Términos y Condiciones</a>
                 <a href="#faq" class="footer__link">FAQ</a>
             </div>
-            <p class="footer__copyright">Â© 2025 Graykids Academy</p>
+            <p class="footer__copyright">© 2025 Graykids Academy</p>
         </div>
     </footer>
 
@@ -479,6 +489,8 @@
             sendEmailVerification,
             updateProfile,
             signInWithPopup,
+            signInWithRedirect,
+            getRedirectResult,
             GoogleAuthProvider,
             FacebookAuthProvider,
             onAuthStateChanged
@@ -489,8 +501,8 @@
         // SESSION RESTORATION FROM COOKIES
         // ========================================
         function restoreSessionFromCookies() {
-            // La sesiÃ³n ahora se administra con Firebase Auth.
-            // Esta funciÃ³n queda como compatibilidad hacia atrÃ¡s.
+            // La sesión ahora se administra con Firebase Auth.
+            // Esta función queda como compatibilidad hacia atrás.
             return false;
         }
         
@@ -524,22 +536,22 @@
         
         async function sendFirebaseVerificationEmail(user) {
             if (!firebaseConfigured || !auth || !user) {
-                console.warn('No se pudo enviar email de verificaciÃ³n: Firebase no estÃ¡ configurado o no hay usuario.');
+                console.warn('No se pudo enviar email de verificación: Firebase no está configurado o no hay usuario.');
                 return false;
             }
 
             try {
                 await sendEmailVerification(user);
-                console.log(`ðŸ“§ Email de verificaciÃ³n enviado a ${user.email}`);
+                console.log(`📧 Email de verificación enviado a ${user.email}`);
                 return true;
             } catch (error) {
-                console.error('Error al enviar email de verificaciÃ³n:', error);
-                showErrorMessage('âŒ No pudimos enviar el email de verificaciÃ³n.<br><strong>Intenta nuevamente en unos minutos.</strong>', true);
+                console.error('Error al enviar email de verificación:', error);
+                showErrorMessage('❌ No pudimos enviar el email de verificación.<br><strong>Intenta nuevamente en unos minutos.</strong>', true);
                 return false;
             }
         }
         
-        // Mostrar modal de verificaciÃ³n
+        // Mostrar modal de verificación
         function showVerificationModal(email) {
             document.getElementById('verificationEmail').textContent = email;
             document.getElementById('verificationModal').classList.add('active');
@@ -556,7 +568,7 @@
             document.getElementById('resendEmailBtn').onclick = async function() {
                 const user = auth?.currentUser;
                 if (!user) {
-                    showErrorMessage('âŒ No hay sesiÃ³n activa.<br><strong>Inicia sesiÃ³n nuevamente.</strong>', true);
+                    showErrorMessage('❌ No hay sesión activa.<br><strong>Inicia sesión nuevamente.</strong>', true);
                 return;
             }
             
@@ -566,7 +578,7 @@
 
                 const sent = await sendFirebaseVerificationEmail(user);
                 if (sent) {
-                    showSuccessMessage('ðŸ“§ Email de verificaciÃ³n reenviado. Revisa tu bandeja de entrada.');
+                    showSuccessMessage('📧 Email de verificación reenviado. Revisa tu bandeja de entrada.');
                 }
 
                             setTimeout(() => {
@@ -576,7 +588,7 @@
             };
         }
         
-        // Cerrar modal de verificaciÃ³n
+        // Cerrar modal de verificación
         function closeVerificationModal() {
             document.getElementById('verificationModal').classList.remove('active');
         }
@@ -585,7 +597,7 @@
             const user = auth?.currentUser;
 
             if (!user) {
-                showErrorMessage('âŒ No hay sesiÃ³n activa.<br><strong>Inicia sesiÃ³n nuevamente.</strong>', true);
+                showErrorMessage('❌ No hay sesión activa.<br><strong>Inicia sesión nuevamente.</strong>', true);
                 closeVerificationModal();
                 return;
             }
@@ -594,14 +606,14 @@
                 await user.reload();
                 if (user.emailVerified) {
                     closeVerificationModal();
-                    showSuccessMessage('âœ… Email verificado exitosamente!');
+                    showSuccessMessage('✅ Email verificado exitosamente!');
                     await handlePostLogin(user, { skipVerificationCheck: true, announce: false });
             } else {
-                    showErrorMessage('âŒ Tu email aÃºn no estÃ¡ verificado.<br><strong>Revisa tu bandeja o reenvÃ­a el correo.</strong>', true);
+                    showErrorMessage('❌ Tu email aún no está verificado.<br><strong>Revisa tu bandeja o reenvía el correo.</strong>', true);
                 }
             } catch (error) {
-                console.error('Error al comprobar verificaciÃ³n de email:', error);
-                showErrorMessage('âŒ No pudimos comprobar la verificaciÃ³n.<br><strong>Intenta nuevamente.</strong>', true);
+                console.error('Error al comprobar verificación de email:', error);
+                showErrorMessage('❌ No pudimos comprobar la verificación.<br><strong>Intenta nuevamente.</strong>', true);
             }
         }
 
@@ -728,13 +740,13 @@
                 }
 
                 if (announce) {
-                    showSuccessMessage(userInfo.isAdmin ? 'âœ… Bienvenido Administrador!' : 'âœ… Inicio de sesiÃ³n exitoso!');
+                    showSuccessMessage(userInfo.isAdmin ? '✅ Bienvenido Administrador!' : '✅ Inicio de sesión exitoso!');
                 }
 
                 redirectBasedOnRole(userInfo, { announce, delay: fromObserver ? 300 : undefined });
             } catch (error) {
-                console.error('Error procesando inicio de sesiÃ³n:', error);
-                showErrorMessage('âŒ No pudimos completar el inicio de sesiÃ³n.<br><strong>IntÃ©ntalo nuevamente.</strong>', true);
+                console.error('Error procesando inicio de sesión:', error);
+                showErrorMessage('❌ No pudimos completar el inicio de sesión.<br><strong>Inténtalo nuevamente.</strong>', true);
             }
         }
 
@@ -742,30 +754,34 @@
             const code = error?.code || 'auth/unknown';
 
             const messages = {
-                'auth/invalid-email': 'âŒ El correo electrÃ³nico no es vÃ¡lido.',
-                'auth/user-disabled': 'âŒ Esta cuenta estÃ¡ deshabilitada. Contacta al soporte.',
-                'auth/user-not-found': 'âŒ No encontramos una cuenta con ese correo.',
-                'auth/wrong-password': 'âŒ Email o contraseÃ±a incorrectos.',
-                'auth/email-already-in-use': 'âŒ Este correo ya estÃ¡ registrado.',
-                'auth/weak-password': 'âŒ La contraseÃ±a es demasiado corta. Usa al menos 6 caracteres.',
-                'auth/too-many-requests': 'âŒ Has realizado demasiados intentos. Intenta nuevamente mÃ¡s tarde.',
-                'auth/popup-closed-by-user': 'âŒ Cerraste la ventana de autenticaciÃ³n antes de completar el proceso.',
-                'auth/cancelled-popup-request': 'âŒ Se cancelÃ³ la operaciÃ³n de autenticaciÃ³n. Intenta nuevamente.',
-                'auth/account-exists-with-different-credential': 'âŒ Ya existe una cuenta con este correo usando otro proveedor. Inicia sesiÃ³n con ese proveedor.',
-                'auth/operation-not-allowed': 'âŒ Este mÃ©todo de inicio de sesiÃ³n no estÃ¡ habilitado aÃºn.',
-                'auth/missing-email': 'âŒ Debes ingresar un correo electrÃ³nico.',
-                'auth/internal-error': 'âŒ OcurriÃ³ un error inesperado.'
+                'auth/invalid-email': '❌ El correo electrónico no es válido.',
+                'auth/user-disabled': '❌ Esta cuenta está deshabilitada. Contacta al soporte.',
+                'auth/user-not-found': '❌ No encontramos una cuenta con ese correo.',
+                'auth/wrong-password': '❌ Email o contraseña incorrectos.',
+                'auth/email-already-in-use': '❌ Este correo ya está registrado.',
+                'auth/weak-password': '❌ La contraseña es demasiado corta. Usa al menos 6 caracteres.',
+                'auth/too-many-requests': '❌ Has realizado demasiados intentos. Intenta nuevamente más tarde.',
+                'auth/popup-closed-by-user': '❌ Cerraste la ventana de autenticación antes de completar el proceso.',
+                'auth/popup-blocked': '❌ El navegador bloqueó la ventana emergente de Google.<br><strong>Permite las ventanas emergentes o intenta nuevamente en otra pestaña o navegador.</strong>',
+                'auth/cancelled-popup-request': '❌ Se canceló la operación de autenticación. Intenta nuevamente.',
+                'auth/account-exists-with-different-credential': '❌ Ya existe una cuenta con este correo usando otro proveedor. Inicia sesión con ese proveedor.',
+                'auth/operation-not-allowed': '❌ Este método de inicio de sesión no está habilitado aún.',
+                'auth/missing-email': '❌ Debes ingresar un correo electrónico.',
+                'auth/internal-error': '❌ Ocurrió un error inesperado.',
+                'auth/network-request-failed': '❌ No pudimos conectarnos con Google.<br><strong>Revisa tu conexión a internet e inténtalo nuevamente.</strong>',
+                'auth/operation-not-supported-in-this-environment': '❌ Este método de inicio de sesión no es compatible con el entorno actual.<br><strong>Asegúrate de abrir la página desde una URL http(s) (por ejemplo http://localhost) y no directamente desde el archivo.</strong>',
+                'auth/web-storage-unsupported': '❌ El navegador bloqueó el almacenamiento necesario para iniciar sesión.<br><strong>Habilita cookies y almacenamiento local, o prueba con otro navegador.</strong>'
             };
 
-            let message = messages[code] || 'âŒ No pudimos completar la operaciÃ³n.';
+            let message = messages[code] || '❌ No pudimos completar la operación.';
 
             if (context === 'reset') {
                 if (code === 'auth/user-not-found') {
-                    message = 'âŒ No encontramos una cuenta con ese correo.<br><strong>Verifica el email ingresado.</strong>';
+                    message = '❌ No encontramos una cuenta con ese correo.<br><strong>Verifica el email ingresado.</strong>';
                 }
             }
 
-            return message.includes('<strong>') ? message : `${message}<br><strong>IntÃ©ntalo nuevamente.</strong>`;
+            return message.includes('<strong>') ? message : `${message}<br><strong>Inténtalo nuevamente.</strong>`;
         }
 
         function setButtonLoadingState(button, loadingText) {
@@ -786,7 +802,7 @@
             };
         }
         
-        // Mostrar mensaje de Ã©xito
+        // Mostrar mensaje de éxito
         function showSuccessMessage(message, isHtml = false) {
             try {
                 // Remover mensaje anterior si existe
@@ -796,7 +812,7 @@
                 }
                 
                 if (!message) {
-                    console.warn('showSuccessMessage: mensaje vacÃ­o');
+                    console.warn('showSuccessMessage: mensaje vacío');
                     return;
                 }
                 
@@ -840,16 +856,16 @@
                 // Forzar reflow y luego mostrar
                 msgDiv.offsetHeight; // Trigger reflow
                 
-                // Aplicar animaciÃ³n de entrada
+                // Aplicar animación de entrada
                 setTimeout(() => {
                     msgDiv.style.transition = 'all 0.5s ease-out';
                     msgDiv.style.opacity = '1';
                     msgDiv.style.transform = 'translateX(0)';
                 }, 10);
                 
-                console.log('Mensaje de Ã©xito mostrado:', message);
+                console.log('Mensaje de éxito mostrado:', message);
                 
-                // Desaparecer despuÃ©s de 4 segundos
+                // Desaparecer después de 4 segundos
                 setTimeout(() => {
                     msgDiv.style.opacity = '0';
                     msgDiv.style.transform = 'translateX(400px)';
@@ -866,7 +882,7 @@
             }
         }
         
-        // Exponer funciÃ³n globalmente para debugging
+        // Exponer función globalmente para debugging
         window.showSuccessMessage = showSuccessMessage;
         
         // Mostrar mensaje de error
@@ -879,7 +895,7 @@
                 }
                 
                 if (!message) {
-                    console.warn('showErrorMessage: mensaje vacÃ­o');
+                    console.warn('showErrorMessage: mensaje vacío');
                     return;
                 }
                 
@@ -923,7 +939,7 @@
                 // Forzar reflow y luego mostrar
                 msgDiv.offsetHeight; // Trigger reflow
                 
-                // Aplicar animaciÃ³n de entrada
+                // Aplicar animación de entrada
                 setTimeout(() => {
                     msgDiv.style.transition = 'all 0.5s ease-out';
                     msgDiv.style.opacity = '1';
@@ -932,7 +948,7 @@
                 
                 console.log('Mensaje de error mostrado:', message);
                 
-                // Desaparecer despuÃ©s de 5 segundos (mÃ¡s tiempo para errores)
+                // Desaparecer después de 5 segundos (más tiempo para errores)
                 setTimeout(() => {
                     msgDiv.style.opacity = '0';
                     msgDiv.style.transform = 'translateX(400px)';
@@ -949,7 +965,7 @@
             }
         }
         
-        // Exponer funciÃ³n globalmente
+        // Exponer función globalmente
         window.showErrorMessage = showErrorMessage;
         
         // ========================================
@@ -993,12 +1009,12 @@
             const eyeHidden = document.getElementById(inputId + '-eye-hidden');
             
             if (input.type === 'password') {
-                // Mostrar contraseÃ±a
+                // Mostrar contraseña
                 input.type = 'text';
                 if (eyeVisible) eyeVisible.style.display = 'none';
                 if (eyeHidden) eyeHidden.style.display = 'block';
                 
-                // AnimaciÃ³n
+                // Animación
                 if (eyeHidden) {
                     eyeHidden.style.transform = 'scale(0.8)';
                     setTimeout(() => {
@@ -1006,12 +1022,12 @@
                     }, 100);
                 }
             } else {
-                // Ocultar contraseÃ±a
+                // Ocultar contraseña
                 input.type = 'password';
                 if (eyeVisible) eyeVisible.style.display = 'block';
                 if (eyeHidden) eyeHidden.style.display = 'none';
                 
-                // AnimaciÃ³n
+                // Animación
                 if (eyeVisible) {
                     eyeVisible.style.transform = 'scale(0.8)';
                     setTimeout(() => {
@@ -1052,7 +1068,7 @@
             }
 
             if (!firebaseConfigured || !auth) {
-                showErrorMessage('âŒ Google Sign-In no estÃ¡ disponible.<br><strong>Contacta al administrador.</strong>', true);
+                showErrorMessage('❌ Google Sign-In no está disponible.<br><strong>Contacta al administrador.</strong>', true);
                     return;
                 }
                 
@@ -1064,14 +1080,25 @@
             }
 
             const restore = setButtonLoadingState(button, 'Conectando...');
+            const provider = new GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
 
             try {
-                const provider = new GoogleAuthProvider();
-                provider.setCustomParameters({ prompt: 'select_account' });
                 const credential = await signInWithPopup(auth, provider);
                 await handlePostLogin(credential.user, { announce: true });
             } catch (error) {
                 console.error('Error en signInWithGoogle:', error);
+                if (error?.code === 'auth/popup-blocked' || error?.code === 'auth/operation-not-supported-in-this-environment') {
+                    try {
+                        await signInWithRedirect(auth, provider);
+                        return;
+                    } catch (redirectError) {
+                        console.error('Error en signInWithRedirect:', redirectError);
+                        const redirectMessage = getFriendlyAuthError(redirectError, 'login');
+                        showErrorMessage(redirectMessage, true);
+                        return;
+                    }
+                }
                 const message = getFriendlyAuthError(error, 'login');
                 showErrorMessage(message, true);
             } finally {
@@ -1079,13 +1106,29 @@
             }
         }
 
+        (async () => {
+            if (!firebaseConfigured || !auth) {
+                return;
+            }
+            try {
+                const redirectResult = await getRedirectResult(auth);
+                if (redirectResult?.user) {
+                    await handlePostLogin(redirectResult.user, { announce: true });
+                }
+            } catch (error) {
+                console.error('Error procesando resultado de redirect:', error);
+                const message = getFriendlyAuthError(error, 'login');
+                showErrorMessage(message, true);
+            }
+        })();
+
         async function signInWithFacebook(evt) {
             if (evt && typeof evt.preventDefault === 'function') {
                 evt.preventDefault();
             }
 
             if (!firebaseConfigured || !auth) {
-                showErrorMessage('âŒ Facebook Sign-In no estÃ¡ disponible.<br><strong>Contacta al administrador.</strong>', true);
+                showErrorMessage('❌ Facebook Sign-In no está disponible.<br><strong>Contacta al administrador.</strong>', true);
                 return;
             }
 
@@ -1105,7 +1148,7 @@
             } catch (error) {
                 console.error('Error en signInWithFacebook:', error);
                 if (error?.code === 'auth/operation-not-allowed') {
-                    showErrorMessage('âŒ Facebook Sign-In estÃ¡ deshabilitado para este proyecto.<br><strong>Habilita Facebook en la consola de Firebase.</strong>', true);
+                    showErrorMessage('❌ Facebook Sign-In está deshabilitado para este proyecto.<br><strong>Habilita Facebook en la consola de Firebase.</strong>', true);
                     } else {
                     const message = getFriendlyAuthError(error, 'login');
                     showErrorMessage(message, true);
@@ -1120,7 +1163,7 @@
             e.preventDefault();
             
             if (!firebaseConfigured || !auth) {
-                showErrorMessage('âŒ Firebase no estÃ¡ configurado.<br><strong>Contacta al administrador.</strong>', true);
+                showErrorMessage('❌ Firebase no está configurado.<br><strong>Contacta al administrador.</strong>', true);
                 return;
             }
             
@@ -1128,7 +1171,7 @@
             const password = document.getElementById('loginPassword').value;
 
             if (!email || !password) {
-                showErrorMessage('âŒ Por favor completa todos los campos.<br><strong>IntÃ©ntalo nuevamente.</strong>', true);
+                showErrorMessage('❌ Por favor completa todos los campos.<br><strong>Inténtalo nuevamente.</strong>', true);
                 return;
             }
             
@@ -1149,13 +1192,13 @@
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Iniciar sesiÃ³n';
+                    submitBtn.innerHTML = 'Iniciar sesión';
                 }
             }
         });
 
         // Handle register form submission
-        // Asegurar que se ejecute cuando el DOM estÃ© listo
+        // Asegurar que se ejecute cuando el DOM esté listo
         function initRegisterForm() {
             const registerForm = document.getElementById('registerForm');
             if (!registerForm) {
@@ -1168,7 +1211,7 @@
                 e.preventDefault();
                 
                 if (!firebaseConfigured || !auth) {
-                    showErrorMessage('âŒ Firebase no estÃ¡ configurado.<br><strong>Contacta al administrador.</strong>', true);
+                    showErrorMessage('❌ Firebase no está configurado.<br><strong>Contacta al administrador.</strong>', true);
                     return;
                 }
 
@@ -1178,7 +1221,7 @@
                     const passwordConfirmInput = document.getElementById('registerPasswordConfirm');
                     
                     if (!nameInput || !emailInput || !passwordInput || !passwordConfirmInput) {
-                    showErrorMessage('âŒ Error: No se encontraron todos los campos del formulario.<br><strong>Recarga la pÃ¡gina e intÃ©ntalo nuevamente.</strong>', true);
+                    showErrorMessage('❌ Error: No se encontraron todos los campos del formulario.<br><strong>Recarga la página e inténtalo nuevamente.</strong>', true);
                         return;
                     }
                     
@@ -1190,22 +1233,22 @@
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
                     if (!name || !email || !password || !passwordConfirm) {
-                    showErrorMessage('âŒ Por favor completa todos los campos.<br><strong>IntÃ©ntalo nuevamente.</strong>', true);
+                    showErrorMessage('❌ Por favor completa todos los campos.<br><strong>Inténtalo nuevamente.</strong>', true);
                         return;
                     }
                     
                     if (!emailRegex.test(email)) {
-                    showErrorMessage('âŒ Ingresa un email vÃ¡lido.<br><strong>IntÃ©ntalo nuevamente.</strong>', true);
+                    showErrorMessage('❌ Ingresa un email válido.<br><strong>Inténtalo nuevamente.</strong>', true);
                         return;
                     }
                     
                 if (password.length < 6) {
-                    showErrorMessage('âŒ La contraseÃ±a debe tener al menos 6 caracteres.<br><strong>IntÃ©ntalo nuevamente.</strong>', true);
+                    showErrorMessage('❌ La contraseña debe tener al menos 6 caracteres.<br><strong>Inténtalo nuevamente.</strong>', true);
                         return;
                     }
                     
                     if (password !== passwordConfirm) {
-                    showErrorMessage('âŒ Las contraseÃ±as no coinciden.<br><strong>Verifica e intÃ©ntalo nuevamente.</strong>', true);
+                    showErrorMessage('❌ Las contraseñas no coinciden.<br><strong>Verifica e inténtalo nuevamente.</strong>', true);
                         return;
                     }
                     
@@ -1234,7 +1277,7 @@
 
                     await sendFirebaseVerificationEmail(credential.user);
                     showVerificationModal(email);
-                    showSuccessMessage('ðŸŽ‰ Cuenta creada exitosamente!<br><strong>Revisa tu email para verificarla.</strong>', true);
+                    showSuccessMessage('🎉 Cuenta creada exitosamente!<br><strong>Revisa tu email para verificarla.</strong>', true);
 
                     passwordInput.value = '';
                     passwordConfirmInput.value = '';
@@ -1251,7 +1294,7 @@
             });
         }
         
-        // Inicializar cuando el DOM estÃ© listo
+        // Inicializar cuando el DOM esté listo
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initRegisterForm);
         } else {
@@ -1263,14 +1306,14 @@
             e.preventDefault();
             
             if (!firebaseConfigured || !auth) {
-                showErrorMessage('âŒ Firebase no estÃ¡ configurado.<br><strong>Contacta al administrador.</strong>', true);
+                showErrorMessage('❌ Firebase no está configurado.<br><strong>Contacta al administrador.</strong>', true);
                 return;
             }
 
             const email = document.getElementById('resetEmail').value.trim();
             
             if (!email) {
-                showErrorMessage('âŒ Por favor ingresa tu email.<br><strong>IntÃ©ntalo nuevamente.</strong>', true);
+                showErrorMessage('❌ Por favor ingresa tu email.<br><strong>Inténtalo nuevamente.</strong>', true);
                 return;
             }
             
@@ -1282,18 +1325,18 @@
 
             try {
                 await sendPasswordResetEmail(auth, email);
-                showSuccessMessage('ðŸ“§ Enviamos un enlace para restablecer tu contraseÃ±a.<br><strong>Revisa tu bandeja.</strong>', true);
+                showSuccessMessage('📧 Enviamos un enlace para restablecer tu contraseña.<br><strong>Revisa tu bandeja.</strong>', true);
             setTimeout(() => {
                 showLogin();
                 }, 2500);
             } catch (error) {
-                console.error('Error enviando reset de contraseÃ±a:', error);
+                console.error('Error enviando reset de contraseña:', error);
                 const message = getFriendlyAuthError(error, 'reset');
                 showErrorMessage(message, true);
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Enviar enlace de recuperaciÃ³n';
+                    submitBtn.innerHTML = 'Enviar enlace de recuperación';
                 }
             }
         });
