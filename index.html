@@ -16,6 +16,29 @@
     <script src="./src/scripts/header.js" defer></script>
     <script src="./src/scripts/animaciones.js" defer></script>
     <script type="module" src="./src/scripts/courses-loader.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyC8CkXMvUDQmaaR8zyfniYMe4waCKF14-A",
+          authDomain: "graykids-academy.firebaseapp.com",
+          projectId: "graykids-academy",
+          storageBucket: "graykids-academy.firebasestorage.app",
+          messagingSenderId: "545857776481",
+          appId: "1:545857776481:web:959cfcfd698604e095b320",
+          measurementId: "G-E7437GSZRJ"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
     <title>Graykids Academy</title>
 </head>
 <body>
