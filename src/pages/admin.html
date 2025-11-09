@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -342,7 +342,7 @@
                 <nav class="header__nav">
                     <a href="campus.html" class="header__link">
                         <span class="header__link-icon" aria-hidden="true">✦</span>
-                        <span class="header__link-label">← Volver al Campus</span>
+                        <span class="header__link-label">â† Volver al Campus</span>
                         <span class="header__link-trail" aria-hidden="true">▹</span>
                     </a>
                     <a href="cursos.html" class="header__link">
@@ -418,7 +418,7 @@
             <div id="courseEditView" style="display: none;">
                 <div style="margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
                     <button onclick="showCoursesList()" style="background: var(--dark-tertiary); color: white; border: 2px solid var(--primary-color); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem;">
-                        ← Volver a Cursos
+                        â† Volver a Cursos
                     </button>
                     <div>
                         <h2 id="editingCourseTitle" style="color: var(--primary-color); margin: 0; font-size: 1.8rem;"></h2>
@@ -462,7 +462,7 @@
                                 <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 5px;">💡 También puedes usar el botón "➕ Agregar Video" en cada módulo</p>
                             </div>
                             <div class="form-group">
-                                <label style="font-weight: 600; color: white;">📝 Título de la Lección</label>
+                                <label style="font-weight: 600; color: white;">ðŸ“ Título de la Lección</label>
                                 <input type="text" id="lessonTitle" placeholder="Ej: Introducción a la Mezcla Vocales" style="border: 2px solid rgba(255, 255, 255, 0.1);">
                             </div>
                             <div class="form-group">
@@ -476,7 +476,7 @@
                             </div>
                             <div style="display: flex; gap: 10px;">
                                 <button class="btn-add" onclick="saveLesson()" id="lessonSaveBtn" style="flex: 1; padding: 15px; font-size: 1.1rem; font-weight: 700;">✅ Agregar Video</button>
-                                <button class="btn-add" onclick="cancelEditLesson()" id="lessonCancelBtn" style="display: none; background: var(--dark-tertiary); padding: 15px;">❌ Cancelar</button>
+                                <button class="btn-add" onclick="cancelEditLesson()" id="lessonCancelBtn" style="display: none; background: var(--dark-tertiary); padding: 15px;">âŒ Cancelar</button>
                             </div>
                         </div>
                     </div>
@@ -489,7 +489,7 @@
                         <div style="padding: 15px; background: rgba(57, 243, 212, 0.1); border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
                             <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
                                 <strong style="color: var(--primary-color);">💡 Guía rápida:</strong> 
-                                Haz clic en <strong>"✏️ Editar"</strong> para modificar módulos o videos. 
+                                Haz clic en <strong>"âœ️ Editar"</strong> para modificar módulos o videos. 
                                 Usa <strong>"➕ Agregar Video"</strong> en cada módulo para agregar videos rápidamente.
                             </p>
                         </div>
@@ -513,7 +513,7 @@
             <div onclick="event.stopPropagation();" style="max-width: 600px; margin: 0 auto 50px auto; background: var(--dark-bg); border-radius: 15px; padding: 30px; border: 2px solid var(--primary-color); position: relative; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);">
                 <button onclick="closeCourseInfoModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700; transition: transform 0.2s;" onmouseover="this.style.transform='rotate(90deg)'" onmouseout="this.style.transform='rotate(0deg)'">×</button>
                 
-                <h2 style="color: var(--primary-color); margin-bottom: 25px; font-size: 1.8rem;">📝 Editar Información del Curso</h2>
+                <h2 style="color: var(--primary-color); margin-bottom: 25px; font-size: 1.8rem;">ðŸ“ Editar Información del Curso</h2>
                 
                 <div class="form-group">
                     <label style="font-weight: 600; color: white;">Título del Curso</label>
@@ -577,7 +577,7 @@
                 
                 <div style="display: flex; gap: 15px; margin-top: 25px;">
                     <button onclick="saveCourseInfoFromModal()" class="btn-save" style="flex: 1; padding: 15px; font-size: 1.1rem; font-weight: 700;">💾 Guardar Cambios</button>
-                    <button onclick="closeCourseInfoModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 15px 25px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">❌ Cancelar</button>
+                    <button onclick="closeCourseInfoModal()" style="background: var(--dark-tertiary); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 15px 25px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">âŒ Cancelar</button>
                 </div>
                 
                 <div id="modalDeleteBtnContainer" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
@@ -959,7 +959,7 @@
                                     <div style="color: var(--primary-color); font-size: 1.3rem; font-weight: 700;">${price}</div>
                                 </div>
                                 <button onclick="editCourseInfoInPanel('${courseId}', event)" style="background: rgba(57, 243, 212, 0.2); color: var(--primary-color); border: 1px solid var(--primary-color); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;" onmouseover="this.style.background='var(--primary-color)'; this.style.color='var(--dark-bg)'" onmouseout="this.style.background='rgba(57, 243, 212, 0.2)'; this.style.color='var(--primary-color)'">
-                                    ✏️ Editar Info
+                                    âœ️ Editar Info
                                 </button>
                             </div>
                         </div>
@@ -973,7 +973,7 @@
                     if (editBtnContainer) {
                         // Botón de Editar Contenido
                         const editBtn = document.createElement('button');
-                        editBtn.textContent = '✏️ Editar Contenido';
+                        editBtn.textContent = 'âœ️ Editar Contenido';
                         editBtn.style.cssText = 'flex: 1; background: var(--gradient-primary); color: var(--dark-bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: transform 0.2s;';
                         editBtn.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
                         editBtn.onmouseout = function() { this.style.transform = 'scale(1)'; };
@@ -1160,7 +1160,7 @@
             
             document.getElementById('moduleTitle').value = module.title;
             document.getElementById('editingModuleId').value = moduleId;
-            document.getElementById('moduleFormTitle').textContent = '✏️ Editar Módulo';
+            document.getElementById('moduleFormTitle').textContent = 'âœ️ Editar Módulo';
             document.getElementById('moduleSaveBtn').textContent = '💾 Guardar Cambios';
             document.getElementById('moduleCancelBtn').style.display = 'block';
             
@@ -1255,7 +1255,7 @@
             }, 100);
             
             // Cambiar título y botón
-            document.getElementById('lessonFormTitle').textContent = '✏️ Editar Lección';
+            document.getElementById('lessonFormTitle').textContent = 'âœ️ Editar Lección';
             document.getElementById('lessonSaveBtn').textContent = '💾 Guardar Cambios';
             document.getElementById('lessonCancelBtn').style.display = 'block';
             
@@ -1366,7 +1366,7 @@
                             </p>
                         </div>
                         <div style="display: flex; gap: 10px;">
-                            <button class="btn-edit" onclick="editModule('${module.id}')" style="background: var(--primary-color); color: var(--dark-bg); padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">✏️ Editar Nombre</button>
+                            <button class="btn-edit" onclick="editModule('${module.id}')" style="background: var(--primary-color); color: var(--dark-bg); padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">âœ️ Editar Nombre</button>
                             <button class="btn-remove" onclick="removeModule('${module.id}')" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; padding: 10px 18px; border: 2px solid #ff4d4d; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">🗑️ Eliminar Módulo</button>
                         </div>
                     </div>
@@ -1397,7 +1397,7 @@
                                                     <strong>Video disponible</strong>
                                                 </span>` : 
                                                 `<span style="color: #ff4d4d; display: flex; align-items: center; gap: 5px;">
-                                                    <span>❌</span>
+                                                    <span>âŒ</span>
                                                     <strong>Sin video asignado</strong>
                                                 </span>`
                                             }
@@ -1409,7 +1409,7 @@
                                         </div>
                                     </div>
                                     <div style="display: flex; gap: 10px; flex-shrink: 0; margin-left: 15px;">
-                                        <button class="btn-edit" onclick="editLesson('${module.id}', ${lesson.id})" style="background: var(--primary-color); color: var(--dark-bg); padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; white-space: nowrap; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(57, 243, 212, 0.3);" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Editar título, duración y URL del video">✏️ Editar</button>
+                                        <button class="btn-edit" onclick="editLesson('${module.id}', ${lesson.id})" style="background: var(--primary-color); color: var(--dark-bg); padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; white-space: nowrap; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(57, 243, 212, 0.3);" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Editar título, duración y URL del video">âœ️ Editar</button>
                                         <button class="btn-remove" onclick="removeLesson('${module.id}', ${lesson.id})" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; padding: 10px 18px; border: 2px solid #ff4d4d; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; white-space: nowrap; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Eliminar este video permanentemente">🗑️ Eliminar</button>
                                     </div>
                                 </div>
@@ -1458,7 +1458,7 @@
         function showAlert(message) {
             const alertElement = document.getElementById('alertMessage');
             if (!alertElement) {
-                console.error('❌ Elemento alertMessage no encontrado');
+                console.error('âŒ Elemento alertMessage no encontrado');
                 // Fallback: usar alert nativo
                 window.alert(message);
                 return;
@@ -1865,8 +1865,8 @@
             const descriptionInput = document.getElementById('newCourseDescription');
             
             if (!courseIdInput || !nameInput || !descriptionInput) {
-                console.error('❌ Campos del formulario no encontrados');
-                window.alert('❌ Error: Los campos del formulario no se encontraron. Por favor recarga la página.');
+                console.error('âŒ Campos del formulario no encontrados');
+                window.alert('âŒ Error: Los campos del formulario no se encontraron. Por favor recarga la página.');
                 return;
             }
             
@@ -1880,12 +1880,12 @@
             const icon = document.getElementById('newCourseIcon') ? document.getElementById('newCourseIcon').value.trim() || '🎓' : '🎓';
             const status = document.getElementById('newCourseStatus') ? document.getElementById('newCourseStatus').value : 'coming-soon';
             
-            console.log('📝 Datos del formulario:', { courseId, name, description, level, price, icon, status });
+            console.log('ðŸ“ Datos del formulario:', { courseId, name, description, level, price, icon, status });
             
             if (!courseId || !name || !description) {
                 window.alert('⚠️ Por favor completa todos los campos requeridos:\n- ID del Curso\n- Nombre del Curso\n- Descripción');
                 if (typeof showAlert === 'function') {
-                    showAlert('❌ Por favor completa todos los campos requeridos');
+                    showAlert('âŒ Por favor completa todos los campos requeridos');
                 }
                 if (typeof showToast === 'function') {
                     showToast('Completa los campos requeridos antes de crear el curso.', { icon: '⚠️', duration: 3800 });
@@ -1982,7 +1982,7 @@
                 window.alert('✅ ¡Curso agregado correctamente!\n\nEl curso "' + name + '" ha sido creado exitosamente.\n\nRedirigiendo a "Gestionar Cursos"...');
                 console.log('✅ Alert nativo mostrado');
             } catch (e) {
-                console.error('❌ Error al mostrar alert:', e);
+                console.error('âŒ Error al mostrar alert:', e);
             }
             
             // También mostrar mensaje visual
@@ -1991,13 +1991,13 @@
                     showAlert('✅ ¡Curso agregado correctamente! Redirigiendo a "Gestionar Cursos"...');
                     console.log('✅ Mensaje visual mostrado');
                 } else {
-                    console.error('❌ showAlert no está definida');
+                    console.error('âŒ showAlert no está definida');
                 }
                 if (typeof showInlineNewCourseMessage === 'function') {
                     showInlineNewCourseMessage('✅ El curso <strong>' + name + '</strong> se creó exitosamente. En unos segundos te llevaremos a "Gestionar Cursos".');
                 }
             } catch (e) {
-                console.error('❌ Error al mostrar mensaje visual:', e);
+                console.error('âŒ Error al mostrar mensaje visual:', e);
             }
 
             if (typeof showToast === 'function') {
@@ -2033,7 +2033,7 @@
                         // Desplazarse al curso recién creado después de que se renderice
                         setTimeout(() => {
                             const newCourseCard = document.querySelector(`[data-course-id="${courseId}"]`);
-                            console.log('🔍 Buscando curso:', courseId, 'Encontrado:', !!newCourseCard);
+                            console.log('ðŸ” Buscando curso:', courseId, 'Encontrado:', !!newCourseCard);
                             if (newCourseCard) {
                                 newCourseCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
                                 // Resaltar el curso nuevo por 3 segundos
@@ -2063,8 +2063,8 @@
             console.log('🗑️ deleteCourse llamada con courseId:', courseId);
             
             if (!courseId || courseId.trim() === '') {
-                console.error('❌ Error: courseId inválido');
-                showAlert('❌ Error: No se pudo identificar el curso a eliminar');
+                console.error('âŒ Error: courseId inválido');
+                showAlert('âŒ Error: No se pudo identificar el curso a eliminar');
                 return false;
             }
             
@@ -2248,7 +2248,7 @@
                         </div>
                         <div style="display: flex; gap: 10px; margin-top: 15px;">
                             <button onclick="viewUserDetails('${email}')" style="flex: 1; background: var(--dark-tertiary); color: white; border: 1px solid var(--primary-color); padding: 8px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">
-                                👁️ Ver Detalles
+                                ðŸ‘️ Ver Detalles
                             </button>
                             ${!isAdmin && !isCurrentUser ? `
                             <button onclick="deleteUser('${email}')" style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">
@@ -2345,8 +2345,7 @@
         // ========================================
         // INICIALIZACIÓN
         // ========================================
-        
-        // ========================================
+       
         // FUNCIÓN DE CERRAR SESIÓN
         // ========================================
         
