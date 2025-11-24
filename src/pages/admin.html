@@ -10,9 +10,10 @@
     <script src="../scripts/config.js"></script>
     <script src="../scripts/header.js" defer></script>
     <script type="module">
-        import { guardPage } from '../scripts/auth-guard.js';
-        import { db, firebaseConfigured } from '../scripts/firebase-init.js';
+        import { guardPage, persistSession } from '../scripts/auth-guard.js';
+        import { auth, db, firebaseConfigured } from '../scripts/firebase-init.js';
         import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
         guardPage({
             requireAdmin: true,
@@ -2353,23 +2354,40 @@
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
         }
         
-        function logout() {
+        async function logout() {
             if (confirm('¿Estás seguro que quieres cerrar sesión?')) {
-                // Limpiar localStorage
-                localStorage.removeItem('user');
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('currentCourse');
-                
-                // Limpiar cookies
-                deleteCookie('user_session');
-                deleteCookie('is_logged_in');
-                
-                // Limpiar sessionStorage
-                sessionStorage.removeItem('oauth_redirect_from');
-                sessionStorage.removeItem('google_user_email');
-                
-                window.location.href = 'Login.html';
+                try {
+                    // Cerrar sesión en Firebase primero
+                    if (firebaseConfigured && auth) {
+                        await signOut(auth);
+                    }
+                    
+                    // Limpiar sesión persistida
+                    persistSession(null);
+                    
+                    // Limpiar localStorage
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('currentCourse');
+                    
+                    // Limpiar cookies
+                    deleteCookie('user_session');
+                    deleteCookie('is_logged_in');
+                    
+                    // Limpiar sessionStorage
+                    sessionStorage.removeItem('oauth_redirect_from');
+                    sessionStorage.removeItem('google_user_email');
+                    
+                    // Redirigir a Login
+                    window.location.href = 'Login.html';
+                } catch (error) {
+                    console.error('Error al cerrar sesión:', error);
+                    // Aún así, limpiar todo y redirigir
+                    persistSession(null);
+                    localStorage.clear();
+                    window.location.href = 'Login.html';
+                }
             }
         }
         
