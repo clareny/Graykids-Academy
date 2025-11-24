@@ -6,8 +6,10 @@ export function persistSession(user, extra = {}) {
     if (!user) {
         localStorage.removeItem('user');
         localStorage.removeItem('isLoggedIn');
-        document.cookie = 'user_session=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;';
-        document.cookie = 'is_logged_in=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;';
+        // Borrar cookies usando los mismos atributos (SameSite/Secure)
+        const secureAttr = window.location.protocol === 'https:' ? ';SameSite=Lax;Secure' : ';SameSite=Lax';
+        document.cookie = `user_session=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/` + secureAttr;
+        document.cookie = `is_logged_in=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/` + secureAttr;
         return;
     }
 

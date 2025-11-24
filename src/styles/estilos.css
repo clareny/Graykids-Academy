@@ -996,17 +996,20 @@ details[open] .faq__question::after {
    ======================================== */
 @media (max-width: 768px) {
     .container {
-        padding: 0 16px;
+        padding: 0px;
+
     }
 
     .header {
         background: rgba(10, 10, 10, 0.92);
         border-bottom: 1px solid rgba(77, 74, 74, 0.836);
+        margin: 0;
+        gap: 20px;
     }
 
     .header__container {
-        padding: 12px 20px;
-        gap: 14px;
+        padding: 0px;
+        gap: 10px;
     }
 
     .header__logo {
@@ -1503,7 +1506,10 @@ details[open] .faq__question::after {
 @media (min-width: 428px) and (max-width: 768px) {
     .header {
         padding-top: env(safe-area-inset-top);
-        z-index: 1000;
+        margin: 0;
+        align-items: center;
+        justify-content: space-around;
+        
     }
     
     .header__menu {
