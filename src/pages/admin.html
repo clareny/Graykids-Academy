@@ -26,6 +26,12 @@
                 }
             }
         });
+        
+        // Exportar funciones para uso global en scripts no módulo
+        window.firebaseAuth = auth;
+        window.firebaseConfigured = firebaseConfigured;
+        window.signOut = signOut;
+        window.persistSession = persistSession;
     </script>
     <title>Panel de Administrador - Graykids Academy</title>
     <style>
@@ -2357,13 +2363,22 @@
         async function logout() {
             if (confirm('¿Estás seguro que quieres cerrar sesión?')) {
                 try {
+                    // Esperar a que las funciones de Firebase estén disponibles
+                    let attempts = 0;
+                    while ((!window.firebaseAuth || !window.signOut) && attempts < 10) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        attempts++;
+                    }
+                    
                     // Cerrar sesión en Firebase primero
-                    if (firebaseConfigured && auth) {
-                        await signOut(auth);
+                    if (window.firebaseConfigured && window.firebaseAuth && window.signOut) {
+                        await window.signOut(window.firebaseAuth);
                     }
                     
                     // Limpiar sesión persistida
-                    persistSession(null);
+                    if (window.persistSession) {
+                        window.persistSession(null);
+                    }
                     
                     // Limpiar localStorage
                     localStorage.removeItem('user');
@@ -2384,7 +2399,9 @@
                 } catch (error) {
                     console.error('Error al cerrar sesión:', error);
                     // Aún así, limpiar todo y redirigir
-                    persistSession(null);
+                    if (window.persistSession) {
+                        window.persistSession(null);
+                    }
                     localStorage.clear();
                     window.location.href = 'Login.html';
                 }
@@ -2393,6 +2410,11 @@
         
         // Hacer logout disponible globalmente
         window.logout = logout;
+        
+        // Asegurar que la función esté disponible incluso si se llama antes
+        document.addEventListener('DOMContentLoaded', () => {
+            window.logout = logout;
+        });
         
         // Initialize
         showCurrentAdmin();
