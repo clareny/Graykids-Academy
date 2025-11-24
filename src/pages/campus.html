@@ -25,7 +25,49 @@
             }
         });
         
-        // Exportar funciones para uso global
+        // Función de logout dentro del módulo
+        async function logout() {
+            if (confirm('¿Estás seguro que quieres cerrar sesión?')) {
+                try {
+                    // Cerrar sesión en Firebase primero
+                    if (firebaseConfigured && auth) {
+                        await signOut(auth);
+                    }
+                    
+                    // Limpiar sesión persistida
+                    persistSession(null);
+                    
+                    // Limpiar localStorage
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('currentCourse');
+                    
+                    // Limpiar cookies
+                    const secureAttr = window.location.protocol === 'https:' ? ';SameSite=Lax;Secure' : ';SameSite=Lax';
+                    document.cookie = `user_session=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/` + secureAttr;
+                    document.cookie = `is_logged_in=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/` + secureAttr;
+                    
+                    // Limpiar sessionStorage
+                    sessionStorage.removeItem('oauth_redirect_from');
+                    sessionStorage.removeItem('google_user_email');
+                    
+                    // Redirigir a Login
+                    window.location.href = 'Login.html';
+                } catch (error) {
+                    console.error('Error al cerrar sesión:', error);
+                    // Aún así, limpiar todo y redirigir
+                    persistSession(null);
+                    localStorage.clear();
+                    window.location.href = 'Login.html';
+                }
+            }
+        }
+        
+        // Exportar función logout a window inmediatamente
+        window.logout = logout;
+        
+        // Exportar otras funciones para uso global (si se necesitan)
         window.firebaseAuth = auth;
         window.firebaseConfigured = firebaseConfigured;
         window.signOut = signOut;
@@ -638,67 +680,10 @@
             renderProgress(context);
         }
 
-        // Cookie functions
+        // Cookie functions (mantener por compatibilidad si se usa en otro lugar)
         function deleteCookie(name) {
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
         }
-
-        // Logout function
-        async function logout() {
-            if (confirm('¿Estás seguro que quieres cerrar sesión?')) {
-                try {
-                    // Esperar a que las funciones de Firebase estén disponibles
-                    let attempts = 0;
-                    while ((!window.firebaseAuth || !window.signOut) && attempts < 10) {
-                        await new Promise(resolve => setTimeout(resolve, 100));
-                        attempts++;
-                    }
-                    
-                    // Cerrar sesión en Firebase primero
-                    if (window.firebaseConfigured && window.firebaseAuth && window.signOut) {
-                        await window.signOut(window.firebaseAuth);
-                    }
-                    
-                    // Limpiar sesión persistida
-                    if (window.persistSession) {
-                        window.persistSession(null);
-                    }
-                    
-                    // Limpiar localStorage
-                    localStorage.removeItem('user');
-                    localStorage.removeItem('isLoggedIn');
-                    localStorage.removeItem('access_token');
-                    localStorage.removeItem('currentCourse');
-                    
-                    // Limpiar cookies
-                    deleteCookie('user_session');
-                    deleteCookie('is_logged_in');
-                    
-                    // Limpiar sessionStorage
-                    sessionStorage.removeItem('oauth_redirect_from');
-                    sessionStorage.removeItem('google_user_email');
-                    
-                    // Redirigir a Login
-                    window.location.href = 'Login.html';
-                } catch (error) {
-                    console.error('Error al cerrar sesión:', error);
-                    // Aún así, limpiar todo y redirigir
-                    if (window.persistSession) {
-                        window.persistSession(null);
-                    }
-                    localStorage.clear();
-                    window.location.href = 'Login.html';
-                }
-            }
-        }
-        
-        // Hacer logout disponible globalmente
-        window.logout = logout;
-        
-        // Asegurar que la función esté disponible incluso si se llama antes
-        document.addEventListener('DOMContentLoaded', () => {
-            window.logout = logout;
-        });
 
         // Initialize campus
         displayUserInfo();
